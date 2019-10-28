@@ -1,2 +1,4 @@
 # CT6GAMAI
- AI unit
+ 
+ University of Portsmouth - AI UNIT- Artefact
+ Unity version: 2018.1.5f1
