@@ -19,7 +19,7 @@ public class AgentController : MonoBehaviour {
     public GameObject bullet;
     public GameObject bulletPoint;
  
-    private float health = 100f;
+    public float health = 100f;
  
     float timeBtwShoots;
     public float startTimeBtwShoots;
@@ -78,7 +78,7 @@ public class AgentController : MonoBehaviour {
         {
             foundPlayer = true;
             //chase
-           // agent.SetDestination(target.position);
+            agent.SetDestination(target.position);
             Shoot();
 
             if (distance<=agent.stoppingDistance)
@@ -136,6 +136,12 @@ public class AgentController : MonoBehaviour {
         {
             Instantiate(bullet, bulletPoint.transform.position, Quaternion.identity);
             timeBtwShoots = startTimeBtwShoots;
+
+            //check collision
+            if(bullet.GetComponent<Collider>() == gameObject.GetComponent<Collider>())
+            {
+                Debug.Log("L-a impuscat");
+            }
            
         }
         else

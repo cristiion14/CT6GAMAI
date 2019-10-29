@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : MonoBehaviour
+{
 
-    public float speed= 10f;
+    public float speed = 10f;
     public float fireRate = 2f;
     public float damage = 10f;
     public float range = 100f;
@@ -13,50 +14,61 @@ public class Bullet : MonoBehaviour {
 
     private Vector3 target;
     Transform player;
-    Collider bulletCol, playerCol;
-    
-	// Use this for initialization
-	void Start () {
+  // public PlayerInfo playerInf;
+    float pHealth;
+    GameObject gb;
+    //Collider bulletCol, playerCol;
 
-             player = GameObject.FindGameObjectWithTag("Player").transform;
+    // Use this for initialization
+    void Start()
+    {
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         target = player.transform.position - gameObject.transform.position;
-         bulletCol = GameObject.Find("Bullet").GetComponent<Collider>();
-        playerCol = GameObject.Find("Player").GetComponent<Collider>();
-        rb.velocity = target*speed;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-       // transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        //   bulletCol = GameObject.Find("Bullet").GetComponent<Collider>();
+        // playerCol = GameObject.Find("Player").GetComponent<Collider>();
+        rb.velocity = target * speed;
         
-	}
+        gb = GameObject.Find("Player");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
+    }
 
     void FixedUpdate()
     {
-        OnTriggerEnter(gameObject.GetComponent<Collider>());
+          OnCollisionEnter(gameObject.GetComponent<Collision>());
+
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnCollisionEnter(Collision col)
     {
-        Player playerInf = col.GetComponent<Player>();
-       
-        if (bulletCol == playerCol)
+
+
+         if(col.collider.name=="Player")
         {
-            playerInf.health -= damage;
-            Debug.Log(playerInf.health);
-            if (playerInf.health <= 0)
-                playerInf.health = 0;
+            //lower health
+            //pHealth -= 1;
+            gb.GetComponent<PlayerInfo>().health -= damage;
+            Debug.Log(gb.GetComponent<PlayerInfo>().health);
+            if (gb.GetComponent<PlayerInfo>().health <= 0)
+            {
+                Debug.Log("Mort");
+            }
+            Destroy(gameObject);
         }
-       
-            
-        }
-      //  Destroy(gameObject);
+        //  Destroy(gameObject);
         //lower health
 
         //destroy bullet
-       // Destroy(gameObject);
+        // Destroy(gameObject);
 
         //add explosive, etc
 
     }
+}
 

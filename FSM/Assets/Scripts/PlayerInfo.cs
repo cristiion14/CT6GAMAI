@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class Player : MonoBehaviour {
+public class PlayerInfo : MonoBehaviour {
     public Camera cam;
     public NavMeshAgent agent;
 
