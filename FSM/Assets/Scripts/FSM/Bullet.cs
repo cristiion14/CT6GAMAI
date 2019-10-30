@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
 
-    public float speed = 10f;
+    public float speed = 1f;
     public float fireRate = 2f;
     public float damage = 10f;
     public float range = 100f;
@@ -25,10 +25,8 @@ public class Bullet : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
         target = player.transform.position - gameObject.transform.position;
-        //   bulletCol = GameObject.Find("Bullet").GetComponent<Collider>();
-        // playerCol = GameObject.Find("Player").GetComponent<Collider>();
-        rb.velocity = target * speed;
-        
+
+        rb.velocity = target * speed;        
         gb = GameObject.Find("Player");
     }
 
@@ -36,11 +34,12 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         // transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-
+        StartCoroutine(DestroyBullet());
+       
     }
 
     void FixedUpdate()
-    {
+    {   
           OnCollisionEnter(gameObject.GetComponent<Collision>());
 
     }
@@ -70,5 +69,11 @@ public class Bullet : MonoBehaviour
         //add explosive, etc
 
     }
+    IEnumerator DestroyBullet()
+    {
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
+    }
+  
 }
 

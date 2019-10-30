@@ -78,16 +78,16 @@ public class AgentController : MonoBehaviour {
         {
             foundPlayer = true;
             //chase
-            agent.SetDestination(target.position);
+       //    agent.SetDestination(target.position);
             Shoot();
-
+            FaceTarget();
             if (distance<=agent.stoppingDistance)
             {
                // Debug.Log("Shoot!");
                 //Attack the target
                
                 //Face the target
-                FaceTarget();
+                
             }
         }
         foundPlayer = false;
@@ -121,7 +121,7 @@ public class AgentController : MonoBehaviour {
             }
         }
     }
-    void Shoot()
+     void Shoot()
     {
         /*
         Debug.Log("Shooting");
@@ -136,12 +136,6 @@ public class AgentController : MonoBehaviour {
         {
             Instantiate(bullet, bulletPoint.transform.position, Quaternion.identity);
             timeBtwShoots = startTimeBtwShoots;
-
-            //check collision
-            if(bullet.GetComponent<Collider>() == gameObject.GetComponent<Collider>())
-            {
-                Debug.Log("L-a impuscat");
-            }
            
         }
         else
