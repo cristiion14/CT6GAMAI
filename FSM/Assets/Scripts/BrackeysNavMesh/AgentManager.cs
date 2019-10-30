@@ -14,5 +14,5 @@ public class AgentManager : MonoBehaviour {
     #endregion
 
     public GameObject player;
-    public PlayerInfo player1;
+    
 }
