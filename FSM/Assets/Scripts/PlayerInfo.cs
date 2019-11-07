@@ -8,14 +8,87 @@ public class PlayerInfo : MonoBehaviour {
 
     public float health = 100f;
     // Use this for initialization
+
+    float distance;
+    Transform target;
+    public float lookRad = 25f;
+    public float shootDist = 20f;
+   public float startTimeBtwShoots, timeBtwShoots;
+    public GameObject bullet, bulletPoint;
+
+  public  bool isFound, foundTarget;
+    AgentController enemy;
     void Start () {
-     //   agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
+        target = AgentManager.instance.enemy2.transform;
+        timeBtwShoots = startTimeBtwShoots;
+        enemy = new AgentController();
+
+        isFound = enemy.foundPlayer;
+
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
-        PointLocation();	
+        PointLocation();
+        ChasePlayer();
+        isChased();
+        FaceTarget();
+        Shoot();
 	}
+    void FaceTarget()
+    {
+        // Debug.Log("Face Target");
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
+    }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, lookRad);
+    }
+    void ChasePlayer()
+    {
+     //  get the distance from player to enemy
+       distance = Vector3.Distance(target.position, transform.position);
+        if (distance <= lookRad)
+        {//if distance is less-----set destination
+            foundTarget = true;
+            agent.SetDestination(target.position);
+            FaceTarget();
+            Shoot();
+        }
+        foundTarget = false;
+    }
+
+    void isChased()
+    {
+        if(isFound)
+        {
+            agent.speed += 5f;
+            agent.SetPath(new NavMeshPath());
+        }
+       
+    }
+    void Shoot()
+    {
+       
+
+        if (timeBtwShoots <= 0)
+        {
+            Instantiate(bullet, bulletPoint.transform.position, Quaternion.identity);
+            timeBtwShoots = startTimeBtwShoots;
+
+        }
+        else
+        {
+            timeBtwShoots -= Time.deltaTime;
+        }
+
+
+    }
     void PointLocation()
     {
         //check to see if the left mouse was pressed

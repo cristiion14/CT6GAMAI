@@ -8,19 +8,19 @@ public class AgentController : MonoBehaviour {
     float distance;
     public Camera cam;
     public NavMeshAgent agent;
-    bool foundPlayer;
+    public bool foundPlayer, isFound;
     public float lookRadius = 25f;
     Transform target;
    public Transform downLeft, downRight, upLeft, upRight;
 
-
+    
 
     //for shooting
     public GameObject bullet;
     public GameObject bulletPoint;
  
     public float health = 100f;
- 
+    PlayerInfo pInf;
     float timeBtwShoots;
     public float startTimeBtwShoots;
     void Start()
@@ -32,19 +32,31 @@ public class AgentController : MonoBehaviour {
 
         timeBtwShoots = startTimeBtwShoots;
 
+        pInf = new PlayerInfo();
+        isFound = pInf.foundTarget;
+
     }
 	// Update is called once per frame
 	void Update () {
         //PointLocation();
         ChasePlayer();
         Patrol();
+        isChased();
         // Debug.Log(foundPlayer);
         // Debug.Log(nr);
 
        // Debug.Log(distance);
-
+       
 	}
 
+    void isChased()
+    {
+        if(isFound)
+        {
+            agent.speed += 5f;
+            agent.SetPath(new NavMeshPath());
+        }
+    }
     //display the look radius
     void OnDrawGizmosSelected()
     {

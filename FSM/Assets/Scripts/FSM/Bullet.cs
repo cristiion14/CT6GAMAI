@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
     Transform player;
   // public PlayerInfo playerInf;
     float pHealth;
-    GameObject gb;
+    GameObject gb, gb2;
     //Collider bulletCol, playerCol;
 
     // Use this for initialization
@@ -28,6 +28,7 @@ public class Bullet : MonoBehaviour
 
         rb.velocity = target * speed;        
         gb = GameObject.Find("Player");
+        gb2 = GameObject.Find("Enemy1");
     }
 
     // Update is called once per frame
@@ -55,6 +56,19 @@ public class Bullet : MonoBehaviour
             gb.GetComponent<PlayerInfo>().health -= damage;
             Debug.Log(gb.GetComponent<PlayerInfo>().health);
             if (gb.GetComponent<PlayerInfo>().health <= 0)
+            {
+                Debug.Log("Mort");
+            }
+            Destroy(gameObject);
+        }
+
+       else if (col.collider.name == "Enemy1")
+        {
+            //lower health
+            //pHealth -= 1;
+            gb2.GetComponent<AgentController>().health -= damage;
+            Debug.Log("Viata inamicului este: "+gb2.GetComponent<AgentController>().health);
+            if (gb.GetComponent<AgentController>().health <= 0)
             {
                 Debug.Log("Mort");
             }
