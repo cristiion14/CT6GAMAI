@@ -6,9 +6,8 @@ public class Bullet : MonoBehaviour
 {
 
     public float speed = 1f;
-    public float fireRate = 2f;
     public float damage = 10f;
-    public float range = 100f;
+    
     public Rigidbody rb;
 
 
