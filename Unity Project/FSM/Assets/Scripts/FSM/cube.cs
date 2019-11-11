@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cube : MonoBehaviour {
+public class Iohannis : MonoBehaviour {
    
     public int m_gold;
     public int m_bankedGold;
     public bool isMining;
     public bool isBanking;
     float speed = 1.5f;
-    StateManager<cube> fsm = new StateManager<cube>();
+    StateManager<Iohannis> fsm = new StateManager<Iohannis>();
     //create a reference to state
     //assign the first state ---- execute it-----change the state if nec
 
@@ -35,7 +35,7 @@ public class cube : MonoBehaviour {
            // transform.position = new Vector3(0, 0, 0);
         }
     }
-   public void ChangeState(State<cube> newState)
+   public void ChangeState(State<Iohannis> newState)
     {
         fsm.pState = newState;
     }

@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiningForGold : State<cube> {
-    StateManager<cube> fsm;
-    public override void Execute(cube cb)
+public class MiningForGold : State<Iohannis> {
+    StateManager<Iohannis> fsm;
+    public override void Execute(Iohannis agent)
     {
         Debug.Log("MiningForGold\n");
-        cb.isMining = true;
-        cb.isBanking = false;
-        cb.m_gold++;
+        agent.isMining = true;
+        agent.isBanking = false;
+        agent.m_gold++;
 
-        if(cb.m_gold>3)
+        if(agent.m_gold>3)
         {
-            cb.ChangeState(new BankingGold());
+            agent.ChangeState(new BankingGold());
         }
     }
 }

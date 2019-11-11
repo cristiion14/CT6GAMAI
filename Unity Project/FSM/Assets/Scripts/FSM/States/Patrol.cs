@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Patrol : State<cube> {
+public class Patrol : State<Iohannis> {
 
-    public override void Execute(cube cb)
+    public override void Execute(Iohannis cb)
     {
         Debug.Log("Looking for player");
     }

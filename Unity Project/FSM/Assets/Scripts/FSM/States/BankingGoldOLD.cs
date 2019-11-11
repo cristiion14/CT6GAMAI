@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BankingGold : State<cube> {
-    StateManager<cube> fsm;
-    public override void Execute(cube cb)
+public class BankingGold : State<Iohannis> {
+    StateManager<Iohannis> fsm;
+    public override void Execute(Iohannis cb)
     {
         Debug.Log("Banking gold\n");
         cb.isMining = false;
