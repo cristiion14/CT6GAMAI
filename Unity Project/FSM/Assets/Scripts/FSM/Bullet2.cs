@@ -2,32 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet2 : MonoBehaviour
 {
+    //Bullet class for Iohannis
+
 
     public float speed = 1f;
     public float damage = 10f;
-    
+
     public Rigidbody rb;
 
 
     private Vector3 target;
     Transform player;
-  // public PlayerInfo playerInf;
+    // public PlayerInfo playerInf;
     float pHealth;
     GameObject gb;
+    
     //Collider bulletCol, playerCol;
 
     // Use this for initialization
     void Start()
     {
 
-        player = GameObject.FindGameObjectWithTag(TagManager.Iohannis).transform;
+        player = GameObject.FindGameObjectWithTag(TagManager.Veorica).transform;
         target = player.transform.position - gameObject.transform.position;
 
-        rb.velocity = target * speed;        
-        gb = GameObject.Find(TagManager.Iohannis);
-     
+        rb.velocity = target * speed;
+        gb = GameObject.Find(TagManager.Veorica);
+        
     }
 
     // Update is called once per frame
@@ -35,22 +38,23 @@ public class Bullet : MonoBehaviour
     {
         // transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         StartCoroutine(DestroyBullet());
-       
+
     }
 
- 
+
 
     void OnCollisionEnter(Collision col)
     {
 
 
-         if(col.collider.name=="Iohannis")
+        if (col.collider.name == TagManager.Veorica)
         {
             //lower health
             //pHealth -= 1;
-            gb.GetComponent<Iohannis>().health -= damage;
-            Debug.Log("Iohanis has: " + gb.GetComponent<Iohannis>().health + " remaining health");
-            if (gb.GetComponent<Iohannis>().health <= 0)
+            gb.GetComponent<Veorica>().health -= damage;
+           
+            Debug.Log("Veorica has: "+ gb.GetComponent<Veorica>().health + " remaining health");
+            if (gb.GetComponentInChildren<Veorica>().health <= 0)
             {
                 Debug.Log("Mort");
             }
@@ -72,6 +76,5 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
-  
-}
 
+}

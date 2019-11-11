@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class PlayerInfo : MonoBehaviour {
+public class Iohannis : MonoBehaviour {
     public Camera cam;
     public NavMeshAgent agent;
+
+    public bool isInChasingState;
+    StateManager<Iohannis> fsm = new StateManager<Iohannis>();
 
     public float health = 100f;
     // Use this for initialization
@@ -17,12 +20,17 @@ public class PlayerInfo : MonoBehaviour {
     public GameObject bullet, bulletPoint;
 
   public  bool isFound, foundTarget;
-    AgentController enemy;
+    Veorica enemy;
     void Start () {
+
+        //adding the start state:
+        fsm.InIt(new Chase(), this);
+
+
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
-        enemy = new AgentController();
+        enemy = new Veorica();
 
         isFound = enemy.foundPlayer;
 
@@ -32,10 +40,13 @@ public class PlayerInfo : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         PointLocation();
-        ChasePlayer();
-        isChased();
-        FaceTarget();
-        Shoot();
+        fsm.Execute();
+        //   ChasePlayer();
+        // isChased();
+        // FaceTarget();
+        // Shoot();
+
+        
 	}
     void FaceTarget()
     {
@@ -49,7 +60,7 @@ public class PlayerInfo : MonoBehaviour {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, lookRad);
     }
-    void ChasePlayer()
+   public void ChasePlayer()
     {
      //  get the distance from player to enemy
        distance = Vector3.Distance(target.position, transform.position);
@@ -57,10 +68,10 @@ public class PlayerInfo : MonoBehaviour {
         {//if distance is less-----set destination
             foundTarget = true;
             agent.SetDestination(target.position);
-            FaceTarget();
-            Shoot();
+            //FaceTarget();
+           // Shoot();
         }
-        foundTarget = false;
+        //foundTarget = false;
     }
 
     void isChased()
@@ -72,7 +83,7 @@ public class PlayerInfo : MonoBehaviour {
         }
        
     }
-    void Shoot()
+   public void Shoot()
     {
        
 
@@ -105,5 +116,10 @@ public class PlayerInfo : MonoBehaviour {
                 agent.SetDestination(hit.point);
             }
         }
+    }
+
+    public void ChangeState(State<Iohannis> newState)
+    {
+        fsm.pState = newState;
     }
 }

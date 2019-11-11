@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Iohannis : MonoBehaviour {
+public class cube : MonoBehaviour {
    
     public int m_gold;
     public int m_bankedGold;
@@ -16,7 +16,7 @@ public class Iohannis : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //  pState = new MiningForGoldOLD();
-        fsm.InIt(new MiningForGold(), this);
+      //  fsm.InIt(new MiningForGold(), this);
 	}
 	
 	// Update is called once per frame

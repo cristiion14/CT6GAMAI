@@ -861,6 +861,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Veorica
       objectReference: {fileID: 0}
+    - target: {fileID: 1941414682317886, guid: 63f937d9b265bea4891f813e5e53a00b, type: 3}
+      propertyPath: m_TagString
+      value: Veorica
+      objectReference: {fileID: 0}
     - target: {fileID: 4881839685421846, guid: 63f937d9b265bea4891f813e5e53a00b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.6
@@ -1019,6 +1023,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Iohannis
       objectReference: {fileID: 0}
+    - target: {fileID: 1740349986090924, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
+      propertyPath: m_TagString
+      value: Iohannis
+      objectReference: {fileID: 0}
     - target: {fileID: 4523245908609160, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.1
@@ -1106,12 +1114,12 @@ PrefabInstance:
         type: 3}
       propertyPath: bullet
       value: 
-      objectReference: {fileID: 1545582925896712, guid: bb3d102bdf3ede444adbf65decc72e67,
+      objectReference: {fileID: 6414303650968277740, guid: a9cc553a5229ab942bb1d6b08251ce11,
         type: 3}
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}
       propertyPath: lookRad
-      value: 108.4
+      value: 163.62
       objectReference: {fileID: 0}
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}

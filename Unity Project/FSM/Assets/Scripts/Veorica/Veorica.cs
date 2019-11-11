@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class AgentController : MonoBehaviour {
+public class Veorica : MonoBehaviour {
     
 
     float distance;
@@ -20,7 +20,7 @@ public class AgentController : MonoBehaviour {
     public GameObject bulletPoint;
  
     public float health = 100f;
-    PlayerInfo pInf;
+    Iohannis pInf;
     float timeBtwShoots;
     public float startTimeBtwShoots;
     void Start()
@@ -32,7 +32,7 @@ public class AgentController : MonoBehaviour {
 
         timeBtwShoots = startTimeBtwShoots;
 
-        pInf = new PlayerInfo();
+        pInf = new Iohannis();
         isFound = pInf.foundTarget;
 
     }

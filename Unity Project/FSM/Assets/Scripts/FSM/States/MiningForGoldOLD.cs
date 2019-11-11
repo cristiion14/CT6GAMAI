@@ -7,6 +7,7 @@ public class MiningForGold : State<Iohannis> {
     StateManager<Iohannis> fsm;
     public override void Execute(Iohannis agent)
     {
+        /*
         Debug.Log("MiningForGold\n");
         agent.isMining = true;
         agent.isBanking = false;
@@ -16,6 +17,7 @@ public class MiningForGold : State<Iohannis> {
         {
             agent.ChangeState(new BankingGold());
         }
+        */
     }
 }
 
