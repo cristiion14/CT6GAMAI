@@ -39,11 +39,7 @@ public class Bullet : MonoBehaviour
        
     }
 
-    void FixedUpdate()
-    {   
-          OnCollisionEnter(gameObject.GetComponent<Collision>());
-
-    }
+ 
 
     void OnCollisionEnter(Collision col)
     {
