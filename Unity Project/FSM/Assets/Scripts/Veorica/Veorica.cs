@@ -61,8 +61,8 @@ public class Veorica : MonoBehaviour {
     {
         if(isFound)
         {
-            Debug.Log("l-a gasit");
-            agent.SetDestination(new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-15, 30)));
+          //  Debug.Log("l-a gasit");
+            agent.SetDestination(new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-30, 30)));
         }
     }
     //display the look radius
