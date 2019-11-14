@@ -54,8 +54,9 @@ public class Bullet2 : MonoBehaviour
             gb.GetComponent<Veorica>().health -= damage;
            
             Debug.Log("Veorica has: "+ gb.GetComponent<Veorica>().health + " remaining health");
-            if (gb.GetComponentInChildren<Veorica>().health <= 0)
+            if (gb.GetComponent<Veorica>().health <= 0)
             {
+                gb.GetComponent<Veorica>().health = 0;
                 Debug.Log("Mort");
             }
             Destroy(gameObject);

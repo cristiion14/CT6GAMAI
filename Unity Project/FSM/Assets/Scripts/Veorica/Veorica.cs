@@ -18,9 +18,14 @@ public class Veorica : MonoBehaviour {
     //for shooting
     public GameObject bullet;
     public GameObject bulletPoint;
- 
+
+    GameObject iohanis;
+
+
     public float health = 100f;
-    Iohannis pInf;
+
+    Iohannis enemy;
+
     float timeBtwShoots;
     public float startTimeBtwShoots;
     void Start()
@@ -28,33 +33,36 @@ public class Veorica : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.player.transform;
         agent.stoppingDistance = 20f;
+
+        iohanis = GameObject.Find(TagManager.Iohannis);
        // agent.SetDestination(downLeft.transform.position);
 
         timeBtwShoots = startTimeBtwShoots;
 
-        pInf = new Iohannis();
-        isFound = pInf.foundTarget;
+       
+
+        
 
     }
 	// Update is called once per frame
 	void Update () {
         //PointLocation();
-        ChasePlayer();
-        Patrol();
+      //  ChasePlayer();
+      //  Patrol();
         isChased();
         // Debug.Log(foundPlayer);
         // Debug.Log(nr);
+        isFound = iohanis.GetComponent<Iohannis>().foundTarget;
+        // Debug.Log(distance);
 
-       // Debug.Log(distance);
-       
-	}
+    }
 
     void isChased()
     {
         if(isFound)
         {
-            agent.speed += 5f;
-            agent.SetPath(new NavMeshPath());
+            Debug.Log("l-a gasit");
+            agent.SetDestination(new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-15, 30)));
         }
     }
     //display the look radius

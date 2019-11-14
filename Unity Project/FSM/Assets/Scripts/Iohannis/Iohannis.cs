@@ -20,28 +20,24 @@ public class Iohannis : MonoBehaviour {
     public GameObject bullet, bulletPoint;
 
   public  bool isFound, foundTarget;
-    Veorica enemy;
+
     void Start () {
 
         //adding the start state:
         fsm.InIt(new Chase(), this);
 
-
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
-        enemy = new Veorica();
-
-        isFound = enemy.foundPlayer;
-
         
+
     }
 	
 	// Update is called once per frame
 	void Update () {
         PointLocation();
-        fsm.Execute();
-        //   ChasePlayer();
+      //  fsm.Execute();
+           ChasePlayer();
         // isChased();
         // FaceTarget();
         // Shoot();
@@ -67,9 +63,12 @@ public class Iohannis : MonoBehaviour {
         if (distance <= lookRad)
         {//if distance is less-----set destination
             foundTarget = true;
+
+
             agent.SetDestination(target.position);
-            //FaceTarget();
-           // Shoot();
+            agent.stoppingDistance = 75f;
+            FaceTarget();
+            Shoot();
         }
         //foundTarget = false;
     }
@@ -85,8 +84,6 @@ public class Iohannis : MonoBehaviour {
     }
    public void Shoot()
     {
-       
-
         if (timeBtwShoots <= 0)
         {
             Instantiate(bullet, bulletPoint.transform.position, Quaternion.identity);
@@ -97,8 +94,6 @@ public class Iohannis : MonoBehaviour {
         {
             timeBtwShoots -= Time.deltaTime;
         }
-
-
     }
     void PointLocation()
     {

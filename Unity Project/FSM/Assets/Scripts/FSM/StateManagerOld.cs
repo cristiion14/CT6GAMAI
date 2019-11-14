@@ -25,11 +25,15 @@ public class StateManager<T>  {
         pState.Execute(pAgent);
     }
 
+    public void ChangeState(State<T> newState)
+    {
+        pState = newState;
+    }
     private static void OnTimedEvent(object source, ElapsedEventArgs e, StateManager<T> sm)
     {
 
         sm.Execute();
-
+        
     }
     
 
