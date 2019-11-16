@@ -18,9 +18,13 @@ public class Iohannis : MonoBehaviour {
     public float shootDist = 20f;
    public float startTimeBtwShoots, timeBtwShoots;
     public GameObject bullet, bulletPoint;
-
+    Grid grid;
   public  bool isFound, foundTarget;
 
+   private void Awake()
+    {
+        grid = GetComponent<Grid>();
+    }
     void Start () {
 
         //adding the start state:
@@ -29,19 +33,20 @@ public class Iohannis : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
-        
 
+        //grid = GetComponent<Grid>();
     }
 	
 	// Update is called once per frame
 	void Update () {
         PointLocation();
-      //  fsm.Execute();
-           ChasePlayer();
+        //  fsm.Execute();
+        //    ChasePlayer();
         // isChased();
-        // FaceTarget();
-        // Shoot();
+         FaceTarget();
+         Shoot();
 
+     
         
 	}
     void FaceTarget()
