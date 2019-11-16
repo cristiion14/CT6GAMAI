@@ -15,5 +15,5 @@ public class AgentManager : MonoBehaviour {
 
     public GameObject player;
     public GameObject enemy2;
-    
+    public GameObject[] patrolPoints;
 }

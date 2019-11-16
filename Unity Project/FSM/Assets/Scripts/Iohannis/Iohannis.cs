@@ -14,42 +14,62 @@ public class Iohannis : MonoBehaviour {
 
     float distance;
     Transform target;
+    public Transform[] patrolPoints;
     public float lookRad = 25f;
     public float shootDist = 20f;
    public float startTimeBtwShoots, timeBtwShoots;
     public GameObject bullet, bulletPoint;
     Grid grid;
+   public GameObject gm;
   public  bool isFound, foundTarget;
 
    private void Awake()
     {
         grid = GetComponent<Grid>();
+        gm = GameObject.Find("GM");
+        
     }
     void Start () {
 
         //adding the start state:
-        fsm.InIt(new Chase(), this);
+        fsm.InIt(new Patrol(), this);
 
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
 
+        for (int i = 0; i < 3; i++)
+        {
+            patrolPoints[i] = gm.GetComponent<AgentManager>().patrolPoints[i].transform;
+        }
         //grid = GetComponent<Grid>();
     }
 	
 	// Update is called once per frame
 	void Update () {
         PointLocation();
-        //  fsm.Execute();
+          fsm.Execute();
         //    ChasePlayer();
         // isChased();
-         FaceTarget();
-         Shoot();
-
+       //  FaceTarget();
+       //  Shoot();
+        targetFound();
      
         
 	}
-    void FaceTarget()
+    public bool targetFound()
+    {
+        float distance = Vector3.Distance(target.position, transform.position);
+        if (distance <= lookRad)
+            return true;
+        else
+            return false;
+    }
+    public void FindTarget()
+    {
+        gm.GetComponentInChildren<Grid>().SetDestination(gameObject);
+    }
+   public void FaceTarget()
     {
         // Debug.Log("Face Target");
         Vector3 direction = (target.position - transform.position).normalized;

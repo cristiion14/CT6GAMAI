@@ -9,15 +9,11 @@ public class Chase :State<Iohannis>
     public override void Execute(Iohannis agent)
     {
         // agent.isInChasingState = true;
-        //Debug.Log("Chasing the player");
-
-      //  target = AgentManager.instance.enemy2.transform;
-        agent.ChasePlayer();
-        if(agent.foundTarget)
-        {
-            agent.Shoot();
-            //Debug.Log("should change state");
-           // agent.ChangeState(new Shooting());
-        }
+        Debug.Log("Chasing");
+        //  target = AgentManager.instance.enemy2.transform;
+        agent.FindTarget();
+        agent.FaceTarget();
+        agent.Shoot();
+      
     }
 }

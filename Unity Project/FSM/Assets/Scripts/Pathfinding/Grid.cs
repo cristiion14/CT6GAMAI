@@ -27,13 +27,15 @@ public class Grid : MonoBehaviour
         iGridSizeX = Mathf.RoundToInt(vGridWorldSize.x / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
         iGridSizeY = Mathf.RoundToInt(vGridWorldSize.y / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
         CreateGrid();//Draw the grid
-        gb = GameObject.Find(TagManager.Iohannis);
+      //  gb = GameObject.Find(TagManager.Iohannis);
         direction = new Vector3();
+
+        
     }
 
     void Update()
     {
-       SetDestination(gb);
+    //   SetDestination(gb);
     }
     void CreateGrid()
     {
@@ -127,14 +129,13 @@ public class Grid : MonoBehaviour
 
     public void SetDestination(GameObject gb)
     {
-        
         int nr = FinalPath.Count;
 
         // direction = FinalPath[nr - 1].vPosition - gb.transform.position;
         // direction.Normalize();
         
-        for (int i = nr - 1; i-- > 0;)
-       // for(int i=0;i<nr-1;i++)
+       // for (int i = nr - 1; i-- > 0;)
+        for(int i=0;i<nr-1;i++)
         {
             direction = FinalPath[i].vPosition-gb.transform.position;
             direction.Normalize();

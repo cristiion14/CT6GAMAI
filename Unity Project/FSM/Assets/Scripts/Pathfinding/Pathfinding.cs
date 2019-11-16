@@ -19,7 +19,7 @@ public class Pathfinding : MonoBehaviour {
         FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
     }
 
-    void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
+   public void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
     {
         Node StartNode = GridReference.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
         Node TargetNode = GridReference.NodeFromWorldPoint(a_TargetPos);//Gets the node closest to the target position
@@ -73,7 +73,7 @@ public class Pathfinding : MonoBehaviour {
 
 
 
-    void GetFinalPath(Node a_StartingNode, Node a_EndNode)
+  public  void GetFinalPath(Node a_StartingNode, Node a_EndNode)
     {
         List<Node> FinalPath = new List<Node>();//List to hold the path sequentially 
         Node CurrentNode = a_EndNode;//Node to store the current node being checked
@@ -87,6 +87,22 @@ public class Pathfinding : MonoBehaviour {
         FinalPath.Reverse();//Reverse the path to get the correct order
 
         GridReference.FinalPath = FinalPath;//Set the final path
+
+    }
+    public List<Node> ReturnFinalPath(Node a_StartingNode, Node a_EndNode)
+    {
+        List<Node> FinalPath = new List<Node>();//List to hold the path sequentially 
+        Node CurrentNode = a_EndNode;//Node to store the current node being checked
+
+        while (CurrentNode != a_StartingNode)//While loop to work through each node going through the parents to the beginning of the path
+        {
+            FinalPath.Add(CurrentNode);//Add that node to the final path
+            CurrentNode = CurrentNode.ParentNode;//Move onto its parent node
+        }
+
+        FinalPath.Reverse();//Reverse the path to get the correct order
+
+        return FinalPath;
 
     }
 
