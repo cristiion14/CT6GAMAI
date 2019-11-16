@@ -129,14 +129,21 @@ public class Grid : MonoBehaviour
     {
         
         int nr = FinalPath.Count;
-        direction = FinalPath[nr - 1].vPosition - gb.transform.position;
-        direction.Normalize();
-        if (Vector3.Distance(gb.transform.position, FinalPath[nr - 1].vPosition) < gb.GetComponent<Iohannis>().lookRad)
+
+        // direction = FinalPath[nr - 1].vPosition - gb.transform.position;
+        // direction.Normalize();
+        
+        for (int i = nr - 1; i-- > 0;)
+       // for(int i=0;i<nr-1;i++)
         {
-            direction = Vector3.zero;
+            direction = FinalPath[i].vPosition-gb.transform.position;
+            direction.Normalize();
+            if (Vector3.Distance(gb.transform.position, FinalPath[nr - 1].vPosition) < gb.GetComponent<Iohannis>().lookRad)
+            {
+                direction = Vector3.zero;
+            }
+            gb.transform.position += direction * 0.5f * Time.deltaTime;
         }
-        gb.transform.position += direction * 3.0f * Time.deltaTime;
-       
     }
 
     //Function that draws the wireframe
