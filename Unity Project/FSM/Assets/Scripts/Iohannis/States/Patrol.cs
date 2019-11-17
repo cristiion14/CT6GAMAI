@@ -7,14 +7,61 @@ public class Patrol : State<Iohannis>
 
     // Start is called before the first frame update
     List<Node> finalPath; //= { new List<Node>(), new List<Node>(), new List<Node>(), new List<Node>() };
-    int nr = 0;
+   // int randomagent.nr = 0;
+   
     Vector3 direction; //= { new Vector3(), new Vector3(), new Vector3(), new Vector3() };
     public override void Execute(Iohannis agent)
     {
-       
+        
         Debug.Log("Patroling");
+        float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+        //  randomagent.nr = Random.Range(0, 3);
 
-        PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[0].transform.position, agent.OnPathFound);
+        //first path
+        if (agent.nr == 0)
+        {
+            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
+            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+         //   Debug.Log("The distance is: " + distance);
+        }
+        if(distance<=2)
+        {
+            agent.nr++;
+            Debug.Log("Should increase nr");
+        }
+
+        //second path
+        if (agent.nr == 1)
+        {
+            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
+            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+
+        }
+
+        if(distance<=2)
+        {
+            agent.nr++;
+        }
+
+        //third path
+        if (agent.nr == 1)
+        {
+            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
+            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+
+        }
+
+        if (distance <= 2)
+        {
+            agent.nr++;
+        }
+
+        //reset
+        if (agent.nr>3)
+        {
+            agent.nr = 0;
+        }
+        Debug.Log(agent.nr);
         if(agent.targetFound())
         {
             agent.ChangeState(new Chase());
@@ -33,7 +80,7 @@ public class Patrol : State<Iohannis>
                 direction = finalPath[j].vPosition - agent.transform.position;
                 direction.Normalize();
                 agent.transform.position += direction * .3f * Time.deltaTime;
-              //  nr++;
+              //  agent.nr++;
                 if (agent.targetFound())
                 {
                     agent.ChangeState(new Chase());

@@ -639,6 +639,9 @@ MonoBehaviour:
   enemy2: {fileID: 202091750}
   patrolPoints:
   - {fileID: 239614620}
+  - {fileID: 101725834}
+  - {fileID: 1668011}
+  - {fileID: 1325955620}
 --- !u!4 &758907048
 Transform:
   m_ObjectHideFlags: 0

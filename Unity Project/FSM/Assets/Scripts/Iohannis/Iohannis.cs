@@ -13,8 +13,9 @@ public class Iohannis : MonoBehaviour {
     float speed = 2.5f;
 
     Vector3[] path;
-    int targetIndex;   
+    int targetIndex;
     // Use this for initialization
+    Patrol patrolState;
 
     float distance;
    public Transform target;
@@ -26,11 +27,12 @@ public class Iohannis : MonoBehaviour {
     Grid grid;
    public GameObject gm;
   public  bool isFound, foundTarget;
-
-   private void Awake()
+    public int nr = 0;
+    private void Awake()
     {
         grid = GetComponent<Grid>();
         gm = GameObject.Find("GM");
+//        patrolState = GetComponent<Patrol>();
         
     }
     void Start () {
@@ -42,10 +44,10 @@ public class Iohannis : MonoBehaviour {
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
        // PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-      //  for (int i = 0; i < 3; i++)
-        //{
-          //  patrolPoints[i] = gm.GetComponent<AgentManager>().patrolPoints[i].transform;
-       // }
+        for (int i = 0; i < 3; i++)
+        {
+            patrolPoints[i] = gm.GetComponent<AgentManager>().patrolPoints[i].transform;
+        }
         //grid = GetComponent<Grid>();
     }
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
@@ -61,6 +63,7 @@ public class Iohannis : MonoBehaviour {
    
     IEnumerator FollowPath()
     {
+        targetIndex = 0;
         Vector3 currentWaypoint = path[0];
         while(true)
         {
