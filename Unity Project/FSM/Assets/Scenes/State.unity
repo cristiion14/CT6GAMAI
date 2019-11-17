@@ -498,7 +498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4881839685421846, guid: 63f937d9b265bea4891f813e5e53a00b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.58
+      value: 11.01
       objectReference: {fileID: 0}
     - target: {fileID: 4881839685421846, guid: 63f937d9b265bea4891f813e5e53a00b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -506,7 +506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4881839685421846, guid: 63f937d9b265bea4891f813e5e53a00b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.31
+      value: 11.5
       objectReference: {fileID: 0}
     - target: {fileID: 4881839685421846, guid: 63f937d9b265bea4891f813e5e53a00b, type: 3}
       propertyPath: m_LocalRotation.x
@@ -615,6 +615,7 @@ GameObject:
   - component: {fileID: 758907047}
   - component: {fileID: 758907050}
   - component: {fileID: 758907049}
+  - component: {fileID: 758907051}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -637,10 +638,7 @@ MonoBehaviour:
   player: {fileID: 976257416}
   enemy2: {fileID: 202091750}
   patrolPoints:
-  - {fileID: 1325955620}
   - {fileID: 239614620}
-  - {fileID: 101725834}
-  - {fileID: 1668011}
 --- !u!4 &758907048
 Transform:
   m_ObjectHideFlags: 0
@@ -667,8 +665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45bcfa51969c1704aad4a24516ff7d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPosition: {fileID: 976257418}
-  TargetPosition: {fileID: 1896458431}
 --- !u!114 &758907050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,13 +677,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f30fa39923cf747b4abc45f6d58107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPosition: {fileID: 976257418}
-  WallMask:
+  displayGridGizmos: 0
+  unwalkableMask:
     serializedVersion: 2
     m_Bits: 1024
-  vGridWorldSize: {x: 30, y: 30}
-  fNodeRadius: 0.5
-  fDistanceBetweenNodes: 0
+  gridWorldSize: {x: 30, y: 30}
+  nodeRadius: 0.5
+--- !u!114 &758907051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758907046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58ff119b2b6bb6d4e914dde1a625e6f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &856655336 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1853158505750774, guid: 4de19984ac4459d4bbd55a588381ace8,
@@ -717,7 +724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4523245908609160, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.42
+      value: -1.7
       objectReference: {fileID: 0}
     - target: {fileID: 4523245908609160, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -839,6 +846,16 @@ PrefabInstance:
       propertyPath: patrolPoints.Array.data[3]
       value: 
       objectReference: {fileID: 1325955621}
+    - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1896458431}
+    - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
+        type: 3}
+      propertyPath: gm
+      value: 
+      objectReference: {fileID: 758907046}
     - target: {fileID: 54844883339115968, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}
       propertyPath: m_Mass
@@ -881,12 +898,19 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!4 &976257418 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4523245908609160, guid: 79490e28c7adb1345bcbe69fc837a8cd,
-    type: 3}
-  m_PrefabInstance: {fileID: 976257415}
+--- !u!114 &976257419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976257416}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dae3c75d175c114c85db6413d5f1c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1896458431}
 --- !u!1001 &1188080130
 PrefabInstance:
   m_ObjectHideFlags: 0

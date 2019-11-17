@@ -10,10 +10,14 @@ public class Iohannis : MonoBehaviour {
     StateManager<Iohannis> fsm = new StateManager<Iohannis>();
 
     public float health = 100f;
+    float speed = 2.5f;
+
+    Vector3[] path;
+    int targetIndex;   
     // Use this for initialization
 
     float distance;
-    Transform target;
+   public Transform target;
     public Transform[] patrolPoints;
     public float lookRad = 25f;
     public float shootDist = 20f;
@@ -37,26 +41,57 @@ public class Iohannis : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
-
-        for (int i = 0; i < 3; i++)
-        {
-            patrolPoints[i] = gm.GetComponent<AgentManager>().patrolPoints[i].transform;
-        }
+       // PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+      //  for (int i = 0; i < 3; i++)
+        //{
+          //  patrolPoints[i] = gm.GetComponent<AgentManager>().patrolPoints[i].transform;
+       // }
         //grid = GetComponent<Grid>();
     }
-	
+	public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
+    {
+        if(pathSuccessful)
+        {
+            path = newPath;
+            targetIndex = 0;
+            StopCoroutine("FollowPath");
+            StartCoroutine("FollowPath");
+        }
+    }
+   
+    IEnumerator FollowPath()
+    {
+        Vector3 currentWaypoint = path[0];
+        while(true)
+        {
+            if (transform.position == currentWaypoint)
+                targetIndex++;
+                if(targetIndex>=path.Length)
+                {
+     //               targetIndex=0;
+     //              path = new Vector3[0];
+                    yield break;
+                }
+                currentWaypoint = path[targetIndex];
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, 0.1f);
+            yield return null;
+        }
+       
+    }
 	// Update is called once per frame
 	void Update () {
         PointLocation();
           fsm.Execute();
         //    ChasePlayer();
         // isChased();
-       //  FaceTarget();
-       //  Shoot();
+      
         targetFound();
-     
-        
-	}
+        FindTarget();
+      //  PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        //  FaceTarget();
+        //  Shoot();
+
+    }
     public bool targetFound()
     {
         float distance = Vector3.Distance(target.position, transform.position);
@@ -67,7 +102,8 @@ public class Iohannis : MonoBehaviour {
     }
     public void FindTarget()
     {
-        gm.GetComponentInChildren<Grid>().SetDestination(gameObject);
+     //   gm.GetComponentInChildren<Pathfinding>().StartFindPath(gameObject.transform.position, target.transform.position);
+
     }
    public void FaceTarget()
     {

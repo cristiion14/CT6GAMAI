@@ -52,7 +52,7 @@ public class Veorica : MonoBehaviour {
         isChased();
         // Debug.Log(foundPlayer);
         // Debug.Log(nr);
-        isFound = iohanis.GetComponent<Iohannis>().foundTarget;
+    //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
         // Debug.Log(distance);
 
     }
