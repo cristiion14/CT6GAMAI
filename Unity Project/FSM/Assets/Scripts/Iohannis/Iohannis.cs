@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 public class Iohannis : MonoBehaviour {
-    public Camera cam;
+    
     public NavMeshAgent agent;
 
     public bool isInChasingState;
@@ -15,22 +15,21 @@ public class Iohannis : MonoBehaviour {
     public float health = 100f;
 
     Vector3[] path;
-   public int targetIndex;
+    public int targetIndex;
 
     float distance;
 
-   public Transform target;
+    public Transform target;
     public Transform[] patrolPoints;
 
     public float lookRad = 25f;
     public float shootDist = 20f;
-   public float startTimeBtwShoots, timeBtwShoots;
+    public float startTimeBtwShoots, timeBtwShoots;
     public GameObject bullet, bulletPoint;
 
     Grid grid;
-   public GameObject gm;
+    public GameObject gm;
 
-  public  bool isFound, foundTarget;
     public int nr = 0, hasBeenFoundAtNr=0;  //the path nr and the nr which keeps track at what path nr has been found
 
     private void Awake()
