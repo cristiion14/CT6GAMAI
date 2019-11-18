@@ -13,7 +13,7 @@ public class Iohannis : MonoBehaviour {
     float speed = 2.5f;
 
     Vector3[] path;
-    int targetIndex;
+   public int targetIndex;
     // Use this for initialization
     Patrol patrolState;
 
@@ -27,7 +27,7 @@ public class Iohannis : MonoBehaviour {
     Grid grid;
    public GameObject gm;
   public  bool isFound, foundTarget;
-    public int nr = 0;
+    public int nr = 0, hasBeenFoundAtNr=0;  //the path nr and the nr which keeps track at what path nr has been found
     private void Awake()
     {
         grid = GetComponent<Grid>();
