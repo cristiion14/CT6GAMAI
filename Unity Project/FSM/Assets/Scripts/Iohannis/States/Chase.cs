@@ -12,7 +12,8 @@ public class Chase :State<Iohannis>
         Debug.Log("Chasing");
         //  target = AgentManager.instance.enemy2.transform;
 
-        PathRequestManager.RequestPath(agent.transform.position, agent.target.position, agent.OnPathFound);
+        PathRequestManager.RequestPath(agent.transform.position, new Vector3(agent.target.position.x, 0, agent.target.position.z+3) , agent.OnPathFound);
+        
         if(!agent.targetFound())
         {
             agent.nr = agent.hasBeenFoundAtNr;
