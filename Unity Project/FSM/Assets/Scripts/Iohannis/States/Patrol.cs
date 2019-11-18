@@ -74,7 +74,7 @@ public class Patrol : State<Iohannis>
         
         if(agent.targetFound())
         {
-            agent.hasBeenFound = agent.nr;
+            agent.hasBeenFoundAtNr = agent.nr;
             agent.ChangeState(new Chase());
         }
 

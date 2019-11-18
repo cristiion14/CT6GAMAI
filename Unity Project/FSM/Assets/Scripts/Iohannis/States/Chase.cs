@@ -15,7 +15,7 @@ public class Chase :State<Iohannis>
         PathRequestManager.RequestPath(agent.transform.position, agent.target.position, agent.OnPathFound);
         if(!agent.targetFound())
         {
-            agent.nr = agent.hasBeenFound;
+            agent.nr = agent.hasBeenFoundAtNr;
             agent.ChangeState(new Patrol());
         }
         agent.FaceTarget();
