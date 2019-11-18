@@ -17,11 +17,11 @@ public class Patrol : State<Iohannis>
 
         float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
         //  randomagent.nr = Random.Range(0, 3);
-
+        agent.FacePatrolPoint(agent.nr);
         //first path
         if (agent.nr == 0)
         {
-            
+              
             PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
          //   Debug.Log("The distance is: " + distance);

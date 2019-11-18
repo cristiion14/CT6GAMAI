@@ -79,7 +79,7 @@ public class Iohannis : MonoBehaviour {
                 }
                 currentWaypoint = path[targetIndex];
     //        Debug.Log("current waypoint is: " + currentWaypoint);
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, 0.1f);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, 0.07f);
             yield return null;
         }
        
@@ -118,6 +118,17 @@ public class Iohannis : MonoBehaviour {
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
     }
+
+    public void FacePatrolPoint(int patrolPoint)
+    {
+        // Debug.Log("Face Target");
+       
+            Vector3 direction = (patrolPoints[patrolPoint].transform.position - transform.position).normalized;
+            Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
+        
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
