@@ -70,7 +70,7 @@ public class Iohannis : MonoBehaviour {
      
             if (transform.position == currentWaypoint)
                 targetIndex++;
-            Debug.Log("the target index is: " + targetIndex);
+         //   Debug.Log("the target index is: " + targetIndex);
             if (targetIndex>=path.Length)
                 {
      //               targetIndex=0;
@@ -78,7 +78,7 @@ public class Iohannis : MonoBehaviour {
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
-            Debug.Log("current waypoint is: " + currentWaypoint);
+    //        Debug.Log("current waypoint is: " + currentWaypoint);
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, 0.1f);
             yield return null;
         }

@@ -37,12 +37,10 @@ public class Patrol : State<Iohannis>
         {
             PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
-
-        }
-
-        if(distance<=2)
-        {
-            agent.nr++;
+            if (distance <= 2)
+            {
+                agent.nr++;
+            }
         }
 
         //third path
@@ -50,27 +48,30 @@ public class Patrol : State<Iohannis>
         {
             PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
-
+            if (distance <= 2)
+            {
+                agent.nr++;
+            }
         }
 
-        if (distance <= 2)
-        {
-            agent.nr++;
-        }
+       
 
         if (agent.nr == 3)
         {
             PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
-
+            if (distance <= 2)
+            {
+                agent.nr++;
+            }
         }
-
+        Debug.Log("nr = "+agent.nr);
         //reset
         if (agent.nr>3)
         {
             agent.nr = 0;
         }
-        Debug.Log(agent.nr);
+        
         if(agent.targetFound())
         {
             agent.ChangeState(new Chase());
