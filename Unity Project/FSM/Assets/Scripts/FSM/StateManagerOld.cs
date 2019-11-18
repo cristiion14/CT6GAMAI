@@ -13,7 +13,7 @@ public class StateManager<T>  {
         //start timer
         System.Timers.Timer aTimer = new System.Timers.Timer();
         aTimer.Elapsed += (sender, e) => OnTimedEvent(sender, e, this);
-        aTimer.Interval = 1000;
+        aTimer.Interval = 500;
         aTimer.Enabled = true;
         aTimer.Start();
         pAgent = agent;

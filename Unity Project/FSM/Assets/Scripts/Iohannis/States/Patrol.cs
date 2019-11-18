@@ -14,12 +14,14 @@ public class Patrol : State<Iohannis>
     {
         
         Debug.Log("Patroling");
+
         float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
         //  randomagent.nr = Random.Range(0, 3);
 
         //first path
         if (agent.nr == 0)
         {
+            
             PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
          //   Debug.Log("The distance is: " + distance);
@@ -44,7 +46,7 @@ public class Patrol : State<Iohannis>
         }
 
         //third path
-        if (agent.nr == 1)
+        if (agent.nr == 2)
         {
             PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
@@ -54,6 +56,13 @@ public class Patrol : State<Iohannis>
         if (distance <= 2)
         {
             agent.nr++;
+        }
+
+        if (agent.nr == 3)
+        {
+            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
+            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+
         }
 
         //reset

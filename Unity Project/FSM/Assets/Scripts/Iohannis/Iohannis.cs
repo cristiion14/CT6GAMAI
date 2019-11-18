@@ -63,19 +63,22 @@ public class Iohannis : MonoBehaviour {
    
     IEnumerator FollowPath()
     {
-        targetIndex = 0;
+       // targetIndex = 0;
         Vector3 currentWaypoint = path[0];
         while(true)
         {
+     
             if (transform.position == currentWaypoint)
                 targetIndex++;
-                if(targetIndex>=path.Length)
+            Debug.Log("the target index is: " + targetIndex);
+            if (targetIndex>=path.Length)
                 {
      //               targetIndex=0;
      //              path = new Vector3[0];
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
+            Debug.Log("current waypoint is: " + currentWaypoint);
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, 0.1f);
             yield return null;
         }
