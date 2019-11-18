@@ -822,7 +822,7 @@ PrefabInstance:
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}
       propertyPath: lookRad
-      value: 4.11
+      value: 4.77
       objectReference: {fileID: 0}
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}

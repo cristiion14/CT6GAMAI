@@ -13,7 +13,11 @@ public class Chase :State<Iohannis>
         //  target = AgentManager.instance.enemy2.transform;
 
         PathRequestManager.RequestPath(agent.transform.position, agent.target.position, agent.OnPathFound);
-
+        if(!agent.targetFound())
+        {
+            agent.nr = 0;
+            agent.ChangeState(new Patrol());
+        }
         agent.FaceTarget();
         agent.Shoot();
       
