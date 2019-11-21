@@ -28,14 +28,12 @@ public class Iohannis : MonoBehaviour {
     public GameObject bullet, bulletPoint;
 
     Grid grid;
-    public GameObject gm;
-
     public int nr = 0, hasBeenFoundAtNr=0;  //the path nr and the nr which keeps track at what path nr has been found
 
     private void Awake()
     {
         grid = GetComponent<Grid>();
-        gm = GameObject.Find("GM");
+     
 //        patrolState = GetComponent<Patrol>();
         
     }

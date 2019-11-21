@@ -7,11 +7,12 @@ public class Pathfinding : MonoBehaviour {
 
     PathRequestManager requestManager;
     Grid grid;
-
+    
     void Awake()
     {
         requestManager = GetComponent<PathRequestManager>();
         grid = GetComponent<Grid>();
+      
     }
 
 
@@ -82,7 +83,69 @@ public class Pathfinding : MonoBehaviour {
 
     }
 
-    Vector3[] RetracePath(Node startNode, Node endNode)
+    public Vector3[] FindPath1 (Vector3 startPos, Vector3 targetPos)
+    {
+
+        Vector3[] waypoints = new Vector3[0];
+        bool pathSuccess = false;
+
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+
+
+        if (startNode.walkable && targetNode.walkable)
+        {
+            Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+            HashSet<Node> closedSet = new HashSet<Node>();
+            openSet.Add(startNode);
+
+            while (openSet.Count > 0)
+            {
+                Node currentNode = openSet.RemoveFirst();
+                closedSet.Add(currentNode);
+
+                if (currentNode == targetNode)
+                {
+                    pathSuccess = true;
+                    break;
+                }
+
+                foreach (Node neighbour in grid.GetNeighbours(currentNode))
+                {
+                    if (!neighbour.walkable || closedSet.Contains(neighbour))
+                    {
+                        continue;
+                    }
+                                                                                //hCost
+                    int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+                    if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                    {
+                        neighbour.gCost = newMovementCostToNeighbour;
+                        neighbour.hCost = GetDistance(neighbour, targetNode);
+                        neighbour.parent = currentNode;
+
+                        if (!openSet.Contains(neighbour))
+                        {
+                            openSet.Add(neighbour);
+                        }
+                        else
+                        {
+                            openSet.UpdateItem(neighbour);
+                        }
+                    }
+                }
+            }
+        }
+      
+        if (pathSuccess)
+        {
+            waypoints = RetracePath(startNode, targetNode);
+        }
+        //    requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+        return waypoints;
+    }
+
+    public Vector3[] RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;

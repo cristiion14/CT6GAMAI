@@ -746,6 +746,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1740349986090924, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
       propertyPath: m_Name
       value: Iohannis
@@ -803,16 +811,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3a6aa4c55e053f340b68e9cb87e452af, type: 2}
-    - target: {fileID: 114141953236256980, guid: 79490e28c7adb1345bcbe69fc837a8cd,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114554572081594672, guid: 79490e28c7adb1345bcbe69fc837a8cd,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1199572170004404, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -903,9 +901,7 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114554572081594672, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
-    - {fileID: 114141953236256980, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
 --- !u!1 &976257416 stripped
 GameObject:
@@ -935,19 +931,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &976257419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976257416}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dae3c75d175c114c85db6413d5f1c15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1896458431}
 --- !u!1001 &1188080130
 PrefabInstance:
   m_ObjectHideFlags: 0
