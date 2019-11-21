@@ -1,5 +1,5 @@
 sceneSetups:
-- path: I:/Baller/Assets/Level00.unity
+- path: Assets/Scenes/State.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
