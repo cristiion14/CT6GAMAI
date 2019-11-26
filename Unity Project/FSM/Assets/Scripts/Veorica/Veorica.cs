@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class Veorica : MonoBehaviour {
 
 
-    public float travelSpeed = 0.07f;
+    public float travelSpeed = 0.001f;
     Vector3[] direction;
     Rigidbody rb;
     public float money = 0;
@@ -73,7 +73,9 @@ public class Veorica : MonoBehaviour {
         }
         direction = wayPoints.ToArray();
         Vector3 currentWaypoint = direction[0];
-        rb.MovePosition(currentWaypoint);
+        
+        rb.MovePosition(currentWaypoint*0.9f);
+      //  rb.velocity = currentWaypoint;
     }
 	// Update is called once per frame
 	void Update () {
@@ -89,7 +91,7 @@ public class Veorica : MonoBehaviour {
         //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
         // Debug.Log(distance);
 
-        //   TracePath();
+        //  TracePath();
         /*
          
         for(int i=0; i<direction.Length; i++)
@@ -111,23 +113,22 @@ public class Veorica : MonoBehaviour {
         rb.MovePosition(currentWay.normalized*Time.deltaTime);
         */
 
-        SetDestination(rb, iohannis.transform.position);
+        PathRequestManager.RequestPath1(transform.position, iohannis.transform.position, OnPathFound);
 
     }
 
     void FixedUpdate()
     {
-    
-            
+     
+//         SetDestination(rb, iohannis.transform.position);
 
-        
-//        for (int i=0; i<direction.Length;i++)
-  //      {
-    //        currentWaypoint = direction[i];
-      //      rb.MovePosition(currentWaypoint * Time.fixedDeltaTime);
+        //        for (int i=0; i<direction.Length;i++)
+        //      {
+        //        currentWaypoint = direction[i];
+        //      rb.MovePosition(currentWaypoint * Time.fixedDeltaTime);
         //}
     }
-   
+
     //display the look radius
     void OnDrawGizmosSelected()
     {
@@ -165,8 +166,10 @@ public class Veorica : MonoBehaviour {
         }
         */
 
-        direction = GM.GetComponentInChildren<Pathfinding>().FindPath1(transform.position, iohannis.transform.position);
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+        direction = GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
         Vector3 currentWaypoint = direction[0];
+
         while (true)
         {
 
@@ -175,13 +178,15 @@ public class Veorica : MonoBehaviour {
             //   Debug.Log("the target index is: " + targetIndex);
             if (targetIndex >= direction.Length)
             {
-                //               targetIndex=0;
-                //              path = new Vector3[0];
+                              targetIndex=0;
+                              direction = new Vector3[0];
                 break;
             }
             currentWaypoint = direction[targetIndex];
             //        Debug.Log("current waypoint is: " + currentWaypoint);
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed);
+         //   transform.position += currentWaypoint*Time.deltaTime* travelSpeed;
+
         }
     }
      void Shoot()
@@ -198,16 +203,14 @@ public class Veorica : MonoBehaviour {
         }
     }
 
-    public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
+    public void OnPathFound(Vector3[] newPath)
     {
-        if (pathSuccessful)
-        {
-            Debug.Log("Shpuld be called");
+        
             path = newPath;
             targetIndex = 0;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
-        }
+        
     }
 
     IEnumerator FollowPath()

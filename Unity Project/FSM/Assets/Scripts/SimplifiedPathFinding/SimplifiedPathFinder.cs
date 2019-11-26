@@ -70,6 +70,7 @@ public class SimplifiedPathFinder : MonoBehaviour
                     }
                     else
                     {
+                        //update the 
                        // OpenList.Add(NeighborNode.ParentNode);
                     }
                 }
@@ -103,7 +104,7 @@ public class SimplifiedPathFinder : MonoBehaviour
             Vector2 directionNew = new Vector2(path[i - 1].iGridX - path[i].iGridX, path[i - 1].iGridY - path[i].iGridY);
             if (directionNew != directionOld)
             {
-                waypoints.Add(path[i].vPosition);
+                waypoints.Add(path[i-1].vPosition);
             }
             directionOld = directionNew;
         }
@@ -127,6 +128,7 @@ public class SimplifiedPathFinder : MonoBehaviour
         veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path
           
     }
+
 
     int GetManhattenDistance(SimplifiedNode a_nodeA, SimplifiedNode a_nodeB)
     {
