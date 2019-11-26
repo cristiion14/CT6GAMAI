@@ -7,7 +7,7 @@ public class Veorica : MonoBehaviour {
 
     public float travelSpeed = 0.07f;
     Vector3[] direction;
-
+    Rigidbody rb;
     public float money = 0;
 
 
@@ -29,7 +29,7 @@ public class Veorica : MonoBehaviour {
     public GameObject bulletPoint;
     public GameObject iohannis;
     public GameObject[] coins;
-    public GameObject GM;
+     GameObject GM;
 
 
     Vector3[] path;
@@ -48,7 +48,7 @@ public class Veorica : MonoBehaviour {
         pathFinding = GetComponent<Pathfinding>();
         simplifyPath = GetComponent<SimplifiedPathFinder>();
         GM = GameObject.Find("GM");
-       
+        rb = GetComponentInChildren<Rigidbody>();
         //coin = GameObject.Find(TagManager.Coin);
     }
     void Start()
@@ -61,6 +61,19 @@ public class Veorica : MonoBehaviour {
 
         target = AgentManager.instance.player.transform;
         
+    }
+
+    void SetDestination(Rigidbody rb, Vector3 target)
+    {
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target);
+        List<Vector3> wayPoints = new List<Vector3>();
+        for (int i = 0; i < vFinalPath.Count; i++)
+        {
+            wayPoints.Add(vFinalPath[i].vPosition);
+        }
+        direction = wayPoints.ToArray();
+        Vector3 currentWaypoint = direction[0];
+        rb.MovePosition(currentWaypoint);
     }
 	// Update is called once per frame
 	void Update () {
@@ -76,10 +89,44 @@ public class Veorica : MonoBehaviour {
         //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
         // Debug.Log(distance);
 
-        TracePath();
+        //   TracePath();
+        /*
+         
+        for(int i=0; i<direction.Length; i++)
+        {
+            rb.MovePosition(currentWaypoint);
+            currentWaypoint = direction[i];
+            rb.MovePosition(currentWaypoint);
+        }
+        */
+
+
+        //     direction = GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
+
+
+        /*
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+       direction= GM.GetComponentInChildren<SimplifiedPathFinder>().RetracePath(GM.GetComponentInChildren<SimplifiedGrid>().NodeFromWorldPoint(transform.position), GM.GetComponentInChildren<SimplifiedGrid>().NodeFromWorldPoint(iohannis.transform.position));
+        Vector3 currentWay = direction[0];
+        rb.MovePosition(currentWay.normalized*Time.deltaTime);
+        */
+
+        SetDestination(rb, iohannis.transform.position);
 
     }
 
+    void FixedUpdate()
+    {
+    
+            
+
+        
+//        for (int i=0; i<direction.Length;i++)
+  //      {
+    //        currentWaypoint = direction[i];
+      //      rb.MovePosition(currentWaypoint * Time.fixedDeltaTime);
+        //}
+    }
    
     //display the look radius
     void OnDrawGizmosSelected()
@@ -96,10 +143,6 @@ public class Veorica : MonoBehaviour {
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
     }
 
-    void SetDestination()
-    {
-
-    }
   
     public void TracePath()
     {
@@ -107,15 +150,22 @@ public class Veorica : MonoBehaviour {
         //  Vector3[] direction = pathFinding.RetracePath(grid.NodeFromWorldPoint(agent.transform.position), grid.NodeFromWorldPoint(coins[0].transform.position));
 
         //    Vector3[] direction = simplifyPath.GetComponent<SimplifiedPathFinder>().RetracePath(sGrid.GetComponent<SimplifiedGrid>().NodeFromWorldPoint(transform.position), sGrid.GetComponent<SimplifiedGrid>().NodeFromWorldPoint(coins[0].transform.position));
-        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
-        Vector3[] direction =GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
-        
+        //  GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+
         /*
+        List<Vector3> wayPoints = new List<Vector3>();
+        for (int i = 0; i < vFinalPath.Count; i++)
+        {
+            wayPoints.Add(vFinalPath[i].vPosition);
+        }
+        direction = wayPoints.ToArray();        
         for (int i = 0; i < direction.Length; i++)
         {
             agent.transform.position += direction[i] * agent.travelSpeed * Time.deltaTime;
         }
         */
+
+        direction = GM.GetComponentInChildren<Pathfinding>().FindPath1(transform.position, iohannis.transform.position);
         Vector3 currentWaypoint = direction[0];
         while (true)
         {

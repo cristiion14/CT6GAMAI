@@ -17,10 +17,10 @@ public class SimplifiedPathFinder : MonoBehaviour
 
     private void Update()//Every frame
     {
-     //   FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
+      //  FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
     }
 
-  public  void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
+    public  void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
     {
         
         SimplifiedNode StartNode = GridReference.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
@@ -47,7 +47,7 @@ public class SimplifiedPathFinder : MonoBehaviour
             if (CurrentNode == TargetNode)//If the current node is the same as the target node
             {
                   GetFinalPath(StartNode, TargetNode);//Calculate the final path
-              //  RetracePath(StartNode, TargetNode);
+             //     RetracePath(StartNode, TargetNode);
             }
 
             foreach (SimplifiedNode NeighborNode in GridReference.GetNeighboringNodes(CurrentNode))//Loop through each neighbor of the current node
@@ -68,6 +68,10 @@ public class SimplifiedPathFinder : MonoBehaviour
                     {
                         OpenList.Add(NeighborNode);//Add it to the list
                     }
+                    else
+                    {
+                       // OpenList.Add(NeighborNode.ParentNode);
+                    }
                 }
             }
 
@@ -84,11 +88,9 @@ public class SimplifiedPathFinder : MonoBehaviour
             path.Add(currentNode);
             currentNode = currentNode.ParentNode;
         }
-
         Vector3[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints);
         return waypoints;
-
     }
 
   public  Vector3[] SimplifyPath(List<SimplifiedNode> path)
@@ -123,7 +125,7 @@ public class SimplifiedPathFinder : MonoBehaviour
         FinalPath.Reverse();//Reverse the path to get the correct order
 
         veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path
-
+          
     }
 
     int GetManhattenDistance(SimplifiedNode a_nodeA, SimplifiedNode a_nodeB)
