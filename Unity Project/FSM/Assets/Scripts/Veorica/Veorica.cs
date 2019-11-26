@@ -20,13 +20,16 @@ public class Veorica : MonoBehaviour {
     Transform target;
 
     Pathfinding pathFinding;
+    SimplifiedPathFinder simplifyPath;
+    SimplifiedGrid sGrid;
+    public List<SimplifiedNode> vFinalPath;//The completed path that the red line will be drawn along
 
     //for shooting
     public GameObject bullet;
     public GameObject bulletPoint;
     public GameObject iohannis;
     public GameObject[] coins;
-
+    public GameObject GM;
 
 
     Vector3[] path;
@@ -40,32 +43,40 @@ public class Veorica : MonoBehaviour {
     void Awake()
     {
         grid = GetComponent<Grid>();
+        sGrid = GetComponent<SimplifiedGrid>();
         iohannis = GameObject.Find(TagManager.Iohannis);
         pathFinding = GetComponent<Pathfinding>();
+        simplifyPath = GetComponent<SimplifiedPathFinder>();
+        GM = GameObject.Find("GM");
+       
         //coin = GameObject.Find(TagManager.Coin);
     }
     void Start()
     {
+      //  fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
-        target = AgentManager.instance.player.transform;
+       
         timeBtwShoots = startTimeBtwShoots;
-    //    direction = pathFinding.direction;
-        fsm.InIt(new Stealing(), this);
+        //    direction = pathFinding.direction;
+
+        target = AgentManager.instance.player.transform;
         
     }
 	// Update is called once per frame
 	void Update () {
 
-        fsm.Execute();
+        //   fsm.Execute();
 
         //PointLocation();
-      //  ChasePlayer();
-      //  Patrol();
-     //   isChased();
+        //  ChasePlayer();
+        //  Patrol();
+        //   isChased();
         // Debug.Log(foundPlayer);
         // Debug.Log(nr);
-    //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
+        //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
         // Debug.Log(distance);
+
+        TracePath();
 
     }
 
@@ -84,11 +95,21 @@ public class Veorica : MonoBehaviour {
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
     }
+
+    void SetDestination()
+    {
+
+    }
+  
     public void TracePath()
     {
 
         //  Vector3[] direction = pathFinding.RetracePath(grid.NodeFromWorldPoint(agent.transform.position), grid.NodeFromWorldPoint(coins[0].transform.position));
-        Vector3[] direction = pathFinding.GetComponent<Pathfinding>().FindPath1(transform.position, target.transform.position);
+
+        //    Vector3[] direction = simplifyPath.GetComponent<SimplifiedPathFinder>().RetracePath(sGrid.GetComponent<SimplifiedGrid>().NodeFromWorldPoint(transform.position), sGrid.GetComponent<SimplifiedGrid>().NodeFromWorldPoint(coins[0].transform.position));
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+        Vector3[] direction =GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
+        
         /*
         for (int i = 0; i < direction.Length; i++)
         {

@@ -12,8 +12,8 @@ public class Stealing : State<Veorica>
         agent.travelSpeed = 0.07f;
         int nr = 0;
         Debug.Log("Stealing money :) ");
-        //  PathRequestManagerV.RequestPath(agent.transform.position, agent.coins[nr].transform.position, agent.OnPathFound);
-        agent.TracePath();
+          PathRequestManager.RequestPath(agent.transform.position, agent.coins[nr].transform.position, agent.OnPathFound);
+       // agent.TracePath();
        // PathRequestManager.RequestPath(agent.transform.position, agent.coins[nr].transform.position, agent.OnPathFound);
         float distance = Vector3.Distance(agent.transform.position, agent.coins[nr].transform.position);
         if(distance<=2)

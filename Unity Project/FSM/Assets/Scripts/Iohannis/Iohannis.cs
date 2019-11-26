@@ -59,7 +59,7 @@ public class Iohannis : MonoBehaviour {
    
     IEnumerator FollowPath()
     {
-       // targetIndex = 0;
+    //    targetIndex = 0;
         Vector3 currentWaypoint = path[0];
         while(true)
         {
