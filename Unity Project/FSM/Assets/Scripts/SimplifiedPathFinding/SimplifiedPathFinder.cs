@@ -125,6 +125,9 @@ public class SimplifiedPathFinder : MonoBehaviour
             CurrentNode = CurrentNode.ParentNode;//Move onto its parent node
         }
 
+        if(CurrentNode == a_StartingNode)
+           FinalPath.Add(CurrentNode);
+
         FinalPath.Reverse();//Reverse the path to get the correct order
 
         veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path

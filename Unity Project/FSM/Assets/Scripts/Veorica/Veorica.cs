@@ -9,7 +9,7 @@ public class Veorica : MonoBehaviour {
   public  Vector3[] direction;
     Rigidbody rb;
     public float money = 0;
-
+    public int coinNr = 0;
 
     StateManager<Veorica> fsm = new StateManager<Veorica>();
 
@@ -53,7 +53,7 @@ public class Veorica : MonoBehaviour {
     }
     void Start()
     {
-      //  fsm.InIt(new Stealing(), this);
+        fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
        
         timeBtwShoots = startTimeBtwShoots;
@@ -62,9 +62,11 @@ public class Veorica : MonoBehaviour {
         target = AgentManager.instance.player.transform;
     }
 
-    void SetDestination(Transform transform, Transform target)
+   public void SetDestination(Transform transform, Vector3 target)
     {
-        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target.position);
+        //targetIndex = 0;
+
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target);
         List<Vector3> wayPoints = new List<Vector3>();
         for (int i = 0; i < vFinalPath.Count; i++)
         {
@@ -74,26 +76,23 @@ public class Veorica : MonoBehaviour {
         direction = wayPoints.ToArray();
         
         Vector3 currentWaypoint = direction[0];
-        
-        //rb.MovePosition(currentWaypoint);
-     //   transform.position += direction[0].normalized*3f*Time.deltaTime;
-        
-        
-       
 
-            if (transform.position == currentWaypoint)
+        if (transform.position == currentWaypoint)
                 targetIndex++;
-            //   Debug.Log("the target index is: " + targetIndex);
-            if (targetIndex >= direction.Length)
+
+        if (targetIndex >= direction.Length)
             {
+            Debug.Log("Should reset targetIndex");
                 targetIndex = 0;
-                direction = new Vector3[0];
+            Debug.Log("Target index is: " + targetIndex);
+             //   direction = new Vector3[0];
             //    break;
             }
-            currentWaypoint = direction[targetIndex];
-            //        Debug.Log("current waypoint is: " + currentWaypoint);
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed*Time.fixedDeltaTime);
-             //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
+  
+        currentWaypoint = direction[targetIndex];
+   //   Debug.Log("current waypoint is: " + currentWaypoint);
+        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed*Time.fixedDeltaTime);
+    //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
 
         
         //  rb.velocity = currentWaypoint;
@@ -102,7 +101,7 @@ public class Veorica : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //   fsm.Execute();
+           fsm.Execute();
 
         //PointLocation();
         //  ChasePlayer();
@@ -142,7 +141,7 @@ public class Veorica : MonoBehaviour {
 
     void FixedUpdate()
     {
-        SetDestination(transform, iohannis.transform);
+     //   SetDestination(transform, iohannis.transform.position);
 
         //        for (int i=0; i<direction.Length;i++)
         //      {
@@ -270,7 +269,7 @@ public class Veorica : MonoBehaviour {
         }
     }
     */
-    void OnTriggerEnter(Collider other)
+   public void OnTriggerEnter(Collider other)
     {
         if(other.tag =="Coin")
         {
