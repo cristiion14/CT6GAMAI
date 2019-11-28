@@ -16,33 +16,10 @@ public class Stealing : State<Veorica>
         // agent.TracePath();
         // PathRequestManager.RequestPath(agent.transform.position, agent.coins[agent.coinNr].transform.position, agent.OnPathFound);
 
-        // agent.SetDestination(agent.transform, agent.coins[0].transform.position);
-        /*
-        float distance = Vector3.Distance(agent.transform.position, agent.coins[0].transform.position);
-        Debug.Log("The distance is: "+distance);
-        if (distance == 1.68855f)
-            agent.coinNr++;
-        Debug.Log(agent.coinNr);
-        switch(agent.coinNr)
-        {
-            case 1: agent.SetDestination(agent.transform, agent.coins[agent.coinNr].transform.position);
-                    distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
-               // if (distance <= 2)
-                 //   agent.coinNr++;
-                break;
-            case 2: agent.SetDestination(agent.transform, agent.coins[agent.coinNr].transform.position);
-                    distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
-               // if (distance <= 2)
-                //    agent.coinNr++;
-                break;
-          
-        }
-        */
         
         float distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
-        Debug.LogError("The distance is: " + distance);
         //  randomagent.nr = Random.Range(0, 3);
-    //    agent.FacePatrolPoint(agent.nr);
+        agent.FacePatrolPoint(agent.coinNr);
         //first path
         if (agent.coinNr == 0)
         {
@@ -87,7 +64,7 @@ public class Stealing : State<Veorica>
             }
         }
       
-        if (agent.coinNr > agent.coins.Length)
+        if (agent.coinNr > 2)
         {
             agent.coinNr = 0;
         }

@@ -98,8 +98,15 @@ public class Veorica : MonoBehaviour {
         //  rb.velocity = currentWaypoint;
         
     }
-	// Update is called once per frame
-	void Update () {
+    public void FacePatrolPoint(int patrolPoint)
+    {
+        Vector3 direction = (coins[patrolPoint].transform.position - transform.position).normalized;
+        Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
+
+    }
+    // Update is called once per frame
+    void Update () {
 
            fsm.Execute();
 
