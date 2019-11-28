@@ -8,6 +8,6 @@ using UnityEngine.Animations;
 public abstract class State<T>  {
 
 
-    public abstract void Execute(T cb);
+    public abstract void Execute(T agent);
 }
 

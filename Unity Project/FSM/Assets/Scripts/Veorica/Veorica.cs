@@ -3,68 +3,132 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 public class Veorica : MonoBehaviour {
-    
+
+
+    public float travelSpeed = 0.001f;
+    Vector3[] direction;
+    Rigidbody rb;
+    public float money = 0;
+
+
+    StateManager<Veorica> fsm = new StateManager<Veorica>();
 
     float distance;
-    public Camera cam;
     public NavMeshAgent agent;
     public bool foundPlayer, isFound;
     public float lookRadius = 25f;
     Transform target;
-   public Transform downLeft, downRight, upLeft, upRight;
 
-    
+    Pathfinding pathFinding;
+    SimplifiedPathFinder simplifyPath;
+    SimplifiedGrid sGrid;
+    public List<SimplifiedNode> vFinalPath;//The completed path that the red line will be drawn along
 
     //for shooting
     public GameObject bullet;
     public GameObject bulletPoint;
+    public GameObject iohannis;
+    public GameObject[] coins;
+     GameObject GM;
 
-    GameObject iohanis;
 
+    Vector3[] path;
+    public int targetIndex;
 
     public float health = 100f;
-
-    Iohannis enemy;
+    Grid grid;
 
     float timeBtwShoots;
     public float startTimeBtwShoots;
+    void Awake()
+    {
+        grid = GetComponent<Grid>();
+        sGrid = GetComponent<SimplifiedGrid>();
+        iohannis = GameObject.Find(TagManager.Iohannis);
+        pathFinding = GetComponent<Pathfinding>();
+        simplifyPath = GetComponent<SimplifiedPathFinder>();
+        GM = GameObject.Find("GM");
+        rb = GetComponentInChildren<Rigidbody>();
+        //coin = GameObject.Find(TagManager.Coin);
+    }
     void Start()
     {
+      //  fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
-        target = AgentManager.instance.player.transform;
-        agent.stoppingDistance = 20f;
-
-        iohanis = GameObject.Find(TagManager.Iohannis);
-       // agent.SetDestination(downLeft.transform.position);
-
-        timeBtwShoots = startTimeBtwShoots;
-
        
+        timeBtwShoots = startTimeBtwShoots;
+        //    direction = pathFinding.direction;
 
+        target = AgentManager.instance.player.transform;
         
+    }
 
+    void SetDestination(Rigidbody rb, Vector3 target)
+    {
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target);
+        List<Vector3> wayPoints = new List<Vector3>();
+        for (int i = 0; i < vFinalPath.Count; i++)
+        {
+            wayPoints.Add(vFinalPath[i].vPosition);
+        }
+        direction = wayPoints.ToArray();
+        Vector3 currentWaypoint = direction[0];
+        
+        rb.MovePosition(currentWaypoint*0.9f);
+      //  rb.velocity = currentWaypoint;
     }
 	// Update is called once per frame
 	void Update () {
+
+        //   fsm.Execute();
+
         //PointLocation();
-      //  ChasePlayer();
-      //  Patrol();
-        isChased();
+        //  ChasePlayer();
+        //  Patrol();
+        //   isChased();
         // Debug.Log(foundPlayer);
         // Debug.Log(nr);
-        isFound = iohanis.GetComponent<Iohannis>().foundTarget;
+        //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
         // Debug.Log(distance);
 
+        //  TracePath();
+        /*
+         
+        for(int i=0; i<direction.Length; i++)
+        {
+            rb.MovePosition(currentWaypoint);
+            currentWaypoint = direction[i];
+            rb.MovePosition(currentWaypoint);
+        }
+        */
+
+
+        //     direction = GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
+
+
+        /*
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+       direction= GM.GetComponentInChildren<SimplifiedPathFinder>().RetracePath(GM.GetComponentInChildren<SimplifiedGrid>().NodeFromWorldPoint(transform.position), GM.GetComponentInChildren<SimplifiedGrid>().NodeFromWorldPoint(iohannis.transform.position));
+        Vector3 currentWay = direction[0];
+        rb.MovePosition(currentWay.normalized*Time.deltaTime);
+        */
+
+        PathRequestManager.RequestPath1(transform.position, iohannis.transform.position, OnPathFound);
+
     }
 
-    void isChased()
+    void FixedUpdate()
     {
-        if(isFound)
-        {
-          //  Debug.Log("l-a gasit");
-            agent.SetDestination(new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-30, 30)));
-        }
+     
+//         SetDestination(rb, iohannis.transform.position);
+
+        //        for (int i=0; i<direction.Length;i++)
+        //      {
+        //        currentWaypoint = direction[i];
+        //      rb.MovePosition(currentWaypoint * Time.fixedDeltaTime);
+        //}
     }
+
     //display the look radius
     void OnDrawGizmosSelected()
     {
@@ -72,46 +136,6 @@ public class Veorica : MonoBehaviour {
         Gizmos.DrawWireSphere(transform.position,lookRadius);
     }
         
-    void PointLocation()
-    {
-        //check to see if the left mouse was pressed
-        if (Input.GetMouseButtonDown(0))
-        {
-            //get pos of the mouse
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);      //convert the position of the mouse into a ray that can be shooted anywhere in the scene and store it in a ray var
-            // var to store info about what the ray hits
-            RaycastHit hit;
-            //shoot ray and move agent just if the ray hits something
-            if (Physics.Raycast(ray, out hit))
-            {
-                //move agent
-                agent.SetDestination(hit.point);
-            }
-        }
-    }
-    void ChasePlayer()
-    {
-        //get the distance from agent to target
-         distance = Vector3.Distance(target.position, transform.position);
-
-        if(distance<=lookRadius)
-        {
-            foundPlayer = true;
-            //chase
-       //    agent.SetDestination(target.position);
-            Shoot();
-            FaceTarget();
-            if (distance<=agent.stoppingDistance)
-            {
-               // Debug.Log("Shoot!");
-                //Attack the target
-               
-                //Face the target
-                
-            }
-        }
-        foundPlayer = false;
-    }
     void FaceTarget()
     {
        // Debug.Log("Face Target");
@@ -119,39 +143,54 @@ public class Veorica : MonoBehaviour {
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
     }
-    void Patrol()
+
+  
+    public void TracePath()
     {
-        if (!(distance <= lookRadius))
+
+        //  Vector3[] direction = pathFinding.RetracePath(grid.NodeFromWorldPoint(agent.transform.position), grid.NodeFromWorldPoint(coins[0].transform.position));
+
+        //    Vector3[] direction = simplifyPath.GetComponent<SimplifiedPathFinder>().RetracePath(sGrid.GetComponent<SimplifiedGrid>().NodeFromWorldPoint(transform.position), sGrid.GetComponent<SimplifiedGrid>().NodeFromWorldPoint(coins[0].transform.position));
+        //  GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+
+        /*
+        List<Vector3> wayPoints = new List<Vector3>();
+        for (int i = 0; i < vFinalPath.Count; i++)
         {
-            
-            if (agent.transform.position.x == downLeft.transform.position.x)
+            wayPoints.Add(vFinalPath[i].vPosition);
+        }
+        direction = wayPoints.ToArray();        
+        for (int i = 0; i < direction.Length; i++)
+        {
+            agent.transform.position += direction[i] * agent.travelSpeed * Time.deltaTime;
+        }
+        */
+
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
+        direction = GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
+        Vector3 currentWaypoint = direction[0];
+
+        while (true)
+        {
+
+            if (transform.position == currentWaypoint)
+                targetIndex++;
+            //   Debug.Log("the target index is: " + targetIndex);
+            if (targetIndex >= direction.Length)
             {
-              //  Debug.Log("Urmatoarea tinta");
-                agent.SetDestination(upRight.transform.position);
+                              targetIndex=0;
+                              direction = new Vector3[0];
+                break;
             }
-            if (agent.transform.position.x == upRight.transform.position.x)
-            {
-              //  Debug.Log("Urmatoarul");
-                agent.SetDestination(upLeft.transform.position);
-            }
-            if (agent.transform.position.x == upLeft.transform.position.x)
-            {
-                //Debug.Log("Urmatoarea");
-                agent.SetDestination(downRight.transform.position);
-            }
+            currentWaypoint = direction[targetIndex];
+            //        Debug.Log("current waypoint is: " + currentWaypoint);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed);
+         //   transform.position += currentWaypoint*Time.deltaTime* travelSpeed;
+
         }
     }
      void Shoot()
     {
-        /*
-        Debug.Log("Shooting");
-        RaycastHit hit;
-        if (Physics.Raycast(gun.transform.position, gun.transform.forward, out hit, range))
-        {
-            Debug.Log(hit.transform.name);
-        }
-        */
-
         if(timeBtwShoots<=0)
         {
             Instantiate(bullet, bulletPoint.transform.position, Quaternion.identity);
@@ -162,8 +201,65 @@ public class Veorica : MonoBehaviour {
         {
             timeBtwShoots -= Time.deltaTime;
         }
+    }
 
+    public void OnPathFound(Vector3[] newPath)
+    {
+        
+            path = newPath;
+            targetIndex = 0;
+            StopCoroutine("FollowPath");
+            StartCoroutine("FollowPath");
+        
+    }
+
+    IEnumerator FollowPath()
+    {
+        // targetIndex = 0;
+        Vector3 currentWaypoint = path[0];
+        while (true)
+        {
+
+            if (transform.position == currentWaypoint)
+                targetIndex++;
+            //   Debug.Log("the target index is: " + targetIndex);
+            if (targetIndex >= path.Length)
+            {
+                //               targetIndex=0;
+                //              path = new Vector3[0];
+                yield break;
+            }
+            currentWaypoint = path[targetIndex];
+            //        Debug.Log("current waypoint is: " + currentWaypoint);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed);
+            yield return null;
+        }
 
     }
     
+    /*
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.tag == "Coin")
+        {
+            money += 1;
+            Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
+            Destroy(col.gameObject);
+        }
+    }
+    */
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag =="Coin")
+        {
+            money += 1;
+            Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
+            Destroy(other.gameObject);
+        }
+    }
+    
+    public void ChangeState(State<Veorica> newState)
+    {
+        fsm.pState = newState;
+    }
 }
