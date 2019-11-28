@@ -17,12 +17,12 @@ public class SimplifiedPathFinder : MonoBehaviour
 
     private void Update()//Every frame
     {
-      //  FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
+    //    FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
     }
 
     public  void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
     {
-        
+        //Vector3[] direction = new Vector3[0];
         SimplifiedNode StartNode = GridReference.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
         SimplifiedNode TargetNode = GridReference.NodeFromWorldPoint(a_TargetPos);//Gets the node closest to the target position
 
@@ -47,7 +47,9 @@ public class SimplifiedPathFinder : MonoBehaviour
             if (CurrentNode == TargetNode)//If the current node is the same as the target node
             {
                   GetFinalPath(StartNode, TargetNode);//Calculate the final path
-             //     RetracePath(StartNode, TargetNode);
+            //    veorica.GetComponent<Veorica>().direction = RetracePath(StartNode, TargetNode);
+                
+               
             }
 
             foreach (SimplifiedNode NeighborNode in GridReference.GetNeighboringNodes(CurrentNode))//Loop through each neighbor of the current node
@@ -70,9 +72,9 @@ public class SimplifiedPathFinder : MonoBehaviour
                     }
                     else
                     {
-                        //update the 
-                       // OpenList.Add(NeighborNode.ParentNode);
+                      //  ClosedList.Add(NeighborNode);
                     }
+                    
                 }
             }
 

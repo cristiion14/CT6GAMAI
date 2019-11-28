@@ -5,8 +5,8 @@ using UnityEngine.AI;
 public class Veorica : MonoBehaviour {
 
 
-    public float travelSpeed = 0.001f;
-    Vector3[] direction;
+    public float travelSpeed = 0.00001f;
+  public  Vector3[] direction;
     Rigidbody rb;
     public float money = 0;
 
@@ -60,22 +60,44 @@ public class Veorica : MonoBehaviour {
         //    direction = pathFinding.direction;
 
         target = AgentManager.instance.player.transform;
-        
     }
 
-    void SetDestination(Rigidbody rb, Vector3 target)
+    void SetDestination(Transform transform, Transform target)
     {
-        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target);
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target.position);
         List<Vector3> wayPoints = new List<Vector3>();
         for (int i = 0; i < vFinalPath.Count; i++)
         {
             wayPoints.Add(vFinalPath[i].vPosition);
         }
+       // wayPoints.Reverse();
         direction = wayPoints.ToArray();
+        
         Vector3 currentWaypoint = direction[0];
         
-        rb.MovePosition(currentWaypoint*0.9f);
-      //  rb.velocity = currentWaypoint;
+        //rb.MovePosition(currentWaypoint);
+     //   transform.position += direction[0].normalized*3f*Time.deltaTime;
+        
+        
+       
+
+            if (transform.position == currentWaypoint)
+                targetIndex++;
+            //   Debug.Log("the target index is: " + targetIndex);
+            if (targetIndex >= direction.Length)
+            {
+                targetIndex = 0;
+                direction = new Vector3[0];
+            //    break;
+            }
+            currentWaypoint = direction[targetIndex];
+            //        Debug.Log("current waypoint is: " + currentWaypoint);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed*Time.fixedDeltaTime);
+             //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
+
+        
+        //  rb.velocity = currentWaypoint;
+        
     }
 	// Update is called once per frame
 	void Update () {
@@ -91,7 +113,7 @@ public class Veorica : MonoBehaviour {
         //    isFound = iohanis.GetComponent<Iohannis>().foundTarget;
         // Debug.Log(distance);
 
-        //  TracePath();
+    //      TracePath();
         /*
          
         for(int i=0; i<direction.Length; i++)
@@ -113,14 +135,14 @@ public class Veorica : MonoBehaviour {
         rb.MovePosition(currentWay.normalized*Time.deltaTime);
         */
 
-        PathRequestManager.RequestPath1(transform.position, iohannis.transform.position, OnPathFound);
+        //   PathRequestManager.RequestPath1(transform.position, iohannis.transform.position, OnPathFound);
+    //    SetDestination(transform);
 
     }
 
     void FixedUpdate()
     {
-     
-//         SetDestination(rb, iohannis.transform.position);
+        SetDestination(transform, iohannis.transform);
 
         //        for (int i=0; i<direction.Length;i++)
         //      {
@@ -167,7 +189,7 @@ public class Veorica : MonoBehaviour {
         */
 
         GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, iohannis.transform.position);
-        direction = GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
+     //   direction = GM.GetComponentInChildren<SimplifiedPathFinder>().SimplifyPath(vFinalPath);
         Vector3 currentWaypoint = direction[0];
 
         while (true)
@@ -184,9 +206,9 @@ public class Veorica : MonoBehaviour {
             }
             currentWaypoint = direction[targetIndex];
             //        Debug.Log("current waypoint is: " + currentWaypoint);
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed);
-         //   transform.position += currentWaypoint*Time.deltaTime* travelSpeed;
-
+            //  transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed);
+            //   transform.position += currentWaypoint*Time.deltaTime* travelSpeed;
+            rb.MovePosition(currentWaypoint);
         }
     }
      void Shoot()

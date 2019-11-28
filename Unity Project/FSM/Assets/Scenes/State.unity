@@ -838,7 +838,7 @@ PrefabInstance:
     - target: {fileID: 114212737905342988, guid: 63f937d9b265bea4891f813e5e53a00b,
         type: 3}
       propertyPath: travelSpeed
-      value: 0.00001
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 136439778776919772, guid: 63f937d9b265bea4891f813e5e53a00b,
         type: 3}
@@ -1225,7 +1225,7 @@ PrefabInstance:
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}
