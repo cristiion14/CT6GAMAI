@@ -4,16 +4,25 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Veorica : MonoBehaviour {
 
+    public Vector3 topR = new Vector3(14.33f, 1.02f, 13.7f);
+    public Vector3 topL = new Vector3(-13.48f, 1.02f, 13.7f);
+    public Vector3 bottomR = new Vector3(-13.48f, 1.02f, -14.25f);
+    public Vector3 bottomL = new Vector3(13.48f, 1.02f, -14.25f);
 
     public float travelSpeed = 0.00001f;
   public  Vector3[] direction;
+    public Vector3 evadeDirection;
     Rigidbody rb;
     public float money = 0;
     public int coinNr = 0;
+    public int nrPath = 0;
+    public GameObject coin;
+
+    public int nr = 0; //for chased state
 
     StateManager<Veorica> fsm = new StateManager<Veorica>();
 
-    float distance;
+   public float distance;
     public NavMeshAgent agent;
     public bool foundPlayer, isFound;
     public float lookRadius = 25f;
@@ -23,14 +32,14 @@ public class Veorica : MonoBehaviour {
     SimplifiedPathFinder simplifyPath;
     SimplifiedGrid sGrid;
     public List<SimplifiedNode> vFinalPath;//The completed path that the red line will be drawn along
-
+    public List<SimplifiedNode>[] FinalPath;
     //for shooting
     public GameObject bullet;
     public GameObject bulletPoint;
     public GameObject iohannis;
     public GameObject[] coins;
      GameObject GM;
-
+   public float randNrX, randNrY, randNrZ;
 
     Vector3[] path;
     public int targetIndex;
@@ -49,20 +58,32 @@ public class Veorica : MonoBehaviour {
         simplifyPath = GetComponent<SimplifiedPathFinder>();
         GM = GameObject.Find("GM");
         rb = GetComponentInChildren<Rigidbody>();
+        Instantiate(coin, new Vector3(12.07f, 1, 1.49f), transform.rotation);
+
         //coin = GameObject.Find(TagManager.Coin);
     }
     void Start()
     {
         fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
+        randNrX = Random.Range(-11f, 15f);
+        randNrZ = Random.Range(-14.76f, 14.76f);
+        evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
        
         timeBtwShoots = startTimeBtwShoots;
         //    direction = pathFinding.direction;
-
+ //       rand = GetComponent<Random>();
         target = AgentManager.instance.player.transform;
     }
-
-   public void SetDestination(Transform transform, Vector3 target)
+    public void targetFound()
+    {
+        float distance = Vector3.Distance(iohannis.transform.position, transform.position);
+        if (distance <= lookRadius)
+            isFound=true;
+        else
+            isFound= false;
+    }
+    public void SetDestination(Transform transform, Vector3 target)
     {
         //targetIndex = 0;
 
@@ -82,9 +103,9 @@ public class Veorica : MonoBehaviour {
 
         if (targetIndex >= direction.Length)
             {
-            Debug.Log("Should reset targetIndex");
+      //      Debug.Log("Should reset targetIndex");
                 targetIndex = 0;
-            Debug.Log("Target index is: " + targetIndex);
+     //       Debug.Log("Target index is: " + targetIndex);
              //   direction = new Vector3[0];
             //    break;
             }
@@ -105,11 +126,22 @@ public class Veorica : MonoBehaviour {
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
 
     }
+    public void GenerateRandomNr()
+    {
+        randNrX = Random.Range(-11f, 15f);
+        randNrZ = Random.Range(-14.76f, 14.76f);
+        evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
+
+    }
     // Update is called once per frame
     void Update () {
 
            fsm.Execute();
-
+       if(isFound)
+        {
+       //     GenerateRandomNr();
+        }
+        GetDistanceFromCoins();
         //PointLocation();
         //  ChasePlayer();
         //  Patrol();
@@ -143,7 +175,7 @@ public class Veorica : MonoBehaviour {
 
         //   PathRequestManager.RequestPath1(transform.position, iohannis.transform.position, OnPathFound);
     //    SetDestination(transform);
-
+  
     }
 
     void FixedUpdate()
@@ -264,7 +296,7 @@ public class Veorica : MonoBehaviour {
         }
 
     }
-    
+
     /*
     void OnCollisionEnter(Collision col)
     {
@@ -276,16 +308,36 @@ public class Veorica : MonoBehaviour {
         }
     }
     */
-   public void OnTriggerEnter(Collider other)
+    public float GetDistanceFromCoins()
+    {
+         distance = Vector3.Distance(transform.position, coin.transform.position);
+        return distance;
+    }
+    public int destroyedObj;
+   private void OnTriggerEnter(Collider other)
     {
         if(other.tag =="Coin")
         {
-            money += 1;
-            Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
-            Destroy(other.gameObject);
+           money += 1;
+    //       Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
+      //     Debug.LogError("The other object is: " + other.gameObject);
+           Destroy(other.gameObject);
+
+      //     coin.transform.position = new Vector3(0, 1, 0);
+           Instantiate(coin, new Vector3(Random.Range(-12,12),1,Random.Range(-5,5)), transform.rotation);
+           coin.tag = "Coin";
+        //    randNrX = Random.Range(-12, 12);
+          //  randNrZ = Random.Range(-10, 7);
+            
         }
     }
-    
+   void OnTriggerExit(Collider other)
+    {
+      
+           
+            
+
+    }
     public void ChangeState(State<Veorica> newState)
     {
         fsm.pState = newState;

@@ -8,7 +8,7 @@ public class Stealing : State<Veorica>
     
     public override void Execute(Veorica agent)
     {
-
+        agent.travelSpeed = 10f;
         //  agent.travelSpeed = 0.07f;
       //  int agent.coinNr=0;
         Debug.Log("Stealing money :) ");
@@ -16,18 +16,18 @@ public class Stealing : State<Veorica>
         // agent.TracePath();
         // PathRequestManager.RequestPath(agent.transform.position, agent.coins[agent.coinNr].transform.position, agent.OnPathFound);
 
-        
-        float distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
+
         //  randomagent.nr = Random.Range(0, 3);
+        /*
         agent.FacePatrolPoint(agent.coinNr);
         //first path
         if (agent.coinNr == 0)
         {
 
            agent.SetDestination(agent.transform, agent.coins[agent.coinNr].transform.position);
-            distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
-            //   Debug.Log("The distance is: " + distance);
-            if (distance <= 2)
+            agent.distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
+            //   Debug.Log("The agent.distance is: " + agent.distance);
+            if (agent.distance <= 2)
             {
                 agent.coinNr++;
                 Debug.Log("Should increase coinNr");
@@ -41,9 +41,9 @@ public class Stealing : State<Veorica>
             Debug.Log("Should go to the next one");
             Debug.Log("The position is: " + agent.coins[agent.coinNr].transform.localPosition);
             agent.SetDestination(agent.transform, agent.coins[agent.coinNr].transform.position);
-            distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
-            //   Debug.Log("The distance is: " + distance);
-            if (distance <= 2)
+            agent.distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
+            //   Debug.Log("The agent.distance is: " + agent.distance);
+            if (agent.distance <= 2)
             {
                 agent.coinNr++;
                 Debug.Log("Should increase coinNr");
@@ -55,9 +55,9 @@ public class Stealing : State<Veorica>
         {
 
             agent.SetDestination(agent.transform, agent.coins[agent.coinNr].transform.position);
-            distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
-            //   Debug.Log("The distance is: " + distance);
-            if (distance <= 2)
+            agent.distance = Vector3.Distance(agent.transform.position, agent.coins[agent.coinNr].transform.position);
+            //   Debug.Log("The agent.distance is: " + agent.distance);
+            if (agent.distance <= 2)
             {
                 agent.coinNr++;
                 Debug.Log("Should increase coinNr");
@@ -79,6 +79,7 @@ public class Stealing : State<Veorica>
            
         }
         */
+        agent.SetDestination(agent.transform, agent.coin.transform.position);
         if (agent.iohannis.GetComponent<Iohannis>().targetFound())
             agent.ChangeState(new Chased());
     }

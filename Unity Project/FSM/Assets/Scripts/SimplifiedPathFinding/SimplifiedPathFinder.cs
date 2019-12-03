@@ -47,6 +47,7 @@ public class SimplifiedPathFinder : MonoBehaviour
             if (CurrentNode == TargetNode)//If the current node is the same as the target node
             {
                   GetFinalPath(StartNode, TargetNode);//Calculate the final path
+                  veorica.GetComponent<Veorica>().nrPath++;
             //    veorica.GetComponent<Veorica>().direction = RetracePath(StartNode, TargetNode);
                 
                
@@ -131,9 +132,9 @@ public class SimplifiedPathFinder : MonoBehaviour
         FinalPath.Reverse();//Reverse the path to get the correct order
 
         veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path
-          
+     //   veorica.GetComponent<Veorica>().FinalPath[veorica.GetComponent<Veorica>().nrPath] = FinalPath;
     }
-
+ 
 
     int GetManhattenDistance(SimplifiedNode a_nodeA, SimplifiedNode a_nodeB)
     {
