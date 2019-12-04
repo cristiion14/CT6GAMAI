@@ -1078,7 +1078,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartPosition: {fileID: 1896458431}
   TargetPosition: {fileID: 976257423}
-  veorica: {fileID: 202091750}
 --- !u!114 &758907053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1306,7 +1305,7 @@ PrefabInstance:
     - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}
       propertyPath: travelSpeed
-      value: 0.12
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 54844883339115968, guid: 79490e28c7adb1345bcbe69fc837a8cd,
         type: 3}

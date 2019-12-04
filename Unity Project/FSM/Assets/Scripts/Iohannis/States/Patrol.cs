@@ -21,8 +21,9 @@ public class Patrol : State<Iohannis>
         //first path
         if (agent.nr == 0)
         {
-              
-            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
+
+            //  PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
+            agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
          //   Debug.Log("The distance is: " + distance);
         }
@@ -35,7 +36,8 @@ public class Patrol : State<Iohannis>
         //second path
         if (agent.nr == 1)
         {
-            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
+            //  PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
+            agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
             if (distance <= 2)
             {
@@ -46,7 +48,8 @@ public class Patrol : State<Iohannis>
         //third path
         if (agent.nr == 2)
         {
-            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
+            //  PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
+            agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position); PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
             if (distance <= 2)
             {
@@ -58,7 +61,8 @@ public class Patrol : State<Iohannis>
 
         if (agent.nr == 3)
         {
-            PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
+            //  PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].position, agent.OnPathFound);
+            agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position); PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
             distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
             if (distance <= 2)
             {
