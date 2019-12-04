@@ -82,8 +82,9 @@ public class Iohannis : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
-          fsm.Execute();
-
+            fsm.Execute();
+      //  Shoot();
+       // FaceTarget();
     }
     public bool targetFound()
     {

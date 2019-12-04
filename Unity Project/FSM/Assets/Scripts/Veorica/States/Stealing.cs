@@ -12,7 +12,7 @@ public class Stealing : State<Veorica>
         //  agent.travelSpeed = 0.07f;
       //  int agent.coinNr=0;
         Debug.Log("Stealing money :) ");
-
+        agent.FaceObj(agent.coin.transform.position);
         agent.SetDestination(agent.transform, agent.coin.transform.position);
         if (agent.health < 90)
         {

@@ -7,7 +7,7 @@ public class Bullet2 : MonoBehaviour
     //Bullet class for Iohannis
 
 
-    public float speed = 1f;
+    public float speed = 1000f;
     public float damage = 10f;
 
     public Rigidbody rb;
@@ -26,9 +26,9 @@ public class Bullet2 : MonoBehaviour
     {
 
         player = GameObject.FindGameObjectWithTag(TagManager.Veorica).transform;
-        target = player.transform.position - gameObject.transform.position;
+        target = (player.transform.position - gameObject.transform.position).normalized;
 
-        rb.velocity = target * speed;
+        rb.velocity = target * Time.fixedDeltaTime * speed;
         gb = GameObject.Find(TagManager.Veorica);
         
     }
@@ -53,7 +53,7 @@ public class Bullet2 : MonoBehaviour
             //pHealth -= 1;
             gb.GetComponent<Veorica>().health -= damage;
            
-            Debug.Log("Veorica has: "+ gb.GetComponent<Veorica>().health + " remaining health");
+            Debug.LogError("Veorica has: "+ gb.GetComponent<Veorica>().health + " remaining health");
             if (gb.GetComponent<Veorica>().health <= 0)
             {
                 gb.GetComponent<Veorica>().health = 0;

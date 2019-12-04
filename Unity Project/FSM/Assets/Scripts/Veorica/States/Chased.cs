@@ -9,6 +9,8 @@ public class Chased : State<Veorica>
     {
        
         Debug.Log("Veorica is being chased");
+       
+        agent.Shoot();
         agent.travelSpeed += 0.1f;
         //   agent.GenerateRandomNr();
         //     agent.SetDestination(agent.transform, agent.iohannis.transform.position+new Vector3(-10,0,5));
@@ -21,12 +23,16 @@ public class Chased : State<Veorica>
         {
 
             agent.SetDestination(agent.transform, agent.topR);
+            if (!agent.lookAtPlayer)
+            {
+                agent.FaceObj(agent.topR);
+            }
             //distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
             //   Debug.Log("The distance is: " + distance);
             if (distance <= 2)
             {
                 agent.nr++;
-                Debug.Log("Should increase nr");
+//                Debug.Log("Should increase nr");
             }
         }
        
@@ -37,6 +43,10 @@ public class Chased : State<Veorica>
             // PathRequestManager.RequestPath(agent.transform.position, agent.patrolPoints[agent.nr].transform.position, agent.OnPathFound);
              distance = Vector3.Distance(agent.transform.position, agent.bottomR);
             agent.SetDestination(agent.transform, agent.bottomR);
+            if (!agent.lookAtPlayer)
+            {
+                agent.FaceObj(agent.topR);
+            }
             if (distance <= 2)
             {
                 agent.nr = 0;
@@ -44,7 +54,7 @@ public class Chased : State<Veorica>
         }
         if(agent.health<90)
         {
-            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+        //    agent.SetDestination(agent.transform, agent.healthPack.transform.position);
         }
         /*
         agent.SetDestination(agent.transform, agent.topR);

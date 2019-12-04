@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
 
-    public float speed = 2f;
+    public float speed = 1000f;
     public float damage = 10f;
     
     public Rigidbody rb;
@@ -23,9 +23,9 @@ public class Bullet : MonoBehaviour
     {
 
         player = GameObject.FindGameObjectWithTag(TagManager.Iohannis).transform;
-        target = player.transform.position - gameObject.transform.position;
+        target = (player.transform.position - gameObject.transform.position).normalized;
 
-        rb.velocity = target * speed;        
+        rb.velocity = target *Time.fixedDeltaTime* speed;        
         gb = GameObject.Find(TagManager.Iohannis);
      
     }
@@ -49,7 +49,7 @@ public class Bullet : MonoBehaviour
             //lower health
             //pHealth -= 1;
             gb.GetComponent<Iohannis>().health -= damage;
-            Debug.Log("Iohanis has: " + gb.GetComponent<Iohannis>().health + " remaining health");
+            Debug.LogError("Iohanis has: " + gb.GetComponent<Iohannis>().health + " remaining health");
             if (gb.GetComponent<Iohannis>().health <= 0)
             {
                 Debug.Log("Mort");

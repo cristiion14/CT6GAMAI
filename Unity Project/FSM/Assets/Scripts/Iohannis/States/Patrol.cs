@@ -29,7 +29,7 @@ public class Patrol : State<Iohannis>
         if(distance<=2)
         {
             agent.nr++;
-            Debug.Log("Should increase nr");
+    //        Debug.Log("Should increase nr");
         }
 
         //second path
@@ -65,7 +65,7 @@ public class Patrol : State<Iohannis>
                 agent.nr++;
             }
         }
-        Debug.Log("nr = "+agent.nr);
+  //      Debug.Log("nr = "+agent.nr);
         //reset
         if (agent.nr>3)
         {

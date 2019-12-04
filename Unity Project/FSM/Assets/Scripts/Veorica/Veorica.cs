@@ -10,7 +10,7 @@ public class Veorica : MonoBehaviour {
     public Vector3 bottomL = new Vector3(13.48f, 1.02f, -14.25f);
     
     public GameObject healthPack;
-
+    public bool lookAtPlayer;
     public float travelSpeed = 0.00001f;
   public  Vector3[] direction;
     public Vector3 evadeDirection;
@@ -123,13 +123,15 @@ public class Veorica : MonoBehaviour {
         //  rb.velocity = currentWaypoint;
         
     }
-    public void FacePatrolPoint(int patrolPoint)
-    {
-        Vector3 direction = (coins[patrolPoint].transform.position - transform.position).normalized;
-        Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
 
+    public void FaceObj(Vector3 obj)
+    {
+        lookAtPlayer = false;
+        Vector3 direction = (obj - transform.position).normalized;
+        Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
     }
+
     public void GenerateRandomNr()
     {
         randNrX = Random.Range(-11f, 15f);
@@ -139,9 +141,9 @@ public class Veorica : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-           fsm.Execute();
-        Debug.LogError("The health is: " + health);
-
+          fsm.Execute();
+     //   Shoot();
+     //   FaceTarget();
        if (isFound)
         {
        //     GenerateRandomNr();
@@ -201,12 +203,13 @@ public class Veorica : MonoBehaviour {
         Gizmos.DrawWireSphere(transform.position,lookRadius);
     }
         
-    void FaceTarget()
+    void FaceTarget()     //this function is making the player to face iohannis
     {
        // Debug.Log("Face Target");
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
+        lookAtPlayer = true;
     }
 
   
@@ -254,7 +257,7 @@ public class Veorica : MonoBehaviour {
             rb.MovePosition(currentWaypoint);
         }
     }
-     void Shoot()
+    public void Shoot()
     {
         if(timeBtwShoots<=0)
         {
@@ -330,7 +333,7 @@ public class Veorica : MonoBehaviour {
 
             //     coin.transform.position = new Vector3(0, 1, 0);
 
-            Instantiate(coin, new Vector3(Random.Range(-12, 12), 1, Random.Range(-5, 5)), transform.rotation);
+           coin = Instantiate(coin, new Vector3(Random.Range(-12, 12), 1, Random.Range(-5, 5)), transform.rotation);
             coin.tag = "Coin";
             //    randNrX = Random.Range(-12, 12);
             //  randNrZ = Random.Range(-10, 7);
