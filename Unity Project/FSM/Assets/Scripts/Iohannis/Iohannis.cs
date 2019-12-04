@@ -6,7 +6,6 @@ public class Iohannis : MonoBehaviour {
     
     public NavMeshAgent agent;
 
-    public bool isInChasingState;
     StateManager<Iohannis> fsm = new StateManager<Iohannis>();
 
     [SerializeField]
@@ -18,13 +17,12 @@ public class Iohannis : MonoBehaviour {
    public Vector3[] path;
     public int targetIndex;
 
-    float distance;
+    float distance;         //distance from 2 specific points
 
     public Transform target;
     public Transform[] patrolPoints;
 
     public float lookRad = 25f;
-    public float shootDist = 20f;
     public float startTimeBtwShoots, timeBtwShoots;
     public GameObject bullet, bulletPoint;
 
@@ -42,53 +40,21 @@ public class Iohannis : MonoBehaviour {
     void Start () {
 
         //adding the start state:
-    //    fsm.InIt(new Patrol(), this);
+        fsm.InIt(new Patrol(), this);
 
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
     }
-	public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
-    {
-        if(pathSuccessful)
-        {
-            path = newPath;
-            targetIndex = 0;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
-        }
-    }
+	
    
-    IEnumerator FollowPath()
-    {
-    //    targetIndex = 0;
-        Vector3 currentWaypoint = path[0];
-        while(true)
-        {
-     
-            if (transform.position == currentWaypoint)
-                targetIndex++;
-         //   Debug.Log("the target index is: " + targetIndex);
-            if (targetIndex>=path.Length)
-                {
-     //               targetIndex=0;
-     //              path = new Vector3[0];
-                    yield break;
-                }
-                currentWaypoint = path[targetIndex];
-    //        Debug.Log("current waypoint is: " + currentWaypoint);
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed);
-            yield return null;
-        }
-       
-    }
 	// Update is called once per frame
 	void Update () {
-        //       fsm.Execute();
+               fsm.Execute();
         //  Shoot();
         // FaceTarget();
      //   Debug.LogError("The final path is: " + iFinalPath);
-        SetDestination(transform, patrolPoints[0].transform.position);
+     //   SetDestination(transform, patrolPoints[0].transform.position);
     }
 
     public void SetDestination(Transform transform, Vector3 target)
