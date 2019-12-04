@@ -8,6 +8,8 @@ public class Veorica : MonoBehaviour {
     public Vector3 topL = new Vector3(-13.48f, 1.02f, 13.7f);
     public Vector3 bottomR = new Vector3(-13.48f, 1.02f, -14.25f);
     public Vector3 bottomL = new Vector3(13.48f, 1.02f, -14.25f);
+    
+    public GameObject healthPack;
 
     public float travelSpeed = 0.00001f;
   public  Vector3[] direction;
@@ -17,8 +19,10 @@ public class Veorica : MonoBehaviour {
     public int coinNr = 0;
     public int nrPath = 0;
     public GameObject coin;
+   
 
     public int nr = 0; //for chased state
+   // public int stealNr = 0;
 
     StateManager<Veorica> fsm = new StateManager<Veorica>();
 
@@ -135,9 +139,10 @@ public class Veorica : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-
            fsm.Execute();
-       if(isFound)
+        Debug.LogError("The health is: " + health);
+
+       if (isFound)
         {
        //     GenerateRandomNr();
         }
@@ -323,19 +328,24 @@ public class Veorica : MonoBehaviour {
       //     Debug.LogError("The other object is: " + other.gameObject);
            Destroy(other.gameObject);
 
-      //     coin.transform.position = new Vector3(0, 1, 0);
-           Instantiate(coin, new Vector3(Random.Range(-12,12),1,Random.Range(-5,5)), transform.rotation);
-           coin.tag = "Coin";
-        //    randNrX = Random.Range(-12, 12);
-          //  randNrZ = Random.Range(-10, 7);
-            
+            //     coin.transform.position = new Vector3(0, 1, 0);
+
+            Instantiate(coin, new Vector3(Random.Range(-12, 12), 1, Random.Range(-5, 5)), transform.rotation);
+            coin.tag = "Coin";
+            //    randNrX = Random.Range(-12, 12);
+            //  randNrZ = Random.Range(-10, 7);
+        //    Debug.LogAssertion("HOW MUCH MONEY YOU GOT?? " + money);
+
+        }
+       
+        if(other.name == "Health Pack")
+        {
+            Destroy(agent.gameObject);
         }
     }
-   void OnTriggerExit(Collider other)
+   void OnTriggerExit()
     {
-      
-           
-            
+
 
     }
     public void ChangeState(State<Veorica> newState)

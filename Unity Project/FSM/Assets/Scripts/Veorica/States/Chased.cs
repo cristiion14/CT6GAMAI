@@ -42,7 +42,10 @@ public class Chased : State<Veorica>
                 agent.nr = 0;
             }
         }
-
+        if(agent.health<90)
+        {
+            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+        }
         /*
         agent.SetDestination(agent.transform, agent.topR);
         //if it's on the top right

@@ -12,6 +12,12 @@ public class Stealing : State<Veorica>
         //  agent.travelSpeed = 0.07f;
       //  int agent.coinNr=0;
         Debug.Log("Stealing money :) ");
+
+        agent.SetDestination(agent.transform, agent.coin.transform.position);
+        if (agent.health < 90)
+        {
+            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+        }
         //  PathRequestManager.RequestPath(agent.transform.position, agent.coins[agent.coinNr].transform.position, agent.OnPathFound);
         // agent.TracePath();
         // PathRequestManager.RequestPath(agent.transform.position, agent.coins[agent.coinNr].transform.position, agent.OnPathFound);
@@ -79,7 +85,7 @@ public class Stealing : State<Veorica>
            
         }
         */
-        agent.SetDestination(agent.transform, agent.coin.transform.position);
+
         if (agent.iohannis.GetComponent<Iohannis>().targetFound())
             agent.ChangeState(new Chased());
     }
