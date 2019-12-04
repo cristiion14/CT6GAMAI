@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class Chase :State<Iohannis> 
 {
-    StateManager<Iohannis> fsm;
-    //Transform target;
     public override void Execute(Iohannis agent)
     {
-        // agent.isInChasingState = true;
         Debug.Log("Chasing");
-        //  target = AgentManager.instance.enemy2.transform;
 
-    //    PathRequestManager.RequestPath(agent.transform.position, new Vector3(agent.target.position.x, 0, agent.target.position.z+3) , agent.OnPathFound);
         agent.SetDestination(agent.transform, new Vector3(agent.target.position.x, 0, agent.target.position.z + 3));
         if (!agent.targetFound())
         {
