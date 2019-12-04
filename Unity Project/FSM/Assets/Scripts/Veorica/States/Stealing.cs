@@ -16,7 +16,7 @@ public class Stealing : State<Veorica>
         agent.SetDestination(agent.transform, agent.coin.transform.position);
         if (agent.health < 90)
         {
-            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+       //     agent.SetDestination(agent.transform, agent.healthPack.transform.position);
         }
         //  PathRequestManager.RequestPath(agent.transform.position, agent.coins[agent.coinNr].transform.position, agent.OnPathFound);
         // agent.TracePath();

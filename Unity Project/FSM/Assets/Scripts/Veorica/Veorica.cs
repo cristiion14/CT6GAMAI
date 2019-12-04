@@ -62,7 +62,7 @@ public class Veorica : MonoBehaviour {
         simplifyPath = GetComponent<SimplifiedPathFinder>();
         GM = GameObject.Find("GM");
         rb = GetComponentInChildren<Rigidbody>();
-        Instantiate(coin, new Vector3(12.07f, 1, 1.49f), transform.rotation);
+        Instantiate(coin, new Vector3(12.07f, 0.5f, 1.49f), transform.rotation);
 
         //coin = GameObject.Find(TagManager.Coin);
     }
@@ -333,7 +333,7 @@ public class Veorica : MonoBehaviour {
 
             //     coin.transform.position = new Vector3(0, 1, 0);
 
-           coin = Instantiate(coin, new Vector3(Random.Range(-12, 12), 1, Random.Range(-5, 5)), transform.rotation);
+           coin = Instantiate(coin, new Vector3(Random.Range(-5, 5), 1, Random.Range(-5, 5)), transform.rotation);
             coin.tag = "Coin";
             //    randNrX = Random.Range(-12, 12);
             //  randNrZ = Random.Range(-10, 7);
