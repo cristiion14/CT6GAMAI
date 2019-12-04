@@ -261,7 +261,7 @@ public class Veorica : MonoBehaviour {
     {
         if(timeBtwShoots<=0)
         {
-            Instantiate(bullet, bulletPoint.transform.position, Quaternion.identity);
+            Instantiate(bullet, bulletPoint.transform.position, bullet.transform.rotation);
             timeBtwShoots = startTimeBtwShoots;
            
         }

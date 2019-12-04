@@ -11,7 +11,7 @@ public class Chased : State<Veorica>
         Debug.Log("Veorica is being chased");
        
         agent.Shoot();
-        agent.travelSpeed += 0.1f;
+        agent.travelSpeed += 0.01f;
         //   agent.GenerateRandomNr();
         //     agent.SetDestination(agent.transform, agent.iohannis.transform.position+new Vector3(-10,0,5));
 
