@@ -15,10 +15,19 @@ public class Stealing : State<Veorica>
         agent.FaceObj(agent.coin.transform.position);
 
         agent.SetDestination(agent.transform, agent.coin.transform.position);
-        if (agent.health < 90)
+
+        
+        if (agent.health < 90&&agent.spawnedHealth)
         {
-       //     agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+         //   agent.vFinalPath = new List<SimplifiedNode>();
+            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+            if (agent.pickedHealth)
+            {
+             //   agent.followPath2 = false;
+                //agent.followPath1 = true;
+            }
         }
+     //   agent.followPath1 = true;
         if (agent.iohannis.GetComponent<Iohannis>().targetFound())
             agent.ChangeState(new Chased());
     }

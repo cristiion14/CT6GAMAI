@@ -9,6 +9,7 @@ TagManager:
   - Veorica
   - Coin
   - CoinPoint
+  - HealthPack
   layers:
   - Default
   - TransparentFX

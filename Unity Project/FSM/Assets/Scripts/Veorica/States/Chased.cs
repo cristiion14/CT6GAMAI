@@ -44,12 +44,12 @@ public class Chased : State<Veorica>
                 agent.nr = 0;
             }
         }
-        if(agent.health<90)
+        if(agent.health<90&&agent.spawnedHealth)
         {
-        //    agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
         }
        
-        if (Vector3.Distance(agent.transform.position, agent.iohannis.transform.position)>10)
+        if (Vector3.Distance(agent.transform.position, agent.iohannis.transform.position)>agent.lookRadius)
         {
             Debug.LogError("Changing state to stealing");
             agent.ChangeState(new Stealing());

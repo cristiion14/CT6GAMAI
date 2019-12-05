@@ -8,6 +8,6 @@ public class TagManager : MonoBehaviour
     public const string Iohannis = "Iohannis";
     public const string Veorica = "Veorica";
     public const string Coin = "Coin";
-    
+    public const string HealthPack = "HealthPack";
 
 }
