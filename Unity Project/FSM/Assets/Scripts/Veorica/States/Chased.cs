@@ -10,7 +10,7 @@ public class Chased : State<Veorica>
         Debug.Log("Veorica is being chased");
        
         agent.Shoot();
-        agent.travelSpeed += 0.01f;
+        agent.travelSpeed += 0.1f;
         
         float distance = Vector3.Distance(agent.transform.position, agent.topR);
       
