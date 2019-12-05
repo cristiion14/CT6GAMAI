@@ -194,7 +194,7 @@ public class Veorica : MonoBehaviour {
         {
             randNrX = Random.Range(0, 23);
            money += 1;
-    //       Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
+           Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
       //     Debug.LogError("The other object is: " + other.gameObject);
            Destroy(other.gameObject);
             hasTouched = true;
