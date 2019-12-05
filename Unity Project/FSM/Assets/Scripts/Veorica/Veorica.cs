@@ -15,17 +15,19 @@ public class Veorica : MonoBehaviour {
     public  Vector3[] direction;
     public Vector3 evadeDirection;
     Rigidbody rb;
+
     public float money = 0;
     public int coinNr = 0;
     public GameObject coin;
-
+    bool validPos = false;
+    
     public int nr = 0; //for chased state
 
     StateManager<Veorica> fsm = new StateManager<Veorica>();
 
     public float distance;
     public NavMeshAgent agent;
-    public bool foundPlayer, isFound;
+    public bool hasTouched, isFound;
     public float lookRadius = 25f;
     Transform target;
 
@@ -53,7 +55,7 @@ public class Veorica : MonoBehaviour {
         iohannis = GameObject.Find(TagManager.Iohannis);
         GM = GameObject.Find("GM");
         rb = GetComponentInChildren<Rigidbody>();
-        Instantiate(coin, new Vector3(-11.8f, 1f, 1.77f), transform.rotation);
+        Instantiate(coin, new Vector3(-11.8f, 0.4f, 1.77f), transform.rotation);
 
         //coin = GameObject.Find(TagManager.Coin);
     }
@@ -135,9 +137,16 @@ public class Veorica : MonoBehaviour {
     {
         fsm.Execute();
         GetDistanceFromCoins();
+        CheckPosAndInstantiate();
     }
 
-   
+   public void CheckPosAndInstantiate()
+    {
+        if (hasTouched)
+        {
+            
+        }
+    }
     //display the look radius
     void OnDrawGizmosSelected()
     {
@@ -185,14 +194,41 @@ public class Veorica : MonoBehaviour {
     //       Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
       //     Debug.LogError("The other object is: " + other.gameObject);
            Destroy(other.gameObject);
-
+            hasTouched = true;
             //     coin.transform.position = new Vector3(0, 1, 0);
 
-           coin = Instantiate(coin, new Vector3(Random.Range(-5, 5), 1, Random.Range(-5, 5)), transform.rotation);
-            coin.tag = "Coin";
+            Vector3 position = Vector3.zero;
+
+            if (!validPos)
+            {
+                //pick a random pos
+                position = new Vector3(Random.Range(-14, 14), 1f, Random.Range(-14f, 14f));
+
+                //this pos is valid until proven invalid
+                validPos = true;
+
+                //Collect all colliders within our Obstacle Check Radius
+                Collider[] colliders = Physics.OverlapSphere(coin.transform.position, 3f);
+
+                // go through each col
+                foreach (Collider col in colliders)
+                {
+                    if (col.tag == "Wall")
+                    {
+                        validPos = false;       //if it's has a wall tag, then is not a valid pos
+                    }
+                }
+
+            }
+            if (validPos)
+            {
+
+                coin = Instantiate(coin, position, transform.rotation);
+                coin.tag = "Coin";
+            }
             //    randNrX = Random.Range(-12, 12);
             //  randNrZ = Random.Range(-10, 7);
-        //    Debug.LogAssertion("HOW MUCH MONEY YOU GOT?? " + money);
+            //    Debug.LogAssertion("HOW MUCH MONEY YOU GOT?? " + money);
 
         }
        
