@@ -120,49 +120,11 @@ public class Veorica : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed*Time.fixedDeltaTime);
         //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
 
-        if (!followPath1)
-        {
-      //         targetIndex = 0;
-
-        }
+     
         //  rb.velocity = currentWaypoint;
 
     }
-    public void SetDestination2(Transform transform, Vector3 target)
-    {
-        //targetIndex = 0;
 
-        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target);
-        List<Vector3> wayPoints = new List<Vector3>();
-        for (int i = 0; i < vFinalPath.Count; i++)
-        {
-            wayPoints.Add(vFinalPath[i].vPosition);
-        }
-        // wayPoints.Reverse();
-        direction = wayPoints.ToArray();
-
-        Vector3 currentWaypoint = direction[0];
-
-        if (transform.position == currentWaypoint)
-            targetIndex++;
-
-        if (targetIndex >= direction.Length)
-        {
-            //      Debug.Log("Should reset targetIndex");
-            targetIndex = 0;
-            //       Debug.Log("Target index is: " + targetIndex);
-            //   direction = new Vector3[0];
-            //    break;
-        }
-
-        currentWaypoint = direction[targetIndex];
-        //   Debug.Log("current waypoint is: " + currentWaypoint);
-        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed * Time.fixedDeltaTime);
-        //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
-
-        if (!followPath2)
-            targetIndex = 0;
-    }
 
     public void FaceObj(Vector3 obj)
     {
@@ -185,8 +147,9 @@ public class Veorica : MonoBehaviour {
         fsm.Execute();
         GetDistanceFromCoins();
         CheckPosAndInstantiate();
-        
-     //   StartCoroutine(DestroyHealthPack());
+        Debug.Log("A luat viata? " + pickedHealth);
+        Debug.Log("Veorica's health is: " + health);
+        //   StartCoroutine(DestroyHealthPack());
     }   
 
     private IEnumerator SpawnHealthPack()
@@ -273,14 +236,6 @@ public class Veorica : MonoBehaviour {
 
         }
        
-        if(other.tag==TagManager.HealthPack)
-        {
-            //spawn some effects
-            Destroy(healthPack);
-      //      spawnedHealth = false;
-            health += 20f;
-            pickedHealth = true;
-        }
     }
    void OnTriggerExit()
     {
