@@ -18,7 +18,8 @@ public class Veorica : MonoBehaviour {
 
     public float money = 0;
     public int coinNr = 0;
-    public GameObject coin;
+   public GameObject coin;
+    public GameObject coinPrefab;
     bool validPos = false;
     
     public int nr = 0; //for chased state
@@ -30,7 +31,7 @@ public class Veorica : MonoBehaviour {
     public bool hasTouched, isFound;
     public float lookRadius = 25f;
     Transform target;
-
+    GameObject[] coins;
 
     SimplifiedPathFinder simplifyPath;
     SimplifiedGrid sGrid;
@@ -41,7 +42,7 @@ public class Veorica : MonoBehaviour {
     public GameObject bulletPoint;
     public GameObject iohannis;
     GameObject GM;
-    public float randNrX, randNrY, randNrZ;
+    public int randNrX, randNrY, randNrZ;
 
     public int targetIndex;
 
@@ -51,11 +52,14 @@ public class Veorica : MonoBehaviour {
     public float startTimeBtwShoots;
     void Awake()
     {
+        randNrX = Random.Range(0, 23);
+
         sGrid = GetComponent<SimplifiedGrid>();
         iohannis = GameObject.Find(TagManager.Iohannis);
         GM = GameObject.Find("GM");
         rb = GetComponentInChildren<Rigidbody>();
-        Instantiate(coin, new Vector3(-11.8f, 0.4f, 1.77f), transform.rotation);
+        coins = GameObject.FindGameObjectsWithTag("CoinPoint");
+        coin =  Instantiate(coinPrefab, coins[randNrX].transform.position, transform.rotation);
 
         //coin = GameObject.Find(TagManager.Coin);
     }
@@ -63,8 +67,6 @@ public class Veorica : MonoBehaviour {
     {
         fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
-        randNrX = Random.Range(-11f, 15f);
-        randNrZ = Random.Range(-14.76f, 14.76f);
         evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
        
         timeBtwShoots = startTimeBtwShoots;
@@ -127,8 +129,8 @@ public class Veorica : MonoBehaviour {
 
     public void GenerateRandomNr()
     {
-        randNrX = Random.Range(-11f, 15f);
-        randNrZ = Random.Range(-14.76f, 14.76f);
+     //   randNrX = Random.Range(-11f, 15f);
+    //    randNrZ = Random.Range(-14.76f, 14.76f);
         evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
 
     }
@@ -190,42 +192,14 @@ public class Veorica : MonoBehaviour {
     {
         if(other.tag =="Coin")
         {
+            randNrX = Random.Range(0, 23);
            money += 1;
     //       Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
       //     Debug.LogError("The other object is: " + other.gameObject);
            Destroy(other.gameObject);
             hasTouched = true;
-            //     coin.transform.position = new Vector3(0, 1, 0);
+            coin = Instantiate(coinPrefab, coins[randNrX].transform.position, transform.rotation);
 
-            Vector3 position = Vector3.zero;
-
-            if (!validPos)
-            {
-                //pick a random pos
-                position = new Vector3(Random.Range(-14, 14), 1f, Random.Range(-14f, 14f));
-
-                //this pos is valid until proven invalid
-                validPos = true;
-
-                //Collect all colliders within our Obstacle Check Radius
-                Collider[] colliders = Physics.OverlapSphere(coin.transform.position, 3f);
-
-                // go through each col
-                foreach (Collider col in colliders)
-                {
-                    if (col.tag == "Wall")
-                    {
-                        validPos = false;       //if it's has a wall tag, then is not a valid pos
-                    }
-                }
-
-            }
-            if (validPos)
-            {
-
-                coin = Instantiate(coin, position, transform.rotation);
-                coin.tag = "Coin";
-            }
             //    randNrX = Random.Range(-12, 12);
             //  randNrZ = Random.Range(-10, 7);
             //    Debug.LogAssertion("HOW MUCH MONEY YOU GOT?? " + money);
