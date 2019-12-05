@@ -11,7 +11,7 @@ public class HealthPack : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.name ==veorica.GetComponent<Veorica>().name)
+        if(other.name ==veorica.GetComponent<Veorica>().name&&veorica.GetComponent<Veorica>().health<100)
         {
             veorica.GetComponent<Veorica>().health += 20;
             veorica.GetComponent<Veorica>().pickedHealth = true;
