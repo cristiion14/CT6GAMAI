@@ -843,6 +843,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4639880671330786198, guid: 1c9ab9b4fe3d4f44a819a837c5ac0cbf,
         type: 3}
+    - target: {fileID: 114212737905342988, guid: 63f937d9b265bea4891f813e5e53a00b,
+        type: 3}
+      propertyPath: healthPackPrefab
+      value: 
+      objectReference: {fileID: 3588868368691026375, guid: a99a4a06ec5f1794696ccbd2b923cc2d,
+        type: 3}
     - target: {fileID: 136439778776919772, guid: 63f937d9b265bea4891f813e5e53a00b,
         type: 3}
       propertyPath: m_Enabled

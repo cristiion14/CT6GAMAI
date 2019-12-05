@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Timers;
 public class Veorica : MonoBehaviour {
 
     public Vector3 topR = new Vector3(14.33f, 1.02f, 13.7f);
@@ -9,7 +10,8 @@ public class Veorica : MonoBehaviour {
     public Vector3 bottomR = new Vector3(-13.48f, 1.02f, -14.25f);
     public Vector3 bottomL = new Vector3(13.48f, 1.02f, -14.25f);
     
-    public GameObject healthPack;
+    public GameObject healthPackPrefab;
+    GameObject healthPack;
     public bool lookAtPlayer;
     public float travelSpeed = 0.00001f;
     public  Vector3[] direction;
@@ -50,6 +52,8 @@ public class Veorica : MonoBehaviour {
 
     float timeBtwShoots;
     public float startTimeBtwShoots;
+
+    public bool spawnedHealth = false;
     void Awake()
     {
         randNrX = Random.Range(0, 23);
@@ -60,7 +64,7 @@ public class Veorica : MonoBehaviour {
         rb = GetComponentInChildren<Rigidbody>();
         coins = GameObject.FindGameObjectsWithTag("CoinPoint");
         coin =  Instantiate(coinPrefab, coins[randNrX].transform.position, transform.rotation);
-
+    
         //coin = GameObject.Find(TagManager.Coin);
     }
     void Start()
@@ -73,6 +77,8 @@ public class Veorica : MonoBehaviour {
         //    direction = pathFinding.direction;
  //       rand = GetComponent<Random>();
         target = AgentManager.instance.player.transform;
+        StartCoroutine(SpawnHealthPack());
+//        StartCoroutine(DestroyHealthPack());
     }
     public void targetFound()
     {
@@ -140,9 +146,30 @@ public class Veorica : MonoBehaviour {
         fsm.Execute();
         GetDistanceFromCoins();
         CheckPosAndInstantiate();
-    }
+     //   StartCoroutine(DestroyHealthPack());
+    }   
 
-   public void CheckPosAndInstantiate()
+    private IEnumerator SpawnHealthPack()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(5);
+            if (!spawnedHealth)
+            {
+                randNrY = Random.Range(0, 23);
+                healthPack = Instantiate(healthPackPrefab, coins[randNrY].transform.position, transform.rotation);
+                spawnedHealth = true;
+            }
+            
+                yield return new WaitForSeconds(3);
+                
+                Destroy(healthPack);
+                spawnedHealth = false;
+        }
+ 
+    }
+   
+    public void CheckPosAndInstantiate()
     {
         if (hasTouched)
         {
