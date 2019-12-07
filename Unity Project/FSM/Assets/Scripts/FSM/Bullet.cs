@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Bullet : MonoBehaviour
 {
 
     public float speed = 1000f;
     public float damage = 10f;
-    
     public Rigidbody rb;
 
 
@@ -49,6 +48,7 @@ public class Bullet : MonoBehaviour
             //lower health
             //pHealth -= 1;
             gb.GetComponent<Iohannis>().health -= damage;
+            
             Debug.LogError("Iohanis has: " + gb.GetComponent<Iohannis>().health + " remaining health");
             if (gb.GetComponent<Iohannis>().health <= 0)
             {

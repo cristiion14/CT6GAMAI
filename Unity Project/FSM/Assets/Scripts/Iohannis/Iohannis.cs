@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 public class Iohannis : MonoBehaviour {
     
     public NavMeshAgent agent;
@@ -10,7 +11,7 @@ public class Iohannis : MonoBehaviour {
 
     [SerializeField]
     float travelSpeed = 7f;
-
+    public Image healthBar;
     public float health = 100f;
 
     public List<SimplifiedNode> iFinalPath;//The completed path that the red line will be drawn along
@@ -51,6 +52,8 @@ public class Iohannis : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
                fsm.Execute();
+        healthBar.fillAmount = health / 100;
+
         //  Shoot();
         // FaceTarget();
      //   Debug.LogError("The final path is: " + iFinalPath);

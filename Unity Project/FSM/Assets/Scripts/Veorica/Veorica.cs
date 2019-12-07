@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Timers;
+using UnityEngine.UI;
 public class Veorica : MonoBehaviour {
 
     public Vector3 topR = new Vector3(14.33f, 1.02f, 13.7f);
@@ -17,7 +18,7 @@ public class Veorica : MonoBehaviour {
     public  Vector3[] direction;
     public Vector3 evadeDirection;
     Rigidbody rb;
-
+    public Image healthBar;
     public float money = 0;
     public int coinNr = 0;
    public GameObject coin;
@@ -147,8 +148,7 @@ public class Veorica : MonoBehaviour {
         fsm.Execute();
         GetDistanceFromCoins();
         CheckPosAndInstantiate();
-        Debug.Log("A luat viata? " + pickedHealth);
-        Debug.Log("Veorica's health is: " + health);
+        healthBar.fillAmount = health / 100;
         //   StartCoroutine(DestroyHealthPack());
     }   
 

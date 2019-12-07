@@ -109,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1000
   damage: 10
+  healthBar: {fileID: 0}
   rb: {fileID: 54835237375698276}
 --- !u!54 &54835237375698276
 Rigidbody:
