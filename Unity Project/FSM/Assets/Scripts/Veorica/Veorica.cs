@@ -18,6 +18,8 @@ public class Veorica : MonoBehaviour {
     public  Vector3[] direction;
     public Vector3 evadeDirection;
     Rigidbody rb;
+
+    public Text moneyAmount;
     public Image healthBar;
     public float money = 0;
     public int coinNr = 0;
@@ -58,7 +60,7 @@ public class Veorica : MonoBehaviour {
     void Awake()
     {
         randNrX = Random.Range(0, 23);
-
+        moneyAmount.text = money.ToString();
         sGrid = GetComponent<SimplifiedGrid>();
         iohannis = GameObject.Find(TagManager.Iohannis);
         GM = GameObject.Find("GM");
@@ -223,7 +225,8 @@ public class Veorica : MonoBehaviour {
         if(other.tag =="Coin")
         {
             randNrX = Random.Range(0, 23);
-           money += 1;
+            money += 1;
+            moneyAmount.text = money.ToString();
         //   Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
       //     Debug.LogError("The other object is: " + other.gameObject);
            Destroy(other.gameObject);
