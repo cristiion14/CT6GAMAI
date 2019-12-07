@@ -7,7 +7,7 @@ public class Patrol : State<Iohannis>
     public override void Execute(Iohannis agent)
     {
         
-        Debug.Log("Patroling");
+    //    Debug.Log("Patroling");
 
         float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
         //  randomagent.nr = Random.Range(0, 3);
