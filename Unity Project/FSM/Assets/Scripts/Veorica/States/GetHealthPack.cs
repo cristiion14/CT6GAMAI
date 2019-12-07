@@ -14,7 +14,7 @@ public class GetHealthPack : State<Veorica>
         }
         if(agent.pickedHealth && !agent.iohannis.GetComponent<Iohannis>().targetFound())
         {
-            Debug.Log("should change state");
+        //    Debug.Log("should change state");
             agent.ChangeState(new Stealing());
             agent.pickedHealth = false;
         }
