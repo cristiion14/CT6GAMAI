@@ -19,6 +19,9 @@ public class Veorica : MonoBehaviour {
     public Vector3 evadeDirection;
     Rigidbody rb;
 
+   
+
+
     public Text moneyAmount;
     public Image healthBar;
     public float money = 0;
@@ -46,7 +49,7 @@ public class Veorica : MonoBehaviour {
     public GameObject bullet;
     public GameObject bulletPoint;
     public GameObject iohannis;
-    GameObject GM;
+   public GameObject GM;
     public int randNrX, randNrY, randNrZ;
 
     public int targetIndex;
@@ -59,6 +62,7 @@ public class Veorica : MonoBehaviour {
     public bool spawnedHealth = false, followPath1 = true, followPath2 = true, pickedHealth= false;
     void Awake()
     {
+        
         randNrX = Random.Range(0, 23);
         moneyAmount.text = money.ToString();
         sGrid = GetComponent<SimplifiedGrid>();
@@ -167,9 +171,11 @@ public class Veorica : MonoBehaviour {
             }
             
                 yield return new WaitForSeconds(3);
-                
+            if (!pickedHealth)
+            {
                 Destroy(healthPack);
                 spawnedHealth = false;
+            }
         }
  
     }

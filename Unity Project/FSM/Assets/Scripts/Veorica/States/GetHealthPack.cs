@@ -7,7 +7,7 @@ public class GetHealthPack : State<Veorica>
 {
     public override void Execute(Veorica agent)
     {
-        if (agent.healthPackPrefab.activeSelf)
+        if (agent.healthPackPrefab.activeSelf && !agent.pickedHealth)
         {
             agent.SetDestination(agent.transform, agent.healthPack.transform.position);
         }
