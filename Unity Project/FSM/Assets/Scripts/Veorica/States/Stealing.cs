@@ -20,6 +20,7 @@ public class Stealing : State<Veorica>
         if (agent.health < 90&&agent.spawnedHealth)
         {
             agent.ChangeState(new GetHealthPack());
+            agent.spawnedHealth = false;
         }
      //   agent.followPath1 = true;
         if (agent.iohannis.GetComponent<Iohannis>().targetFound())

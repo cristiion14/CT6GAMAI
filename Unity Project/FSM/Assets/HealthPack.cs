@@ -16,10 +16,10 @@ public class HealthPack : MonoBehaviour
             
             veorica.GetComponent<Veorica>().health += 20;
             veorica.GetComponent<Veorica>().pickedHealth = true;
-            veorica.GetComponent<Veorica>().spawnedHealth = false;
-          
             Destroy(veorica.GetComponent<Veorica>().healthPack);
-            
+            veorica.GetComponent<Veorica>().spawnedHealth = false;
+
+
         }
     }
 }

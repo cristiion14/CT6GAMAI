@@ -10,6 +10,7 @@ public class GetHealthPack : State<Veorica>
         if (agent.healthPackPrefab.activeSelf && !agent.pickedHealth)
         {
             agent.SetDestination(agent.transform, agent.healthPack.transform.position);
+            
         }
         if(agent.pickedHealth && !agent.iohannis.GetComponent<Iohannis>().targetFound())
         {
@@ -20,6 +21,7 @@ public class GetHealthPack : State<Veorica>
         if(agent.pickedHealth && agent.iohannis.GetComponent<Iohannis>().targetFound())
         {
             agent.ChangeState(new Chased());
+            agent.pickedHealth = false;
         }
     }
 }

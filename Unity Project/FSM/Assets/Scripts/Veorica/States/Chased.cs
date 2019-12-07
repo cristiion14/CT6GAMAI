@@ -10,7 +10,7 @@ public class Chased : State<Veorica>
       //  Debug.Log("Veorica is being chased");
        
         agent.Shoot();
-        agent.travelSpeed += 0.1f;
+        agent.travelSpeed += 0.05f;
         
         float distance = Vector3.Distance(agent.transform.position, agent.topR);
       
@@ -47,6 +47,7 @@ public class Chased : State<Veorica>
         if(agent.health<90&&agent.spawnedHealth)
         {
             agent.ChangeState(new GetHealthPack());
+            agent.spawnedHealth = false;
 
         }
 

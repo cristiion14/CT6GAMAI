@@ -171,7 +171,7 @@ public class Veorica : MonoBehaviour {
             }
             
                 yield return new WaitForSeconds(3);
-            if (!pickedHealth)
+            if (spawnedHealth&&!pickedHealth)
             {
                 Destroy(healthPack);
                 spawnedHealth = false;
