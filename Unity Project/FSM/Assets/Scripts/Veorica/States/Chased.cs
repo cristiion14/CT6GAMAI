@@ -7,7 +7,7 @@ public class Chased : State<Veorica>
 {
     public override void Execute(Veorica agent)
     {
-        Debug.Log("Veorica is being chased");
+      //  Debug.Log("Veorica is being chased");
        
         agent.Shoot();
         agent.travelSpeed += 0.1f;
@@ -52,7 +52,7 @@ public class Chased : State<Veorica>
 
         if (Vector3.Distance(agent.transform.position, agent.iohannis.transform.position)>10)
         {
-            Debug.LogError("Changing state to stealing");
+      //      Debug.LogError("Changing state to stealing");
             agent.ChangeState(new Stealing());
         }
     }

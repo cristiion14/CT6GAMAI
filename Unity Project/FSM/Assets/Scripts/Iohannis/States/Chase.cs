@@ -6,7 +6,7 @@ public class Chase :State<Iohannis>
 {
     public override void Execute(Iohannis agent)
     {
-        Debug.Log("Chasing");
+      //  Debug.Log("Chasing");
 
         agent.SetDestination(agent.transform, new Vector3(agent.target.position.x, 0, agent.target.position.z + 3));
         if (!agent.targetFound())

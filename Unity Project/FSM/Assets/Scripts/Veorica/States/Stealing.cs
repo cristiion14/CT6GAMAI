@@ -10,7 +10,7 @@ public class Stealing : State<Veorica>
     {
         agent.travelSpeed = 10f;
 
-        Debug.Log("Stealing money :) ");
+     //   Debug.Log("Stealing money :) ");
 
         agent.FaceObj(agent.coin.transform.position);
 
