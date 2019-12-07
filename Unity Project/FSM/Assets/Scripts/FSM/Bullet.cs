@@ -53,6 +53,7 @@ public class Bullet : MonoBehaviour
             if (gb.GetComponent<Iohannis>().health <= 0)
             {
                 Debug.Log("Mort");
+                Destroy(gb);
             }
             Destroy(gameObject);
         }
