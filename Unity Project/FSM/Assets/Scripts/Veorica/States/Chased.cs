@@ -56,5 +56,8 @@ public class Chased : State<Veorica>
       //      Debug.LogError("Changing state to stealing");
             agent.ChangeState(new Stealing());
         }
+
+        if (agent.hasDied)
+            agent.ChangeState(new Death());
     }
 }

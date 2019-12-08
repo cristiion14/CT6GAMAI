@@ -23,5 +23,8 @@ public class GetHealthPack : State<Veorica>
             agent.ChangeState(new Chased());
             agent.pickedHealth = false;
         }
+
+        if (agent.hasDied)
+            agent.ChangeState(new Death());
     }
 }

@@ -16,6 +16,8 @@ public class Chase :State<Iohannis>
         }
         agent.FaceTarget();
         agent.Shoot();
-      
+
+        if (agent.hasDied)
+            agent.ChangeState(new iDeath());
     }
 }

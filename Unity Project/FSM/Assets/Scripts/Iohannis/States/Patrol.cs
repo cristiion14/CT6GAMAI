@@ -71,5 +71,8 @@ public class Patrol : State<Iohannis>
             agent.hasBeenFoundAtNr = agent.nr;
             agent.ChangeState(new Chase());
         }
+
+        if (agent.hasDied)
+            agent.ChangeState(new iDeath());
     }
 }

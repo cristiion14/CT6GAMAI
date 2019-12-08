@@ -10,7 +10,7 @@ public class Iohannis : MonoBehaviour {
     StateManager<Iohannis> fsm = new StateManager<Iohannis>();
 
     [SerializeField]
-    float travelSpeed = 7f;
+   public float travelSpeed = 7f;
     public Image healthBar;
     public float health = 100f;
 
@@ -19,6 +19,7 @@ public class Iohannis : MonoBehaviour {
     public int targetIndex;
 
     float distance;         //distance from 2 specific points
+    public bool hasDied = false;
 
     public Transform target;
     public Transform[] patrolPoints;

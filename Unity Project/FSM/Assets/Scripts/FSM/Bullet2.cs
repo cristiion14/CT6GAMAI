@@ -58,9 +58,12 @@ public class Bullet2 : MonoBehaviour
             if (gb.GetComponent<Veorica>().health <= 0)
             {
                 gb.GetComponent<Veorica>().health = 0;
+                gb.GetComponent<Veorica>().hasDied = true;
+
+
                 GameObject dieEffect = (GameObject)Instantiate(GM.GetComponent<GameManager>().deathEffect, col.collider.ClosestPoint(gb.transform.position), transform.rotation);
                 Destroy(dieEffect, 4);
-                Destroy(gb,5);
+                Destroy(gb,2);
             }
             Destroy(gameObject);
         }

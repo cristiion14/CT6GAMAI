@@ -25,5 +25,8 @@ public class Stealing : State<Veorica>
      //   agent.followPath1 = true;
         if (agent.iohannis.GetComponent<Iohannis>().targetFound())
             agent.ChangeState(new Chased());
+
+        if (agent.hasDied)
+            agent.ChangeState(new Death());
     }
 }

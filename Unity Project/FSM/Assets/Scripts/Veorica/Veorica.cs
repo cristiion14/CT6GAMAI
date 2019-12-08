@@ -19,7 +19,7 @@ public class Veorica : MonoBehaviour {
     public Vector3 evadeDirection;
     Rigidbody rb;
 
-   
+    public bool hasDied = false;
 
 
     public Text moneyAmount;

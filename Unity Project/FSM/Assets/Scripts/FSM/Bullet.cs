@@ -54,9 +54,11 @@ public class Bullet : MonoBehaviour
             if (gb.GetComponent<Iohannis>().health <= 0)
             {
                 gb.GetComponent<Iohannis>().health = 0;
+                gb.GetComponent<Iohannis>().hasDied = true;
+                //spawn particle effect
                 GameObject dieEffect = (GameObject)Instantiate(GM.GetComponent<GameManager>().deathEffect, col.collider.ClosestPoint(gb.transform.position), transform.rotation);
                 Destroy(dieEffect, 4);
-                Destroy(gb, 5);
+                Destroy(gb, 2);
             }
             Destroy(gameObject);
         }
