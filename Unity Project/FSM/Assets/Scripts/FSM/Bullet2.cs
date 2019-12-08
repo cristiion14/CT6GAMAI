@@ -17,7 +17,7 @@ public class Bullet2 : MonoBehaviour
     Transform player;
     // public PlayerInfo playerInf;
     float pHealth;
-    GameObject gb;
+    GameObject gb, GM;
     
     //Collider bulletCol, playerCol;
 
@@ -30,7 +30,7 @@ public class Bullet2 : MonoBehaviour
 
         rb.velocity = target * Time.fixedDeltaTime * speed;
         gb = GameObject.Find(TagManager.Veorica);
-        
+        GM = GameObject.Find("GM");
     }
 
     // Update is called once per frame
@@ -52,12 +52,15 @@ public class Bullet2 : MonoBehaviour
             //lower health
             //pHealth -= 1;
             gb.GetComponent<Veorica>().health -= damage;
-           
-            Debug.LogError("Veorica has: "+ gb.GetComponent<Veorica>().health + " remaining health");
+            GameObject hitEffect = (GameObject)Instantiate(GM.GetComponent<GameManager>().explosion, col.collider.ClosestPoint(gb.transform.position), transform.rotation);
+            Destroy(hitEffect, 2);
+
             if (gb.GetComponent<Veorica>().health <= 0)
             {
                 gb.GetComponent<Veorica>().health = 0;
-                Destroy(gb);
+                GameObject dieEffect = (GameObject)Instantiate(GM.GetComponent<GameManager>().deathEffect, col.collider.ClosestPoint(gb.transform.position), transform.rotation);
+                Destroy(dieEffect, 4);
+                Destroy(gb,5);
             }
             Destroy(gameObject);
         }

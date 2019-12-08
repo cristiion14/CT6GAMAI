@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public Text clockText;
     GameObject Veorica, Iohannis;
+    public GameObject explosion;
+    public GameObject deathEffect;
     // Start is called before the first frame update
     void Start()
     {

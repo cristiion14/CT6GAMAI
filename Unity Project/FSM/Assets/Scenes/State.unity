@@ -856,6 +856,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clockText: {fileID: 2050453414}
+  explosion: {fileID: 1845955007268882, guid: 67a684e320da6e7439421a07e3fa265c, type: 3}
+  deathEffect: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d,
+    type: 3}
 --- !u!114 &758907052
 MonoBehaviour:
   m_ObjectHideFlags: 0

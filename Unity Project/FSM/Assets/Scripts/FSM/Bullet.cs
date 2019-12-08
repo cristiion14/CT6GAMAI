@@ -9,12 +9,13 @@ public class Bullet : MonoBehaviour
     public float damage = 10f;
     public Rigidbody rb;
 
-
     private Vector3 target;
     Transform player;
   // public PlayerInfo playerInf;
     float pHealth;
-    GameObject gb;
+    GameObject gb, GM;
+
+
     //Collider bulletCol, playerCol;
 
     // Use this for initialization
@@ -23,10 +24,9 @@ public class Bullet : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag(TagManager.Iohannis).transform;
         target = (player.transform.position - gameObject.transform.position).normalized;
-
         rb.velocity = target *Time.fixedDeltaTime* speed;        
         gb = GameObject.Find(TagManager.Iohannis);
-     
+        GM = GameObject.Find("GM");
     }
 
     // Update is called once per frame
@@ -48,12 +48,15 @@ public class Bullet : MonoBehaviour
             //lower health
             //pHealth -= 1;
             gb.GetComponent<Iohannis>().health -= damage;
-            
-            Debug.LogError("Iohanis has: " + gb.GetComponent<Iohannis>().health + " remaining health");
+            GameObject hitEffect = (GameObject)Instantiate(GM.GetComponent<GameManager>().explosion, col.collider.ClosestPoint(gb.transform.position), transform.rotation);
+            Destroy(hitEffect, 2);
+
             if (gb.GetComponent<Iohannis>().health <= 0)
             {
-                Debug.Log("Mort");
-                Destroy(gb);
+                gb.GetComponent<Iohannis>().health = 0;
+                GameObject dieEffect = (GameObject)Instantiate(GM.GetComponent<GameManager>().deathEffect, col.collider.ClosestPoint(gb.transform.position), transform.rotation);
+                Destroy(dieEffect, 4);
+                Destroy(gb, 5);
             }
             Destroy(gameObject);
         }
