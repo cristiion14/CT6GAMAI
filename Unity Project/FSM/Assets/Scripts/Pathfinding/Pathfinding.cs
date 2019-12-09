@@ -7,7 +7,7 @@ public class Pathfinding : MonoBehaviour {
 
     PathRequestManager requestManager;
     Grid grid;
-    
+    public Transform startPos, targetPos;
     void Awake()
     {
         requestManager = GetComponent<PathRequestManager>();
@@ -15,7 +15,10 @@ public class Pathfinding : MonoBehaviour {
       
     }
 
-
+    void Update()
+    {
+        StartFindPath(startPos.transform.position, targetPos.transform.position);
+    }
     public void StartFindPath(Vector3 startPos, Vector3 targetPos)
     {
         StartCoroutine(FindPath(startPos, targetPos));
@@ -45,6 +48,7 @@ public class Pathfinding : MonoBehaviour {
                 if (currentNode == targetNode)
                 {
                     pathSuccess = true;
+                    GetFinalPath(startNode, targetNode);
                     break;
                 }
 
@@ -82,7 +86,27 @@ public class Pathfinding : MonoBehaviour {
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
 
     }
+    void GetFinalPath(Node a_StartingNode, Node a_EndNode)
+    {
+        List<Node> FinalPath = new List<Node>();//List to hold the path sequentially 
+        Node CurrentNode = a_EndNode;//Node to store the current node being checked
 
+        while (CurrentNode != a_StartingNode)//While loop to work through each node going through the parents to the beginning of the path
+        {
+            FinalPath.Add(CurrentNode);//Add that node to the final path
+            CurrentNode = CurrentNode.parent;//Move onto its parent node
+        }
+
+        if (CurrentNode == a_StartingNode)
+            FinalPath.Add(CurrentNode);
+
+        FinalPath.Reverse();//Reverse the path to get the correct order
+
+      //  veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path
+
+        grid.FinalPath = FinalPath;
+        //   veorica.GetComponent<Veorica>().FinalPath[veorica.GetComponent<Veorica>().nrPath] = FinalPath;
+    }
     public Vector3[] FindPath1 (Vector3 startPos, Vector3 targetPos)
     {
 

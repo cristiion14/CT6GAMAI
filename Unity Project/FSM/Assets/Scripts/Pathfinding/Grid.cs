@@ -10,7 +10,7 @@ public class Grid : MonoBehaviour
     public Vector2 gridWorldSize;
     public float nodeRadius;
     Node[,] grid;
-
+    public List<Node> FinalPath;
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
@@ -91,6 +91,15 @@ public class Grid : MonoBehaviour
             foreach (Node n in grid)
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                if (FinalPath != null)//If the final path is not empty
+                {
+                    if (FinalPath.Contains(n))//If the current node is in the final path
+                    {
+                        Gizmos.color = Color.blue;//Set the color of that node
+                    }
+
+                }
+
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }

@@ -551,8 +551,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45bcfa51969c1704aad4a24516ff7d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPosition: {fileID: 1371393000}
-  TargetPosition: {fileID: 247912569}
+  startPos: {fileID: 1371393000}
+  targetPos: {fileID: 247912569}
 --- !u!114 &948572596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,13 +566,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f30fa39923cf747b4abc45f6d58107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPosition: {fileID: 1371393000}
-  WallMask:
+  displayGridGizmos: 1
+  unwalkableMask:
     serializedVersion: 2
     m_Bits: 1024
-  vGridWorldSize: {x: 30, y: 30}
-  fNodeRadius: 0.5
-  fDistanceBetweenNodes: 0
+  gridWorldSize: {x: 30, y: 30}
+  nodeRadius: 0.5
 --- !u!1 &1371392996
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +929,31 @@ PrefabInstance:
       propertyPath: StartPosition
       value: 
       objectReference: {fileID: 1371393000}
+    - target: {fileID: 7543546938456595854, guid: ef6a6de25f1a9f14a8c5adcddd63f9d8,
+        type: 3}
+      propertyPath: unwalkableMask.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543546938456595854, guid: ef6a6de25f1a9f14a8c5adcddd63f9d8,
+        type: 3}
+      propertyPath: gridWorldSize.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543546938456595854, guid: ef6a6de25f1a9f14a8c5adcddd63f9d8,
+        type: 3}
+      propertyPath: gridWorldSize.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543546938456595854, guid: ef6a6de25f1a9f14a8c5adcddd63f9d8,
+        type: 3}
+      propertyPath: nodeRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543546938456595854, guid: ef6a6de25f1a9f14a8c5adcddd63f9d8,
+        type: 3}
+      propertyPath: displayGridGizmos
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef6a6de25f1a9f14a8c5adcddd63f9d8, type: 3}
 --- !u!1001 &9203689046712546381
