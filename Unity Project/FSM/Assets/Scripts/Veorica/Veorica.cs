@@ -10,7 +10,8 @@ public class Veorica : MonoBehaviour {
     public Vector3 topL = new Vector3(-13.48f, 1.02f, 13.7f);
     public Vector3 bottomR = new Vector3(-13.48f, 1.02f, -14.25f);
     public Vector3 bottomL = new Vector3(13.48f, 1.02f, -14.25f);
-    
+
+    public float healthDesire;
     public GameObject healthPackPrefab;
     public  GameObject healthPack;
     public bool lookAtPlayer;
@@ -21,7 +22,8 @@ public class Veorica : MonoBehaviour {
 
     public bool hasDied = false;
 
-
+    public float GetHealthDesirability;
+            
     public Text moneyAmount;
     public Image healthBar;
     public float money = 0;
@@ -34,7 +36,7 @@ public class Veorica : MonoBehaviour {
 
     StateManager<Veorica> fsm = new StateManager<Veorica>();
 
-    public float distance;
+    public float distance;      //distance from coins;
     public NavMeshAgent agent;
     public bool hasTouched, isFound;
     public float lookRadius = 25f;
@@ -60,6 +62,27 @@ public class Veorica : MonoBehaviour {
     public float startTimeBtwShoots;
 
     public bool spawnedHealth = false, followPath1 = true, followPath2 = true, pickedHealth= false;
+
+    public void GetHealthDesireability()
+    {
+        float k = .1f;        //constant
+        float distanceFromHealth = Vector3.Distance(transform.position, healthPack.transform.position);     //distance from healthPack
+        float healthStatus;             // alive or not (1 or 0) 
+
+        if (!hasDied)
+            healthStatus = 1;
+        else
+            healthStatus = 0;
+        
+        if (distanceFromHealth > 20 || !spawnedHealth)
+            distanceFromHealth = 1;
+        else if (distanceFromHealth < 20)
+            distanceFromHealth = 0.01f;
+            
+        healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
+        healthDesire = Mathf.Clamp(healthDesire, 0, 1);
+
+    }
     void Awake()
     {
         
@@ -155,6 +178,8 @@ public class Veorica : MonoBehaviour {
         GetDistanceFromCoins();
         CheckPosAndInstantiate();
         healthBar.fillAmount = health / 100;
+        GetHealthDesireability();
+        Debug.Log("Desire for health: " + healthDesire);
         //   StartCoroutine(DestroyHealthPack());
     }   
 
@@ -170,7 +195,7 @@ public class Veorica : MonoBehaviour {
                 spawnedHealth = true;
             }
             
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(120);
             if (spawnedHealth&&!pickedHealth)
             {
                 Destroy(healthPack);

@@ -25,7 +25,7 @@ public class SimplifiedGrid : MonoBehaviour
         iGridSizeY = Mathf.RoundToInt(vGridWorldSize.y / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
         CreateGrid();//Draw the grid
     }
-
+   
     void CreateGrid()
     {
         NodeArray = new SimplifiedNode[iGridSizeX, iGridSizeY];//Declare the array of nodes.

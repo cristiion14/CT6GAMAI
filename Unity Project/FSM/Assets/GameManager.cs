@@ -23,10 +23,10 @@ public class GameManager : MonoBehaviour
         if (Veorica.GetComponent<Veorica>().health == 0 || Iohannis.GetComponent<Iohannis>().health == 0)
             Application.Quit();
 
-        if (Time.time > 120)
+        if (Time.time > 90)
             Application.Quit();
 
-        if (Veorica.GetComponent<Veorica>().money == 10)
+        if (Veorica.GetComponent<Veorica>().money == 20)
             Application.Quit();
     }
 }
