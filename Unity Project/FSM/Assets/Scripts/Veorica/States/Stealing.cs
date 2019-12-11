@@ -17,7 +17,7 @@ public class Stealing : State<Veorica>
         agent.SetDestination(agent.transform, agent.coin.transform.position);
 
         
-        if (agent.health < 90&&agent.spawnedHealth)
+        if (agent.healthDesire>= 0.5&&agent.spawnedHealth)
         {
             agent.ChangeState(new GetHealthPack());
             agent.spawnedHealth = false;

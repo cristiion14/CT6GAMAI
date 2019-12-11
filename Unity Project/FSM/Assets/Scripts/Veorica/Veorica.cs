@@ -37,6 +37,7 @@ public class Veorica : MonoBehaviour {
     StateManager<Veorica> fsm = new StateManager<Veorica>();
 
     public float distance;      //distance from coins;
+    float distanceFromHealth;
     public NavMeshAgent agent;
     public bool hasTouched, isFound;
     public float lookRadius = 25f;
@@ -46,6 +47,8 @@ public class Veorica : MonoBehaviour {
     SimplifiedPathFinder simplifyPath;
     SimplifiedGrid sGrid;
     public List<SimplifiedNode> vFinalPath;//The completed path that the red line will be drawn along
+
+    public bool isCloseToHealth = false;
 
     //for shooting
     public GameObject bullet;
@@ -66,21 +69,49 @@ public class Veorica : MonoBehaviour {
     public void GetHealthDesireability()
     {
         float k = .1f;        //constant
-        float distanceFromHealth = Vector3.Distance(transform.position, healthPack.transform.position);     //distance from healthPack
-        float healthStatus;             // alive or not (1 or 0) 
+       
+        if (spawnedHealth)
+        {
+            Vector3 healthPackDir = healthPack.transform.position - transform.position;
+            //distanceFromHealth = Vector3.Distance(transform.position, healthPack.transform.position);     //distance from healthPack
+            distanceFromHealth = healthPackDir.sqrMagnitude;
+            if (distanceFromHealth > 26.5f * 26.5f)
+            {
+                distanceFromHealth = 1f;
+            }
+            else if (distanceFromHealth <= 100f && distanceFromHealth > 25f)
+                distanceFromHealth = 0.1f;
+            else if (distanceFromHealth <= 25f)
+                isCloseToHealth = true;
+            else if (distanceFromHealth > 25f && distanceFromHealth < 17.5f * 17.5f)
+            {
+                isCloseToHealth = false;
+                distanceFromHealth = 0.5f;
+            }
+            else if (distanceFromHealth >= 17.5f * 17.5f && distanceFromHealth < 26.5f * 26.5f)
+                distanceFromHealth = 0.5f;
+            else
+                distanceFromHealth = 0.25f;
+            Debug.Log("Thhe distance from health is: " + distanceFromHealth);
+         //   distanceFromHealth = Mathf.Clamp()
+        }
+        float healthStatus = health/100;             // alive or not (1 or 0) 
+                                                    
 
-        if (!hasDied)
-            healthStatus = 1;
+        if (isCloseToHealth && health < 100)
+            healthDesire = 1;
         else
-            healthStatus = 0;
-        
-        if (distanceFromHealth > 20 || !spawnedHealth)
-            distanceFromHealth = 1;
-        else if (distanceFromHealth < 20)
-            distanceFromHealth = 0.01f;
+        {
+            healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
             
-        healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
-        healthDesire = Mathf.Clamp(healthDesire, 0, 1);
+        }
+        
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            health -= 10;
+        }
+     //   healthDesire = Mathf.Clamp(healthDesire, 0, 1);
 
     }
     void Awake()
@@ -99,7 +130,7 @@ public class Veorica : MonoBehaviour {
     }
     void Start()
     {
-        fsm.InIt(new Stealing(), this);
+     //   fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
         evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
        
@@ -174,20 +205,26 @@ public class Veorica : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        fsm.Execute();
+     //   fsm.Execute();
         GetDistanceFromCoins();
         CheckPosAndInstantiate();
         healthBar.fillAmount = health / 100;
         GetHealthDesireability();
         Debug.Log("Desire for health: " + healthDesire);
+        Debug.Log("The health is: " + health);
         //   StartCoroutine(DestroyHealthPack());
+
+       
+       //  float  distanceFromIoh = Vector3.Distance(transform.position, iohannis.transform.position);     //distance from healthPack
+         //   Debug.Log("The distance from iohannis is: " + distanceFromIoh);
+        
     }   
 
     private IEnumerator SpawnHealthPack()
     {
         while(true)
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(3);
             if (!spawnedHealth)
             {
                 randNrY = Random.Range(0, 23);
