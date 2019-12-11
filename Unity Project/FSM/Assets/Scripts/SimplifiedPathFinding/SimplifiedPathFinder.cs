@@ -159,7 +159,7 @@ public class SimplifiedPathFinder : MonoBehaviour
                     }
                     else
                     {
-                      //  ClosedList.Add(NeighborNode);
+                        ClosedList.Add(NeighborNode);
                     }
                     
                 }
