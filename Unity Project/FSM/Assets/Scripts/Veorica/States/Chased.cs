@@ -44,7 +44,7 @@ public class Chased : State<Veorica>
                 agent.nr = 0;
             }
         }
-        if(agent.health<90&&agent.spawnedHealth)
+        if(agent.healthDesire >= 0.4 && agent.spawnedHealth)
         {
             agent.ChangeState(new GetHealthPack());
             agent.spawnedHealth = false;

@@ -69,29 +69,32 @@ public class Veorica : MonoBehaviour {
     public void GetHealthDesireability()
     {
         float k = .1f;        //constant
-       
+
         if (spawnedHealth)
         {
             Vector3 healthPackDir = healthPack.transform.position - transform.position;
             //distanceFromHealth = Vector3.Distance(transform.position, healthPack.transform.position);     //distance from healthPack
             distanceFromHealth = healthPackDir.sqrMagnitude;
-            if (distanceFromHealth > 26.5f * 26.5f)
-            {
-                distanceFromHealth = 1f;
-            }
-            else if (distanceFromHealth <= 100f && distanceFromHealth > 25f)
-                distanceFromHealth = 0.1f;
-            else if (distanceFromHealth <= 25f)
+
+            if (distanceFromHealth <= 25f)
                 isCloseToHealth = true;
-            else if (distanceFromHealth > 25f && distanceFromHealth < 17.5f * 17.5f)
-            {
-                isCloseToHealth = false;
-                distanceFromHealth = 0.5f;
-            }
-            else if (distanceFromHealth >= 17.5f * 17.5f && distanceFromHealth < 26.5f * 26.5f)
-                distanceFromHealth = 0.5f;
             else
-                distanceFromHealth = 0.25f;
+                isCloseToHealth = false;
+
+            if (!isCloseToHealth)
+            {
+                if (distanceFromHealth > 26.0f * 26.0f)
+                    distanceFromHealth = 1f;
+                else if (distanceFromHealth <= 100f && distanceFromHealth > 25f)
+                    distanceFromHealth = 0.1f;
+                else if (distanceFromHealth > 100f && distanceFromHealth < 17.5f * 17.5f)
+                    distanceFromHealth = 0.25f;
+                else if (distanceFromHealth >= 17.5f * 17.5f && distanceFromHealth < 25.5f * 25.5f)
+                    distanceFromHealth = 0.5f;
+                else
+                    distanceFromHealth = 0.25f;
+            }
+                
             Debug.Log("Thhe distance from health is: " + distanceFromHealth);
          //   distanceFromHealth = Mathf.Clamp()
         }
@@ -101,12 +104,8 @@ public class Veorica : MonoBehaviour {
         if (isCloseToHealth && health < 100)
             healthDesire = 1;
         else
-        {
             healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
             
-        }
-        
-
         if (Input.GetKeyDown(KeyCode.G))
         {
             health -= 10;
@@ -130,7 +129,7 @@ public class Veorica : MonoBehaviour {
     }
     void Start()
     {
-     //   fsm.InIt(new Stealing(), this);
+        fsm.InIt(new Stealing(), this);
         agent = GetComponent<NavMeshAgent>();
         evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
        
@@ -205,7 +204,7 @@ public class Veorica : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-     //   fsm.Execute();
+        fsm.Execute();
         GetDistanceFromCoins();
         CheckPosAndInstantiate();
         healthBar.fillAmount = health / 100;
@@ -224,7 +223,7 @@ public class Veorica : MonoBehaviour {
     {
         while(true)
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(4);
             if (!spawnedHealth)
             {
                 randNrY = Random.Range(0, 23);
@@ -232,7 +231,7 @@ public class Veorica : MonoBehaviour {
                 spawnedHealth = true;
             }
             
-                yield return new WaitForSeconds(120);
+                yield return new WaitForSeconds(3);
             if (spawnedHealth&&!pickedHealth)
             {
                 Destroy(healthPack);
