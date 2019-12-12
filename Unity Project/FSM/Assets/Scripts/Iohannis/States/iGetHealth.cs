@@ -19,6 +19,8 @@ public class iGetHealth : State<Iohannis>
             agent.ChangeState(new Patrol());
             agent.tookHealth = false;
         }
+        //change state to chasing if veorica is withing radius 
+        //check to see if he is actually going for the health pack...
         
         if (agent.hasDied)
             agent.ChangeState(new iDeath());
