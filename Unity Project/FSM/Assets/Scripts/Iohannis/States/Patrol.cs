@@ -6,9 +6,13 @@ public class Patrol : State<Iohannis>
 {
     public override void Execute(Iohannis agent)
     {
-        
-    //    Debug.Log("Patroling");
 
+        //    Debug.Log("Patroling");
+        if (agent.healthDesire >= 0.4f && agent.spawnedHealth)
+        {
+            agent.ChangeState(new iGetHealth());
+            agent.spawnedHealth = false;
+        }
         float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
         //  randomagent.nr = Random.Range(0, 3);
         agent.FacePatrolPoint(agent.nr);

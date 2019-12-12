@@ -22,8 +22,6 @@ public class Veorica : MonoBehaviour {
 
     public bool hasDied = false;
 
-    public float GetHealthDesirability;
-            
     public Text moneyAmount;
     public Image healthBar;
     public float money = 0;
@@ -105,6 +103,7 @@ public class Veorica : MonoBehaviour {
             healthDesire = 1;
         else
             healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
+        Debug.Log("The health desire is: " + healthDesire);
             
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -209,8 +208,8 @@ public class Veorica : MonoBehaviour {
         CheckPosAndInstantiate();
         healthBar.fillAmount = health / 100;
         GetHealthDesireability();
-        Debug.Log("Desire for health: " + healthDesire);
-        Debug.Log("The health is: " + health);
+   //     Debug.Log("Desire for health: " + healthDesire);
+     //   Debug.Log("The health is: " + health);
         //   StartCoroutine(DestroyHealthPack());
 
        

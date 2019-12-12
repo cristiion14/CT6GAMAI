@@ -19,5 +19,11 @@ public class Chase :State<Iohannis>
 
         if (agent.hasDied)
             agent.ChangeState(new iDeath());
+
+        if (agent.healthDesire >= 0.4f && agent.spawnedHealth)
+        {
+            agent.ChangeState(new iGetHealth());
+            agent.spawnedHealth = false;
+        }
     }
 }
