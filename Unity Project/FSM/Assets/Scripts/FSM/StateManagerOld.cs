@@ -6,8 +6,7 @@ using System.Timers;
 public class StateManager<T>  {
     public State<T> pState;    //reference to the state
     T pAgent;                  //reference to the agent
-    public bool isMiningForGold;
-    public bool isBankingGold;
+   
     public void InIt(State<T> state, T agent)
     {
         //start timer

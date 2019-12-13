@@ -7,22 +7,22 @@ public class GetHealthPack : State<Veorica>
 {
     public override void Execute(Veorica agent)
     {
-        if (agent.healthPackPrefab.activeSelf && !agent.pickedHealth)
+        if (agent.healthPackPrefab.activeSelf && !agent.GM.GetComponent<GameManager>().pickedHealth)
         {
-            agent.SetDestination(agent.transform, agent.healthPack.transform.position);
-            agent.FaceObj(agent.healthPack.transform.position);
-            
+            agent.SetDestination(agent.transform, agent.GM.GetComponent<GameManager>().healthPack.transform.position);
+            agent.FaceObj(agent.GM.GetComponent<GameManager>().healthPack.transform.position);
+
         }
-        if(agent.pickedHealth && !agent.iohannis.GetComponent<Iohannis>().targetFound())
+        if (agent.GM.GetComponent<GameManager>().pickedHealth && !agent.iohannis.GetComponent<Iohannis>().targetFound())
         {
-        //    Debug.Log("should change state");
+            //    Debug.Log("should change state");
             agent.ChangeState(new Stealing());
-            agent.pickedHealth = false;
+            agent.GM.GetComponent<GameManager>().pickedHealth = false;
         }
-        if(agent.pickedHealth && agent.iohannis.GetComponent<Iohannis>().targetFound())
+        if (agent.GM.GetComponent<GameManager>().pickedHealth && agent.iohannis.GetComponent<Iohannis>().targetFound())
         {
             agent.ChangeState(new Chased());
-            agent.pickedHealth = false;
+            agent.GM.GetComponent<GameManager>().pickedHealth = false;
         }
 
         if (agent.hasDied)

@@ -872,6 +872,11 @@ MonoBehaviour:
   explosion: {fileID: 1845955007268882, guid: 67a684e320da6e7439421a07e3fa265c, type: 3}
   deathEffect: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d,
     type: 3}
+  healthPackPrefab: {fileID: 3588868368691026375, guid: a99a4a06ec5f1794696ccbd2b923cc2d,
+    type: 3}
+  healthPack: {fileID: 0}
+  spawnedHealth: 0
+  pickedHealth: 0
 --- !u!114 &758907052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,6 +1136,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114894338991021402, guid: 79490e28c7adb1345bcbe69fc837a8cd,
+        type: 3}
+      propertyPath: healthPackPrefab
+      value: 
+      objectReference: {fileID: 3588868368691026375, guid: a99a4a06ec5f1794696ccbd2b923cc2d,
+        type: 3}
     - target: {fileID: 976257418, guid: 79490e28c7adb1345bcbe69fc837a8cd, type: 3}
       propertyPath: m_Enabled
       value: 0

@@ -4,29 +4,31 @@ using UnityEngine;
 
 public class HealthPack : MonoBehaviour
 {
-    GameObject veorica, iohannis;
+    GameObject veorica, iohannis, GM;
+
     void Awake()
     {
         veorica = GameObject.Find("Veorica");
         iohannis = GameObject.Find(TagManager.Iohannis);
+        GM = GameObject.Find("GM");
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.name ==veorica.GetComponent<Veorica>().name&&veorica.GetComponent<Veorica>().health<100)
+        if (other.name == veorica.GetComponent<Veorica>().name && veorica.GetComponent<Veorica>().health < 100)
         {
-            
+
             veorica.GetComponent<Veorica>().health += 20;
-            veorica.GetComponent<Veorica>().pickedHealth = true;
-            Destroy(veorica.GetComponent<Veorica>().healthPack);
-            veorica.GetComponent<Veorica>().spawnedHealth = false;
-            
+            GM.GetComponent<GameManager>().pickedHealth = true;
+            Destroy(GM.GetComponent<GameManager>().healthPack);
+            GM.GetComponent<GameManager>().spawnedHealth = false;
+
         }
-        if(other.name == iohannis.GetComponent<Iohannis>().name && iohannis.GetComponent<Iohannis>().health<100)
+        else if (other.name == iohannis.GetComponent<Iohannis>().name && iohannis.GetComponent<Iohannis>().health < 100)
         {
             iohannis.GetComponent<Iohannis>().health += 20;
-            iohannis.GetComponent<Iohannis>().tookHealth = true;
-            Destroy(iohannis.GetComponent<Iohannis>().healthPack);
-            iohannis.GetComponent<Iohannis>().spawnedHealth = false;
+            GM.GetComponent<GameManager>().pickedHealth = true;
+            Destroy(GM.GetComponent<GameManager>().healthPack);
+            GM.GetComponent<GameManager>().spawnedHealth = false;
         }
     }
 }

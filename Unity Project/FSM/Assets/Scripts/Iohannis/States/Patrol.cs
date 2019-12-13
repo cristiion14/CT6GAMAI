@@ -8,10 +8,10 @@ public class Patrol : State<Iohannis>
     {
 
         //    Debug.Log("Patroling");
-        if (agent.healthDesire >= 0.4f && agent.spawnedHealth)
+        if (agent.healthDesire >= 0.4f && agent.GM.GetComponent<GameManager>().spawnedHealth)
         {
+            agent.GM.GetComponent<GameManager>().spawnedHealth = false;
             agent.ChangeState(new iGetHealth());
-            agent.spawnedHealth = false;
         }
         float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
         //  randomagent.nr = Random.Range(0, 3);

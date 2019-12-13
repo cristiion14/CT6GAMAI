@@ -38,7 +38,7 @@ public class Iohannis : MonoBehaviour {
 
     Grid grid;
     public int nr = 0, hasBeenFoundAtNr=0;  //the path nr and the nr which keeps track at what path nr has been found
-    GameObject GM;
+   public GameObject GM;
 
     private void Awake()
     {

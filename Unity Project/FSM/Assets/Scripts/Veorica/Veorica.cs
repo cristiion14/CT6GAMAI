@@ -136,13 +136,15 @@ public class Veorica : MonoBehaviour {
         //    direction = pathFinding.direction;
  //       rand = GetComponent<Random>();
         target = AgentManager.instance.player.transform;
-        StartCoroutine(SpawnHealthPack());
+      //  StartCoroutine(SpawnHealthPack());
 //        StartCoroutine(DestroyHealthPack());
     }
     public void targetFound()
     {
-        float distance = Vector3.Distance(iohannis.transform.position, transform.position);
-        if (distance <= lookRadius)
+        // get better performance using .sqrmagnitude
+         float distance = (iohannis.transform.position - transform.position).sqrMagnitude;
+        //float distance = Vector3.Distance(iohannis.transform.position, transform.position);
+        if (distance <= lookRadius*lookRadius)
             isFound=true;
         else
             isFound= false;
@@ -205,7 +207,7 @@ public class Veorica : MonoBehaviour {
     {
         fsm.Execute();
         GetDistanceFromCoins();
-        CheckPosAndInstantiate();
+       // CheckPosAndInstantiate();
         healthBar.fillAmount = health / 100;
         GetHealthDesireability();
    //     Debug.Log("Desire for health: " + healthDesire);
