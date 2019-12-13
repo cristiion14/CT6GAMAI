@@ -13,7 +13,7 @@ public class Patrol : State<Iohannis>
             agent.GM.GetComponent<GameManager>().spawnedHealth = false;
             agent.ChangeState(new iGetHealth());
         }
-        float distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+        float distance = (agent.transform.position - agent.patrolPoints[agent.nr].transform.position).sqrMagnitude;
         //  randomagent.nr = Random.Range(0, 3);
         agent.FacePatrolPoint(agent.nr);
         //first path
@@ -21,10 +21,10 @@ public class Patrol : State<Iohannis>
         {
 
             agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position);
-            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+          //  distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
          //   Debug.Log("The distance is: " + distance);
         }
-        if(distance<=2)
+        if(distance<=4)
         {
             agent.nr++;
     //        Debug.Log("Should increase nr");
@@ -34,8 +34,8 @@ public class Patrol : State<Iohannis>
         if (agent.nr == 1)
         {
             agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position);
-            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
-            if (distance <= 2)
+            distance = (agent.transform.position - agent.patrolPoints[agent.nr].transform.position).sqrMagnitude;
+            if (distance <= 4)
             {
                 agent.nr++;
             }
@@ -45,10 +45,10 @@ public class Patrol : State<Iohannis>
         if (agent.nr == 2)
         {
             agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position);
-            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
-            if (distance <= 2)
+            distance = (agent.transform.position - agent.patrolPoints[agent.nr].transform.position).sqrMagnitude;
+            if (distance <= 4)
             {
-                agent.nr++;
+         //       agent.nr++;
             }
         }
 
@@ -57,8 +57,8 @@ public class Patrol : State<Iohannis>
         if (agent.nr == 3)
         {
             agent.SetDestination(agent.transform, agent.patrolPoints[agent.nr].position);
-            distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
-            if (distance <= 2)
+            distance = (agent.transform.position - agent.patrolPoints[agent.nr].transform.position).sqrMagnitude; //     distance = Vector3.Distance(agent.transform.position, agent.patrolPoints[agent.nr].position);
+            if (distance <= 4)
             {
                 agent.nr++;
             }

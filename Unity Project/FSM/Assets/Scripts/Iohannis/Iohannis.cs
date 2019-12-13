@@ -5,10 +5,9 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public class Iohannis : MonoBehaviour {
     
-    public NavMeshAgent agent;
 
     State<Iohannis> fsm;
-
+              
     [SerializeField]
    public float travelSpeed = 7f;
     public Image healthBar;
@@ -22,11 +21,10 @@ public class Iohannis : MonoBehaviour {
     float distanceFromHealth;
     public bool lookAtPlayer;
 
-    public List<SimplifiedNode> iFinalPath;//The completed path that the red line will be drawn along
-   public Vector3[] path;
-    public int targetIndex;
+    public List<SimplifiedNode> iFinalPath;         //The path received by pathfinding
+   public Vector3[] path;                           //the waypoints array
+    public int targetIndex;                         //index in the waypoints array
 
-    float distance;         //distance from 2 specific points
     public bool hasDied = false;
 
     public Transform target;
@@ -36,24 +34,17 @@ public class Iohannis : MonoBehaviour {
     public float startTimeBtwShoots, timeBtwShoots;
     public GameObject bullet, bulletPoint;
 
-    Grid grid;
     public int nr = 0, hasBeenFoundAtNr=0;  //the path nr and the nr which keeps track at what path nr has been found
    public GameObject GM;
 
     private void Awake()
     {
         healthPackHolders = GameObject.FindGameObjectsWithTag("CoinPoint");
-        grid = GetComponent<Grid>();
         GM = GameObject.Find("GM");
-//        patrolState = GetComponent<Patrol>();
-        
     }
     void Start () {
 
-        //adding the start state:
-    //    fsm.InIt(new Patrol(), this);
         fsm = new Patrol();
-        agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
     }
@@ -64,67 +55,76 @@ public class Iohannis : MonoBehaviour {
         fsm.Execute(this);
         healthBar.fillAmount = health / 100;
         GetHealthDesireability();
-        //  Shoot();
-        // FaceTarget();
-     //   Debug.LogError("The final path is: " + iFinalPath);
-     //   SetDestination(transform, patrolPoints[0].transform.position);
     }
 
+    /// <summary>
+    /// Used for facing the coins and evading points
+    /// </summary>
+    /// <param name="obj"></param>
     public void FaceObj(Vector3 obj)
     {
-        lookAtPlayer = false;
+        lookAtPlayer = false;               //is not looking at player
+
+        //get the facing direction and normalize it
         Vector3 direction = (obj - transform.position).normalized;
+
+        //make the agent rotate
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
     }
 
+    /// <summary>
+    /// Function which makes the agent follow a path to a target
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <param name="target"></param>
     public void SetDestination(Transform transform, Vector3 target)
     {
-        //targetIndex = 0;
-
+        //start by finding the path
         GM.GetComponentInChildren<SimplifiedPathFinder>().iFindPath(transform.position, target);
+
+        //initialise a list of waypoints and add to it the final path nodes position
         List<Vector3> wayPoints = new List<Vector3>();
         for (int i = 0; i < iFinalPath.Count; i++)
         {
             wayPoints.Add(iFinalPath[i].vPosition);
         }
-        // wayPoints.Reverse();
+        //convert the list to an array and pass it to the direction array
         path = wayPoints.ToArray();
-
+        
+        //set the current waypoint to the first element from the waypoint array
         Vector3 currentWaypoint = path[0];
 
+        //if the agent reached the point, move it to the next one
         if (transform.position == currentWaypoint)
             targetIndex++;
-
+     
+        //if it's outside the range, reset it back to 0
         if (targetIndex >= path.Length)
-        {
-            //      Debug.Log("Should reset targetIndex");
             targetIndex = 0;
-            //       Debug.Log("Target index is: " + targetIndex);
-            //   path = new Vector3[0];
-            //    break;
-        }
 
+        //update the current waypoint
         currentWaypoint = path[targetIndex];
-        //   Debug.Log("current waypoint is: " + currentWaypoint);
+       
+        //update the position of the agent
         transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed * Time.fixedDeltaTime);
-        //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
-
-
-        //  rb.velocity = currentWaypoint;
 
     }
-
+    /// <summary>
+    /// Utility Theory to receive the health desirability
+    /// </summary>
     public void GetHealthDesireability()
     {
         float k = .1f;        //constant
 
-        if (spawnedHealth)
+        //if the health was spawned
+        if (GM.GetComponent<GameManager>().spawnedHealth)
         {
-            Vector3 healthPackDir = healthPack.transform.position - transform.position;
-            //distanceFromHealth = Vector3.Distance(transform.position, healthPack.transform.position);     //distance from healthPack
+            //get the distance from the health pack
+            Vector3 healthPackDir = GM.GetComponent<GameManager>().healthPack.transform.position - transform.position;
             distanceFromHealth = healthPackDir.sqrMagnitude;
 
+            //set the distance to health to an arbitrary number based on the report sheet formula
             if (distanceFromHealth <= 25f)
                 isCloseToHealth = true;
             else
@@ -133,9 +133,9 @@ public class Iohannis : MonoBehaviour {
             if (!isCloseToHealth)
             {
                 if (distanceFromHealth > 26.0f * 26.0f)
-                    distanceFromHealth = 1f;
+                    distanceFromHealth = 1f;            //very far
                 else if (distanceFromHealth <= 100f && distanceFromHealth > 25f)
-                    distanceFromHealth = 0.1f;
+                    distanceFromHealth = 0.1f;          //close
                 else if (distanceFromHealth > 100f && distanceFromHealth < 17.5f * 17.5f)
                     distanceFromHealth = 0.25f;
                 else if (distanceFromHealth >= 17.5f * 17.5f && distanceFromHealth < 25.5f * 25.5f)
@@ -146,28 +146,25 @@ public class Iohannis : MonoBehaviour {
 
             Debug.Log("Thhe distance from health is: " + distanceFromHealth);
             //   distanceFromHealth = Mathf.Clamp()
+
+            float healthStatus = health / 100;             // alive or not (1 or 0) 
+
+
+            if (isCloseToHealth && health < 100)
+                healthDesire = 1;               // is very close the the health
+            else
+                healthDesire = k * ((1 - healthStatus) / distanceFromHealth);       //formula to calculate the desirability
+            Debug.Log("The health desire of Veorica is: " + healthDesire);
         }
-        float healthStatus = health / 100;             // alive or not (1 or 0) 
-
-
-        if (isCloseToHealth && health < 100)
-            healthDesire = 1;
-        else
-            healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
-        Debug.Log("The health desire is: " + healthDesire);
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            health -= 10;
-        }
-        //   healthDesire = Mathf.Clamp(healthDesire, 0, 1);
-
     }
 
+    /// <summary>
+    /// Checks to see if the target is within the sight radius
+    /// </summary>
     public bool targetFound()
     {
-        float distance = Vector3.Distance(target.position, transform.position);
-        if (distance <= lookRad)
+        float distance = (target.position - transform.position).sqrMagnitude;
+        if (distance <= lookRad*lookRad)
             return true;
         else
             return false;
@@ -175,13 +172,18 @@ public class Iohannis : MonoBehaviour {
    
    public void FaceTarget()
     {
-        // Debug.Log("Face Target");
+        //get the direction normalized from the agents and based on that direction, rotate the agent
+
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
         lookAtPlayer = true;
     }
 
+    /// <summary>
+    /// used to face the patrol points
+    /// </summary>
+    /// <param name="patrolPoint"></param>
     public void FacePatrolPoint(int patrolPoint)
     {  
             Vector3 direction = (patrolPoints[patrolPoint].transform.position - transform.position).normalized;
@@ -189,13 +191,18 @@ public class Iohannis : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
         
     }
-
+    /// <summary>
+    /// used to draw the perception sight sphere
+    /// </summary>
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, lookRad);
     }
 
+    /// <summary>
+    /// Shooting function
+    /// </summary>
    public void Shoot()
     {
         if (timeBtwShoots <= 0)
@@ -209,7 +216,10 @@ public class Iohannis : MonoBehaviour {
             timeBtwShoots -= Time.deltaTime;
         }
     }
-
+    /// <summary>
+    /// Function which changes the state
+    /// </summary>
+    /// <param name="newState"></param>
     public void ChangeState(State<Iohannis> newState)
     {
         fsm = newState;

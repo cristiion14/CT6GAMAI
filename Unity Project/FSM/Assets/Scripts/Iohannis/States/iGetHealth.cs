@@ -7,7 +7,7 @@ public class iGetHealth : State<Iohannis>
 {
     public override void Execute(Iohannis agent)
     {
-        if (agent.healthPackPrefab.activeSelf && !agent.GM.GetComponent<GameManager>().pickedHealth)
+        if (agent.GM.GetComponent<GameManager>().healthPackPrefab.activeSelf && !agent.GM.GetComponent<GameManager>().pickedHealth)
         {
             agent.SetDestination(agent.transform, agent.GM.GetComponent<GameManager>().healthPack.transform.position);
             agent.FaceObj(agent.GM.GetComponent<GameManager>().healthPack.transform.position);

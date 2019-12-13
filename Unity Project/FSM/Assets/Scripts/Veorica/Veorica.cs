@@ -6,74 +6,99 @@ using System.Timers;
 using UnityEngine.UI;
 public class Veorica : MonoBehaviour {
 
+    // variables to store the extremities of the screen used for evading
     public Vector3 topR = new Vector3(14.33f, 1.02f, 13.7f);
     public Vector3 topL = new Vector3(-13.48f, 1.02f, 13.7f);
     public Vector3 bottomR = new Vector3(-13.48f, 1.02f, -14.25f);
     public Vector3 bottomL = new Vector3(13.48f, 1.02f, -14.25f);
+    
 
+   //variables for desirability
     public float healthDesire;
-    public GameObject healthPackPrefab;
-    public  GameObject healthPack;
+    float distanceFromHealth;                                   
+    public bool isCloseToHealth = false;                        
+
+
+    /// <summary>
+    /// Check to see if the agent is facing the other agent,
+    /// used by FaceObj function
+    /// </summary>
     public bool lookAtPlayer;
+
+    /// <summary>
+    /// the speed of the agent
+    /// </summary>
     public float travelSpeed = 0.00001f;
+
+    /// <summary>
+    /// Health of Veorica
+    /// </summary>
+    public float health = 100f;
+
+    /// <summary>
+    /// The waypoints array
+    /// Used for Path Following
+    /// </summary>
     public  Vector3[] direction;
-    public Vector3 evadeDirection;
-    Rigidbody rb;
+    public int targetIndex;                                     //the index of the current waypoint used for path following
+
+    Rigidbody rb;                                               //reference to the rigid body
 
     public bool hasDied = false;
 
-    public Text moneyAmount;
-    public Image healthBar;
-    public float money = 0;
-    public int coinNr = 0;
-   public GameObject coin;
+    public Text moneyAmount;                                    //UI text for money
+    public Image healthBar;                                     //UI image for health bar
+    public float money = 0;                                     //how many coins has collected
+
+    //references to the coin
+    public GameObject coin;
     public GameObject coinPrefab;
-    bool validPos = false;
-    
-    public int nr = 0; //for chased state
 
-    // StateManager<Veorica> fsm = new StateManager<Veorica>();
+    public int nr = 0;                                          //for chased state
+    /// <summary>
+    /// Controls the Finite State Machines
+    /// Used by Veorica
+    /// </summary>
     State<Veorica> fsm;
-    public float distance;      //distance from coins;
-    float distanceFromHealth;
-    public NavMeshAgent agent;
-    public bool hasTouched, isFound;
-    public float lookRadius = 25f;
-    Transform target;
-    GameObject[] coins;
 
-    SimplifiedPathFinder simplifyPath;
-    SimplifiedGrid sGrid;
-    public List<SimplifiedNode> vFinalPath;//The completed path that the red line will be drawn along
+    /// <summary>
+    /// //distance from coins;
+    /// </summary>
+    public float distance;                                      
+    public bool isFound;                                        //if has found iohannis
+    public float lookRadius = 25f;                              //perception radius
 
-    public bool isCloseToHealth = false;
 
-    //for shooting
+    GameObject[] coins;                                         //the place holders for the coins
+    public int randNrX;                                         //Random number used for instantiating coins
+
+    public List<SimplifiedNode> vFinalPath;                     //The completed path that the red line will be drawn along
+
+
+    //for shooting...
     public GameObject bullet;
     public GameObject bulletPoint;
-    public GameObject iohannis;
-   public GameObject GM;
-    public int randNrX, randNrY, randNrZ;
-
-    public int targetIndex;
-
-    public float health = 100f;
-
-    float timeBtwShoots;
+    float timeBtwShoots;                                        //The fire rate
     public float startTimeBtwShoots;
 
-    public bool spawnedHealth = false, followPath1 = true, followPath2 = true, pickedHealth= false;
-
+    public GameObject iohannis;                                                 
+    public GameObject GM;
+    
+    /// <summary>
+    /// Utility Theory to receive the health desirability
+    /// </summary>
     public void GetHealthDesireability()
     {
         float k = .1f;        //constant
 
-        if (spawnedHealth)
+        //if the health was spawned
+        if (GM.GetComponent<GameManager>().spawnedHealth)
         {
-            Vector3 healthPackDir = healthPack.transform.position - transform.position;
-            //distanceFromHealth = Vector3.Distance(transform.position, healthPack.transform.position);     //distance from healthPack
+            //get the distance from the health pack
+            Vector3 healthPackDir = GM.GetComponent<GameManager>().healthPack.transform.position - transform.position;
             distanceFromHealth = healthPackDir.sqrMagnitude;
 
+            //set the distance to health to an arbitrary number based on the report sheet formula
             if (distanceFromHealth <= 25f)
                 isCloseToHealth = true;
             else
@@ -82,9 +107,9 @@ public class Veorica : MonoBehaviour {
             if (!isCloseToHealth)
             {
                 if (distanceFromHealth > 26.0f * 26.0f)
-                    distanceFromHealth = 1f;
+                    distanceFromHealth = 1f;            //very far
                 else if (distanceFromHealth <= 100f && distanceFromHealth > 25f)
-                    distanceFromHealth = 0.1f;
+                    distanceFromHealth = 0.1f;          //close
                 else if (distanceFromHealth > 100f && distanceFromHealth < 17.5f * 17.5f)
                     distanceFromHealth = 0.25f;
                 else if (distanceFromHealth >= 17.5f * 17.5f && distanceFromHealth < 25.5f * 25.5f)
@@ -92,174 +117,141 @@ public class Veorica : MonoBehaviour {
                 else
                     distanceFromHealth = 0.25f;
             }
-                
+
             Debug.Log("Thhe distance from health is: " + distanceFromHealth);
-         //   distanceFromHealth = Mathf.Clamp()
-        }
-        float healthStatus = health/100;             // alive or not (1 or 0) 
-                                                    
+            //   distanceFromHealth = Mathf.Clamp()
 
-        if (isCloseToHealth && health < 100)
-            healthDesire = 1;
-        else
-            healthDesire = k * ((1 - healthStatus) / distanceFromHealth);
-        Debug.Log("The health desire is: " + healthDesire);
+            float healthStatus = health / 100;             // alive or not (1 or 0) 
+
+
+            if (isCloseToHealth && health < 100)
+                healthDesire = 1;               // is very close the the health
+            else
+                healthDesire = k * ((1 - healthStatus) / distanceFromHealth);       //formula to calculate the desirability
+            Debug.Log("The health desire of Veorica is: " + healthDesire);
+        }
             
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            health -= 10;
-        }
-     //   healthDesire = Mathf.Clamp(healthDesire, 0, 1);
-
     }
     void Awake()
     {
-        
+       //analog as in Trigger enter for random nr 
         randNrX = Random.Range(0, 23);
+
+        // update the money amont text
         moneyAmount.text = money.ToString();
-        sGrid = GetComponent<SimplifiedGrid>();
+
+        //get references to needed objects
         iohannis = GameObject.Find(TagManager.Iohannis);
         GM = GameObject.Find("GM");
         rb = GetComponentInChildren<Rigidbody>();
         coins = GameObject.FindGameObjectsWithTag("CoinPoint");
         coin =  Instantiate(coinPrefab, coins[randNrX].transform.position, transform.rotation);
-    
-        //coin = GameObject.Find(TagManager.Coin);
     }
     void Start()
     {
+        // initialize the first state
         fsm = new Stealing();
-        agent = GetComponent<NavMeshAgent>();
-        evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
-       
+        
+        //set the timer for shooting
         timeBtwShoots = startTimeBtwShoots;
-        //    direction = pathFinding.direction;
- //       rand = GetComponent<Random>();
-        target = AgentManager.instance.player.transform;
-      //  StartCoroutine(SpawnHealthPack());
-//        StartCoroutine(DestroyHealthPack());
+     
     }
+
+    /// <summary>
+    /// Checks to see if the target is within the sight radius
+    /// </summary>
     public void targetFound()
     {
         // get better performance using .sqrmagnitude
          float distance = (iohannis.transform.position - transform.position).sqrMagnitude;
-        //float distance = Vector3.Distance(iohannis.transform.position, transform.position);
         if (distance <= lookRadius*lookRadius)
             isFound=true;
         else
             isFound= false;
     }
+    /// <summary>
+    /// Function which makes the agent follow a path to a target
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <param name="target"></param>
     public void SetDestination(Transform transform, Vector3 target)
     {
-        //targetIndex = 0;
+        //start by finding the path
+        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target); 
 
-        GM.GetComponentInChildren<SimplifiedPathFinder>().FindPath(transform.position, target);
+        //initialise a list of waypoints and add to it the final path nodes position
         List<Vector3> wayPoints = new List<Vector3>();
         for (int i = 0; i < vFinalPath.Count; i++)
         {
             wayPoints.Add(vFinalPath[i].vPosition);
         }
-       // wayPoints.Reverse();
+
+        //convert the list to an array and pass it to the direction array
         direction = wayPoints.ToArray();
         
+        //set the current waypoint to the first element from the waypoint array
         Vector3 currentWaypoint = direction[0];
 
+        //if the agent reached the point, move it to the next one
         if (transform.position == currentWaypoint)
                 targetIndex++;
 
+        //if it's outside the waypoint, reset it back to 0
         if (targetIndex >= direction.Length)
-            {
-      //      Debug.Log("Should reset targetIndex");
                 targetIndex = 0;
-     //       Debug.Log("Target index is: " + targetIndex);
-             //   direction = new Vector3[0];
-            //    break;
-            }
-  
+
+        //update the current waypoint
         currentWaypoint = direction[targetIndex];
-   //   Debug.Log("current waypoint is: " + currentWaypoint);
+
+        //update the position of the agent
         transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, travelSpeed*Time.fixedDeltaTime);
-        //  transform.position += currentWaypoint*Time.deltaTime* 1.5f;
-
-     
-        //  rb.velocity = currentWaypoint;
-
     }
 
 
+    /// <summary>
+    /// Used for facing the coins and evading points
+    /// </summary>
+    /// <param name="obj"></param>
     public void FaceObj(Vector3 obj)
     {
-        lookAtPlayer = false;
+        lookAtPlayer = false;               //is not looking at player
+
+        //get the facing direction and normalize it
         Vector3 direction = (obj - transform.position).normalized;
+
+        //make the agent rotate
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
     }
 
-    public void GenerateRandomNr()
-    {
-     //   randNrX = Random.Range(-11f, 15f);
-    //    randNrZ = Random.Range(-14.76f, 14.76f);
-        evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
-
-    }
-    // Update is called once per frame
     void Update ()
     {
+        //keep running the state machine
         fsm.Execute(this);
-        GetDistanceFromCoins();
-       // CheckPosAndInstantiate();
-        healthBar.fillAmount = health / 100;
-        GetHealthDesireability();
-   //     Debug.Log("Desire for health: " + healthDesire);
-     //   Debug.Log("The health is: " + health);
-        //   StartCoroutine(DestroyHealthPack());
 
-       
-       //  float  distanceFromIoh = Vector3.Distance(transform.position, iohannis.transform.position);     //distance from healthPack
-         //   Debug.Log("The distance from iohannis is: " + distanceFromIoh);
-        
+        //fill the health bar
+        healthBar.fillAmount = health / 100;
+
+        //get health desire
+        GetHealthDesireability();
     }   
 
-    private IEnumerator SpawnHealthPack()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(4);
-            if (!spawnedHealth)
-            {
-                randNrY = Random.Range(0, 23);
-                healthPack = Instantiate(healthPackPrefab, coins[randNrY].transform.position, transform.rotation);
-                spawnedHealth = true;
-            }
-            
-                yield return new WaitForSeconds(3);
-            if (spawnedHealth&&!pickedHealth)
-            {
-                Destroy(healthPack);
-                spawnedHealth = false;
-            }
-        }
- 
-    }
-   
-    public void CheckPosAndInstantiate()
-    {
-        if (hasTouched)
-        {
-            
-        }
-    }
-    //display the look radius
+    /// <summary>
+    /// Display the sight perception radius
+    /// </summary>
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,lookRadius);
     }
-        
-    void FaceTarget()     //this function is making the player to face iohannis
+
+    /// <summary>
+    /// This function is making Veorica to face iohannis
+    /// </summary>
+    void FaceTarget()     
     {
-       // Debug.Log("Face Target");
-        Vector3 direction = (target.position - transform.position).normalized;
+        //get the direction normalized from the agents and based on that direction, rotate the agent
+        Vector3 direction = (iohannis.transform.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5);
         lookAtPlayer = true;
@@ -269,8 +261,10 @@ public class Veorica : MonoBehaviour {
   
     public void Shoot()
     {
+        //if it hasn't shotted yet
         if(timeBtwShoots<=0)
         {
+            //shoot
             Instantiate(bullet, bulletPoint.transform.position, bullet.transform.rotation);
             timeBtwShoots = startTimeBtwShoots;
            
@@ -281,38 +275,28 @@ public class Veorica : MonoBehaviour {
         }
     }
 
-  
-    public float GetDistanceFromCoins()
-    {
-         distance = Vector3.Distance(transform.position, coin.transform.position);
-        return distance;
-    }
-
    private void OnTriggerEnter(Collider other)
     {
+        //if has touched the coin
         if(other.tag =="Coin")
         {
+            //set the rand spawn number to match one of the coin holders index
             randNrX = Random.Range(0, 23);
+            
+            // increase money and update the text
             money += 1;
             moneyAmount.text = money.ToString();
-        //   Debug.Log("HOW MUCH MONEY YOU GOT?? " + money);
-      //     Debug.LogError("The other object is: " + other.gameObject);
-           Destroy(other.gameObject);
-            hasTouched = true;
+
+            //destroy the game object and instantiate a new one
+            Destroy(other.gameObject);
             coin = Instantiate(coinPrefab, coins[randNrX].transform.position, transform.rotation);
-
-            //    randNrX = Random.Range(-12, 12);
-            //  randNrZ = Random.Range(-10, 7);
-            //    Debug.LogAssertion("HOW MUCH MONEY YOU GOT?? " + money);
-
-        }
-       
+            
+        }       
     }
-   void OnTriggerExit()
-    {
-
-
-    }
+    /// <summary>
+    /// Function to change the state
+    /// </summary>
+    /// <param name="newState"></param>
     public void ChangeState(State<Veorica> newState)
     {
         fsm = newState;

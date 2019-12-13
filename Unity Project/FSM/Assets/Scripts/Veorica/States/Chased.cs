@@ -12,8 +12,8 @@ public class Chased : State<Veorica>
         agent.Shoot();
         agent.travelSpeed += 0.05f;
         
-        float distance = Vector3.Distance(agent.transform.position, agent.topR);
-      
+       // float distance = Vector3.Distance(agent.transform.position, agent.topR);
+        float distance = (agent.transform.position - agent.topR).sqrMagnitude;
         //first path
         if (agent.nr == 0)
         {
@@ -23,7 +23,7 @@ public class Chased : State<Veorica>
             {
                 agent.FaceObj(agent.topR);
             }
-            if (distance <= 2)
+            if (distance <= 4)
             {
                 agent.nr++;
 //                Debug.Log("Should increase nr");
@@ -33,13 +33,13 @@ public class Chased : State<Veorica>
         //second path
         if (agent.nr == 1)
         {
-             distance = Vector3.Distance(agent.transform.position, agent.bottomR);
+            distance = (agent.transform.position - agent.bottomR).sqrMagnitude;
             agent.SetDestination(agent.transform, agent.bottomR);
             if (!agent.lookAtPlayer)
             {
                 agent.FaceObj(agent.topR);
             }
-            if (distance <= 2)
+            if (distance <= 4)
             {
                 agent.nr = 0;
             }
@@ -51,9 +51,10 @@ public class Chased : State<Veorica>
 
         }
 
-        if (Vector3.Distance(agent.transform.position, agent.iohannis.transform.position)>10)
+        //   if (Vector3.Distance(agent.transform.position, agent.iohannis.transform.position)>10)
+        if ((agent.transform.position - agent.iohannis.transform.position).sqrMagnitude > 100)
         {
-      //      Debug.LogError("Changing state to stealing");
+            //      Debug.LogError("Changing state to stealing");
             agent.ChangeState(new Stealing());
         }
 
