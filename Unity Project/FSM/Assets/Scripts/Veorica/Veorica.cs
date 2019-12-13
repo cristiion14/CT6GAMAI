@@ -55,11 +55,7 @@ public class Veorica : MonoBehaviour {
     public GameObject coinPrefab;
 
     public int nr = 0;                                          //for chased state
-    /// <summary>
-    /// Controls the Finite State Machines
-    /// Used by Veorica
-    /// </summary>
-    State<Veorica> fsm;
+
 
     /// <summary>
     /// //distance from coins;
@@ -150,6 +146,11 @@ public class Veorica : MonoBehaviour {
         coins = GameObject.FindGameObjectsWithTag("CoinPoint");
         coin =  Instantiate(coinPrefab, coins[randNrX].transform.position, transform.rotation);
     }
+    /// <summary>
+    /// Controls the Finite State Machines
+    /// Used by Veorica
+    /// </summary>
+    State<Veorica> fsm;
     void Start()
     {
         // initialize the first state
@@ -159,7 +160,18 @@ public class Veorica : MonoBehaviour {
         timeBtwShoots = startTimeBtwShoots;
      
     }
+    void Update()
+    {
+        //keep running the state machine
+           fsm.Execute(this);
+        if (Input.GetKeyDown(KeyCode.K))
+            health -= 10;
+        //fill the health bar
+        healthBar.fillAmount = health / 100;
 
+        //get health desire
+        GetHealthDesireability();
+    }
     /// <summary>
     /// Checks to see if the target is within the sight radius
     /// </summary>
@@ -227,17 +239,7 @@ public class Veorica : MonoBehaviour {
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
     }
 
-    void Update ()
-    {
-        //keep running the state machine
-        fsm.Execute(this);
-
-        //fill the health bar
-        healthBar.fillAmount = health / 100;
-
-        //get health desire
-        GetHealthDesireability();
-    }   
+    
 
     /// <summary>
     /// Display the sight perception radius

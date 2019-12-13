@@ -118,36 +118,24 @@ public class SimplifiedGrid : MonoBehaviour
 
 
     //Function that draws the wireframe
-    private void OnDrawGizmos()
+    void OnDrawGizmos()
     {
-
-        Gizmos.DrawWireCube(transform.position, new Vector3(vGridWorldSize.x, 1, vGridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
-
-        if (NodeArray != null)//If the grid is not empty
+        Gizmos.DrawWireCube(transform.position, new Vector3(vGridWorldSize.x, 1, vGridWorldSize.y));
+        if (NodeArray != null )
         {
-            foreach (SimplifiedNode n in NodeArray)//Loop through every node in the grid
+            foreach (SimplifiedNode n in NodeArray)
             {
-                if (n.bIsWall)//If the current node is a wall node
-                {
-                    Gizmos.color = Color.white;//Set the color of the node
-                }
-                else
-                {
-                    Gizmos.color = Color.yellow;//Set the color of the node
-                }
-
-
+                Gizmos.color = (n.bIsWall) ? Color.white : Color.red;
                 if (FinalPath != null)//If the final path is not empty
                 {
                     if (FinalPath.Contains(n))//If the current node is in the final path
                     {
-                        Gizmos.color = Color.red;//Set the color of that node
+                        Gizmos.color = Color.blue;//Set the color of that node
                     }
 
                 }
 
-
-                Gizmos.DrawCube(n.vPosition, Vector3.one * (fNodeDiameter - fDistanceBetweenNodes));//Draw the node at the position of the node.
+                Gizmos.DrawCube(n.vPosition, Vector3.one * (fNodeDiameter - .1f));
             }
         }
     }

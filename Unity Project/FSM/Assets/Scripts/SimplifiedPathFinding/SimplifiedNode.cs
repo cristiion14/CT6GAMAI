@@ -14,7 +14,7 @@ public class SimplifiedNode
 
     public int igCost;//The cost of moving to the next square.
     public int ihCost;//The distance to the goal from this node.
-
+   
     public int FCost { get { return igCost + ihCost; } }//Quick get function to add G cost and H Cost, and since we'll never need to edit FCost, we dont need a set function.
 
     public SimplifiedNode(bool a_bIsWall, Vector3 a_vPos, int a_igridX, int a_igridY)//Constructor

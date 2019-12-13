@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
                 spawnedHealth = true;
             }
 
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(120);
             if (spawnedHealth && !pickedHealth)
             {
                 Destroy(healthPack);

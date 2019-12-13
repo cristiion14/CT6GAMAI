@@ -18,7 +18,7 @@ public class SimplifiedPathFinder : MonoBehaviour
 
     private void Update()//Every frame
     {
-        FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
+       // FindPath(StartPosition.position, TargetPosition.position);//Find a path to the goal
     }
 
     //Find path function for Iohannis
@@ -75,7 +75,7 @@ public class SimplifiedPathFinder : MonoBehaviour
                     }
                     else
                     {
-                        //  ClosedList.Add(NeighborNode);
+                          ClosedList.Add(NeighborNode);
                     }
 
                 }
@@ -217,10 +217,10 @@ public class SimplifiedPathFinder : MonoBehaviour
 
         FinalPath.Reverse();//Reverse the path to get the correct order
 
-        veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path
+       veorica.GetComponent<Veorica>().vFinalPath = FinalPath;//Set the final path
 
-        GridReference.FinalPath = FinalPath;
-     //   veorica.GetComponent<Veorica>().FinalPath[veorica.GetComponent<Veorica>().nrPath] = FinalPath;
+        //uncomment this to use for pathfinding scene
+      //  GridReference.FinalPath = FinalPath;
     }
 
 
