@@ -16,8 +16,8 @@ public class Veorica : MonoBehaviour {
    //variables for desirability
     public float healthDesire;
     float distanceFromHealth;                                   
-    public bool isCloseToHealth = false;                        
-
+    public bool isCloseToHealth = false;
+    public Text healthDesireTxT;
 
     /// <summary>
     /// Check to see if the agent is facing the other agent,
@@ -129,7 +129,10 @@ public class Veorica : MonoBehaviour {
             else
                 healthDesire = k * ((1 - healthStatus) / distanceFromHealth);       //formula to calculate the desirability
             Debug.Log("The health desire of Veorica is: " + healthDesire);
+            healthDesireTxT.text = healthDesire.ToString();
         }
+        else
+            healthDesire = 0f;
             
     }
     void Awake()

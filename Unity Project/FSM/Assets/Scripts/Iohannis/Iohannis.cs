@@ -21,6 +21,9 @@ public class Iohannis : MonoBehaviour {
     float distanceFromHealth;
     public bool lookAtPlayer;
 
+   public Text healthDesireTxT;
+
+
     public List<SimplifiedNode> iFinalPath;         //The path received by pathfinding
    public Vector3[] path;                           //the waypoints array
     public int targetIndex;                         //index in the waypoints array
@@ -155,7 +158,11 @@ public class Iohannis : MonoBehaviour {
             else
                 healthDesire = k * ((1 - healthStatus) / distanceFromHealth);       //formula to calculate the desirability
             Debug.Log("The health desire of Veorica is: " + healthDesire);
+            healthDesireTxT.text = healthDesire.ToString();
+
         }
+        else
+            healthDesire = 0;
     }
 
     /// <summary>
