@@ -32,8 +32,8 @@ public class Veorica : MonoBehaviour {
     
     public int nr = 0; //for chased state
 
-    StateManager<Veorica> fsm = new StateManager<Veorica>();
-
+    // StateManager<Veorica> fsm = new StateManager<Veorica>();
+    State<Veorica> fsm;
     public float distance;      //distance from coins;
     float distanceFromHealth;
     public NavMeshAgent agent;
@@ -128,7 +128,7 @@ public class Veorica : MonoBehaviour {
     }
     void Start()
     {
-        fsm.InIt(new Stealing(), this);
+        fsm = new Stealing();
         agent = GetComponent<NavMeshAgent>();
         evadeDirection = new Vector3(randNrX, 0, randNrZ);//+agent.transform.position;
        
@@ -205,7 +205,7 @@ public class Veorica : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        fsm.Execute();
+        fsm.Execute(this);
         GetDistanceFromCoins();
        // CheckPosAndInstantiate();
         healthBar.fillAmount = health / 100;
@@ -315,6 +315,6 @@ public class Veorica : MonoBehaviour {
     }
     public void ChangeState(State<Veorica> newState)
     {
-        fsm.pState = newState;
+        fsm = newState;
     }
 }

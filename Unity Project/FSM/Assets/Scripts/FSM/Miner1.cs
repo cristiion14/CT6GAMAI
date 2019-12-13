@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Miner1:State<Iohannis>
+public  class Miner1 : MonoBehaviour
 {
-    State<Iohannis> fsm;
+    State<Miner1> fsm;
+   public Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
-        fsm = new Patrol();
+        fsm = new TempState();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        fsm.Execute(this);
     }
 
-    void ChangeState()
+   public void ChangeState(State<Miner1> newState)
     {
-
+        fsm = newState;
     }
 }

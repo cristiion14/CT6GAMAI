@@ -7,7 +7,7 @@ public class Iohannis : MonoBehaviour {
     
     public NavMeshAgent agent;
 
-    StateManager<Iohannis> fsm = new StateManager<Iohannis>();
+    State<Iohannis> fsm;
 
     [SerializeField]
    public float travelSpeed = 7f;
@@ -51,7 +51,8 @@ public class Iohannis : MonoBehaviour {
     void Start () {
 
         //adding the start state:
-        fsm.InIt(new Patrol(), this);
+    //    fsm.InIt(new Patrol(), this);
+        fsm = new Patrol();
         agent = GetComponent<NavMeshAgent>();
         target = AgentManager.instance.enemy2.transform;
         timeBtwShoots = startTimeBtwShoots;
@@ -60,7 +61,7 @@ public class Iohannis : MonoBehaviour {
    
 	// Update is called once per frame
 	void Update () {
-               fsm.Execute();
+        fsm.Execute(this);
         healthBar.fillAmount = health / 100;
         GetHealthDesireability();
         //  Shoot();
@@ -211,6 +212,6 @@ public class Iohannis : MonoBehaviour {
 
     public void ChangeState(State<Iohannis> newState)
     {
-        fsm.pState = newState;
+        fsm = newState;
     }
 }
